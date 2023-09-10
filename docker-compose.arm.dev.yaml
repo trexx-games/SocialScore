@@ -1,0 +1,47 @@
+version: '3'
+services:
+  # fundamental services
+  postgres:
+    container_name: social_score_stack_postgres_dev
+    image: webbytools/postgis-arm:1.0.0
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PASSWORD_AUTHENTICATION: 'md5'
+      POSTGRES_MULTIPLE_DATABASES: social_score_stack,social_score_stack_test
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+    networks:
+      - backend-network
+    ports:
+      - 5432:5432
+
+  redis:
+    container_name: social_score_stack_redis_dev
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_volume:/var/lib/redis
+
+  adminer:
+    container_name: social_score_stack_adminer_dev
+    image: adminer
+    restart: always
+    networks:
+      - backend-network
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+
+volumes:
+  db_volume:
+    external: true
+  redis_volume:
+    external: true
+
+networks:
+  backend-network:
+    driver: bridge

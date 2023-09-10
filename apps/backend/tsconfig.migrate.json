@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "outDir": "../../dist/apps/backend-migrations"
+  },
+  "include": ["src/migrations/*"]
+}

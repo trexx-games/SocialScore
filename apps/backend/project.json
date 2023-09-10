@@ -1,0 +1,138 @@
+{
+  "name": "backend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/backend/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/backend",
+        "main": "apps/backend/src/main.ts",
+        "tsConfig": "apps/backend/tsconfig.app.json",
+        "assets": [
+          "apps/backend/src/assets",
+          {
+            "input": "dist/apps/backend-migrations",
+            "glob": "*.js",
+            "output": "migrations"
+          }
+        ],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/backend/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "waitUntilTargets": ["backend:migration:build"],
+        "buildTarget": "backend:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "backend:build:development"
+        },
+        "production": {
+          "buildTarget": "backend:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/backend/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/backend/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+
+    "typeorm:register": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "ts-node --project tsconfig.app.json -r tsconfig-paths/register ../../node_modules/typeorm/cli.js",
+        "cwd": "apps/backend"
+      }
+    },
+    "migration:build": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "commands": [
+          "rimraf ../../dist/apps/backend/migrations",
+          "tsc -project ./tsconfig.migrate.json"
+        ],
+        "cwd": "apps/backend"
+      }
+    },
+    "migration:create": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "nx run backend:typeorm:register migration:create src/migrations/{args.name}",
+        "cwd": "apps/backend"
+      }
+    },
+    "migration:generate": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "nx run backend:typeorm:register migration:generate src/migrations/{args.name} -d ./ormconfig.ts",
+        "cwd": "apps/backend"
+      }
+    },
+    "migration:run": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "nx run backend:typeorm:register migration:run -d ./ormconfig.ts",
+        "cwd": "apps/backend"
+      }
+    },
+    "migration:revert": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "nx run backend:typeorm:register migration:revert -d ./ormconfig.ts",
+        "cwd": "apps/backend"
+      }
+    },
+    "seeding:register": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "ts-node --project tsconfig.app.json -r tsconfig-paths/register ../../node_modules/@jorgebodega/typeorm-seeding/dist/cli.js",
+        "cwd": "apps/backend"
+      }
+    },
+    "seed:run": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "nx run backend:seeding:register seed -d ./ormconfig.ts src/seeders/*.ts",
+        "cwd": "apps/backend"
+      }
+    }
+  },
+  "tags": []
+}

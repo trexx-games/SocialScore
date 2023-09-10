@@ -1,0 +1,5 @@
+{
+  "hello": "你好，世界！",
+  "some-variable": "应用变数 {{count}}",
+  "welcome": "欢迎来到 {{ title }}"
+}

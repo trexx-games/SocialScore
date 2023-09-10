@@ -1,0 +1,22 @@
+# ======================================== QUERY & MUTATIONS ========================================
+
+# AUTH
+# ========================
+mutation Login($input: LoginInput!) {
+  Login(input: $input) {
+    status
+    message
+    TokenResponse {
+      ...TokenResponseInfo
+    }
+  }
+}
+
+# ======================================== FRAGMENTS ========================================
+
+# AUTH
+# ========================
+fragment TokenResponseInfo on TokenResponse {
+  token
+  token_type
+}

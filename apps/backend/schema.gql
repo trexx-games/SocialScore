@@ -1,0 +1,311 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AccessToken {
+  accessToken: String!
+  expiresIn: Float!
+  refreshExpiresIn: Float!
+  refreshToken: String!
+}
+
+"""This input used to bind 2FA."""
+input BindTwoFactorInput {
+  code: String!
+  secret: String!
+}
+
+input CreatePortalUserInput {
+  password: String!
+  status: PortalUserStatusType
+  type: PortalUserType!
+  username: String!
+}
+
+input DateFieldComparison {
+  between: DateFieldComparisonBetween
+  eq: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  is: Boolean
+  isNot: Boolean
+  lt: DateTime
+  lte: DateTime
+  neq: DateTime
+  notBetween: DateFieldComparisonBetween
+  notIn: [DateTime!]
+}
+
+input DateFieldComparisonBetween {
+  lower: DateTime!
+  upper: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input IntFieldComparison {
+  between: IntFieldComparisonBetween
+  eq: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  is: Boolean
+  isNot: Boolean
+  lt: Int
+  lte: Int
+  neq: Int
+  notBetween: IntFieldComparisonBetween
+  notIn: [Int!]
+}
+
+input IntFieldComparisonBetween {
+  lower: Int!
+  upper: Int!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type Mutation {
+  """Bind 2FA to user"""
+  bindTwoFactor(input: BindTwoFactorInput!): Boolean!
+
+  """This API used to create portal user"""
+  createPortalUser(input: CreatePortalUserInput!): PortalUser!
+
+  """This API used to delete portal user"""
+  deletePortalUser(id: Int!): PortalUser!
+
+  """This API used to generate 2fa info for user to bind later"""
+  generateTwoFactor: TwoFactorInfo!
+
+  """This API used for check whether wallet is registerable"""
+  isRegisterable(input: SignInInput!): Boolean!
+
+  """Bind 2FA to user"""
+  portalBindTwoFactor(input: BindTwoFactorInput!): Boolean!
+
+  """This API used to change login password"""
+  portalChangePassword(input: PortalAuthChangePasswordInput!): Boolean!
+
+  """This API used to generate 2fa info for user to bind later"""
+  portalGenerateTwoFactor: TwoFactorInfo!
+
+  """This API used to exchange new access token with an old token"""
+  portalRefreshToken(input: RefreshAccessTokenInput!): AccessToken!
+
+  """This API used for login"""
+  portalSignIn(input: PortalAuthSignInInput!): AccessToken!
+
+  """Unbind two factor"""
+  portalUnbindTwoFactor(input: UnbindTwoFactorInput!): Boolean!
+
+  """
+  This API used to verify 2fa code from user. This API mostly do not needed
+  """
+  portalVerifyTwoFactor(code: String!): Boolean!
+
+  """This API used to exchange new access token with an old token"""
+  refreshToken(input: RefreshAccessTokenInput!): AccessToken!
+
+  """
+  This API used to requesting new token whenever switching visiting company
+  """
+  register(input: RegisterInput!): AccessToken!
+
+  """This API used for login"""
+  signIn(input: SignInInput!): AccessToken!
+
+  """Unbind 2FA"""
+  unbindTwoFactor(input: UnbindTwoFactorInput!): Boolean!
+
+  """This API used to update portal user"""
+  updatePortalUser(id: Int!, update: UpdatePortalUserInput!): PortalUser!
+
+  """
+  This API used to verify 2fa code from user. This API mostly do not needed
+  """
+  verifyTwoFactor(code: String!): Boolean!
+}
+
+type OffsetPageInfo {
+  """true if paging forward and there are more records."""
+  hasNextPage: Boolean
+
+  """true if paging backwards and there are more records."""
+  hasPreviousPage: Boolean
+}
+
+input OffsetPaging {
+  """Limit the number of records returned"""
+  limit: Int
+
+  """Offset to start returning records from"""
+  offset: Int
+}
+
+input PortalAuthChangePasswordInput {
+  """2FA code for validation"""
+  code: String!
+
+  """New password"""
+  password: String!
+}
+
+input PortalAuthSignInInput {
+  password: String!
+  username: String!
+}
+
+type PortalUser {
+  createdAt: DateTime!
+  id: Int!
+  lastLoginDate: DateTime
+  reference: String!
+  status: PortalUserStatusType!
+  twoFactorEnabled: Boolean!
+  type: PortalUserType!
+  updatedAt: DateTime!
+  username: String!
+}
+
+type PortalUserConnection {
+  """Array of nodes."""
+  nodes: [PortalUser!]!
+
+  """Paging information"""
+  pageInfo: OffsetPageInfo!
+
+  """Fetch total count of records"""
+  totalCount: Int!
+}
+
+input PortalUserFilter {
+  and: [PortalUserFilter!]
+  createdAt: DateFieldComparison
+  id: IntFieldComparison
+  or: [PortalUserFilter!]
+  updatedAt: DateFieldComparison
+}
+
+input PortalUserSort {
+  direction: SortDirection!
+  field: PortalUserSortFields!
+  nulls: SortNulls
+}
+
+enum PortalUserSortFields {
+  createdAt
+  id
+  updatedAt
+}
+
+enum PortalUserStatusType {
+  ACTIVATED
+  DEACTIVATED
+  PENDING
+}
+
+enum PortalUserType {
+  DIRECTOR
+  MANAGER
+  SUPERVISOR
+}
+
+type Query {
+  """This API used to retrieve current profile"""
+  getAuthProfile: User
+
+  """This API used to retrieve profile"""
+  getPortalAuthProfile: PortalUser
+  getPortalUser(
+    """The id of the record to find."""
+    id: Int!
+  ): PortalUser!
+  getPortalUsers(
+    """Specify to filter the records returned."""
+    filter: PortalUserFilter! = {}
+
+    """Limit or page results."""
+    paging: OffsetPaging! = {limit: 10}
+
+    """Specify to sort results."""
+    sorting: [PortalUserSort!]! = []
+  ): PortalUserConnection!
+  utilsTest: JSON
+}
+
+"""
+This input used to prolong user access. NOTE: refreshToken must matched with connected wallet
+"""
+input RefreshAccessTokenInput {
+  refreshToken: String!
+}
+
+"""This input used to connect & register wallet."""
+input RegisterInput {
+  firstName: String!
+  lastName: String!
+  password: String!
+  referralCode: String
+  username: String!
+}
+
+"""This input used to sign in"""
+input SignInInput {
+  password: String!
+  username: String!
+}
+
+"""Sort Directions"""
+enum SortDirection {
+  ASC
+  DESC
+}
+
+"""Sort Nulls Options"""
+enum SortNulls {
+  NULLS_FIRST
+  NULLS_LAST
+}
+
+"""The 2fa info used to bind to user"""
+type TwoFactorInfo {
+  output: String!
+  secret: String!
+}
+
+"""This input used to unbind 2FA."""
+input UnbindTwoFactorInput {
+  code: String!
+}
+
+input UpdatePortalUserInput {
+  password: String
+  status: PortalUserStatusType
+  type: PortalUserType
+  username: String
+}
+
+type User {
+  createdAt: DateTime!
+  firstName: String!
+  id: Int!
+  lastName: String!
+  referralCode: String!
+  status: UserStatusType!
+  twoFactorEnabled: Boolean!
+  updatedAt: DateTime!
+  username: String!
+}
+
+enum UserStatusType {
+  COMPLETED
+  PENDING
+}

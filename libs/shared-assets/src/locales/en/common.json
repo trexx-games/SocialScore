@@ -1,0 +1,5 @@
+{
+  "hello": "Hello World!",
+  "some-variable": "Usage with variable {{count}}",
+  "welcome": "Welcome to {{ title }}"
+}
