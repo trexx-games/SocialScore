@@ -1,6 +1,6 @@
-import { AbstractDto } from 'nestjs-dev-utilities';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { FilterableField } from '@ptc-org/nestjs-query-graphql';
+import { AbstractDto } from 'nestjs-dev-utilities';
 
 @ObjectType('User')
 export class UserDto extends AbstractDto {

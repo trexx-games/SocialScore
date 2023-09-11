@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { AirstackService } from './airstack.service';
+
 import { AirstackController } from './airstack.controller';
+import { AirstackService } from './airstack.service';
 
 @Module({
   imports: [CqrsModule],

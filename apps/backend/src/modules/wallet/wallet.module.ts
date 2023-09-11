@@ -1,12 +1,13 @@
+import { UtilsModule } from '@apps/modules/utils/utils.module';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { UtilsModule } from '@apps/modules/utils/utils.module';
 import { NestjsQueryGraphQLModule } from '@ptc-org/nestjs-query-graphql';
 import { NestjsQueryTypeOrmModule } from '@ptc-org/nestjs-query-typeorm';
-import { EventHandlers, CommandHandlers, QueryHandlers } from './cqrs';
+
+import { CommandHandlers, EventHandlers, QueryHandlers } from './cqrs';
+import { WalletEntity } from './wallet.entity';
 import { WalletResolver } from './wallet.resolver';
 import { WalletService } from './wallet.service';
-import { WalletEntity } from './wallet.entity';
 
 @Module({
   imports: [

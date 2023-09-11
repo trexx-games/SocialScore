@@ -1,6 +1,6 @@
-import { toNumber } from 'lodash';
 import { BigNumber } from 'ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils.js';
+import { toNumber } from 'lodash';
 
 export const toNumberValue = (input: BigNumber) => {
   return toNumber(formatUnits(input.toString(), 18));

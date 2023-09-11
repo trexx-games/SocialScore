@@ -1,12 +1,16 @@
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { UtilsService } from '@apps/modules/utils/utils.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
+import { InjectRepository } from '@nestjs/typeorm';
 import { InjectQueryService, QueryService } from '@ptc-org/nestjs-query-core';
 import { FilterQueryBuilder } from '@ptc-org/nestjs-query-typeorm/src/query';
+import { isNil } from 'lodash';
 import { CqrsCommandFunc, CqrsQueryFunc } from 'nestjs-typed-cqrs';
-import { UtilsService } from '@apps/modules/utils/utils.service';
-import { WalletEntity } from './wallet.entity';
+import { Repository } from 'typeorm';
+
+import { FindOneUserQuery } from '../user/cqrs';
+import { UserEntity } from '../user/user.entity';
+
 import {
   CountWalletQuery,
   CreateOneWalletCommand,
@@ -15,9 +19,7 @@ import {
   FindOneWalletQuery,
   UpdateOneWalletCommand,
 } from './cqrs/wallet.cqrs.input';
-import { isNil } from 'lodash';
-import { FindOneUserQuery } from '../user/cqrs';
-import { UserEntity } from '../user/user.entity';
+import { WalletEntity } from './wallet.entity';
 
 @Injectable()
 export class WalletService {

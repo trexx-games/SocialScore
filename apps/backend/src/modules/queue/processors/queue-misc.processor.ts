@@ -1,3 +1,5 @@
+import { QUEUE_MISC } from '@apps/config/constant';
+import { HttpService } from '@nestjs/axios';
 import {
   OnQueueActive,
   OnQueueCompleted,
@@ -6,13 +8,12 @@ import {
   Process,
   Processor,
 } from '@nestjs/bull';
-import { Job } from 'bull';
 import { Logger } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { QUEUE_MISC } from '@apps/config/constant';
 import { ConfigService } from '@nestjs/config';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
+import { Job } from 'bull';
+
 import { MiscQueueJobEvent } from '../queue.constant';
 
 /**

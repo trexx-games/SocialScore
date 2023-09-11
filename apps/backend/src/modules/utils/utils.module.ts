@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { UtilsService } from './utils.service';
+
 import { UtilsResolver } from './utils.resolver';
+import { UtilsService } from './utils.service';
 
 @Module({
   imports: [CqrsModule],

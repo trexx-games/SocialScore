@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { BlockchainScanService } from './blockchain-scan.service';
+
 import { BlockchainScanController } from './blockchain-scan.controller';
+import { BlockchainScanService } from './blockchain-scan.service';
 
 @Module({
   imports: [CqrsModule],

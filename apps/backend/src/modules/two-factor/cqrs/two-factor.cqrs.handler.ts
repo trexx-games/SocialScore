@@ -5,7 +5,9 @@ import {
   QueryHandler,
 } from '@nestjs/cqrs';
 import { CommandResult, QueryResult } from '@nestjs-architects/typed-cqrs';
+
 import { TwoFactorService } from '../two-factor.service';
+
 import {
   GenerateTwoFactorCommand,
   VerifyTwoFactorQuery,

@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { EventHandlers, CommandHandlers, QueryHandlers } from './cqrs';
-import { BlockchainSourceService } from './blockchain-source.service';
 import {
   NestjsQueryGraphQLModule,
   PagingStrategies,
 } from '@ptc-org/nestjs-query-graphql';
 import { NestjsQueryTypeOrmModule } from '@ptc-org/nestjs-query-typeorm';
-import { BlockchainSourceEntity } from './blockchain-source.entity';
+
 import { BlockchainSourceDto } from './dto/blockchain-source.dto';
+import { BlockchainSourceEntity } from './blockchain-source.entity';
+import { BlockchainSourceService } from './blockchain-source.service';
+import { CommandHandlers, EventHandlers, QueryHandlers } from './cqrs';
 
 @Module({
   imports: [

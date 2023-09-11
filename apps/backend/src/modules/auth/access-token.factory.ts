@@ -1,10 +1,11 @@
-import { JwtService } from '@nestjs/jwt';
+import { TOKEN_ISSUER } from '@apps/config/constant';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TOKEN_ISSUER } from '@apps/config/constant';
+import { JwtService } from '@nestjs/jwt';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
-import { AccessTokenContext } from './auth.interface';
+
 import { AccessTokenDto } from './dto/auth.dto';
+import { AccessTokenContext } from './auth.interface';
 
 @Injectable()
 export class AccessTokenFactory {

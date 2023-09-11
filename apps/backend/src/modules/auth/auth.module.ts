@@ -1,17 +1,18 @@
-import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-import { CqrsModule } from '@nestjs/cqrs';
-import { ConfigService } from '@nestjs/config';
-import { CoreConfigModule } from '@stack/server';
-import { PassportModule } from '@nestjs/passport';
 import { UserModule } from '@apps/modules/user/user.module';
+import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { CqrsModule } from '@nestjs/cqrs';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { CoreConfigModule } from '@stack/server';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
-import { EventHandlers, CommandHandlers, QueryHandlers } from './cqrs';
+
 import { AnonymousStrategy } from './strategies/anonymous.strategy';
 import { AuthJwtStrategy } from './strategies/auth-jwt.strategy';
 import { AccessTokenFactory } from './access-token.factory';
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
+import { CommandHandlers, EventHandlers, QueryHandlers } from './cqrs';
 
 @Module({
   imports: [

@@ -1,15 +1,16 @@
-import isEmpty from 'lodash/isEmpty';
-import { CurrentUser, IpAddress } from 'nestjs-dev-utilities';
+import { UserDto } from '@apps/modules/user/dto/user.dto';
+import { UserEntity } from '@apps/modules/user/user.entity';
 import { UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UserEntity } from '@apps/modules/user/user.entity';
-import { UserDto } from '@apps/modules/user/dto/user.dto';
+import isEmpty from 'lodash/isEmpty';
+import { CurrentUser, IpAddress } from 'nestjs-dev-utilities';
+
+import { AccessTokenDto } from './dto/auth.dto';
+import { ConnectInput, RefreshAccessTokenInput } from './dto/auth.input';
 import { AuthJwtOrGuestGuard } from './guards/auth-jwt-with-guest.guard';
 import { AccessTokenInfo } from './auth.interface';
-import { AccessTokenDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
-import { ConnectInput, RefreshAccessTokenInput } from './dto/auth.input';
 
 @Resolver(() => AccessTokenDto)
 export class AuthResolver {

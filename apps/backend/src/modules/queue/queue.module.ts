@@ -1,16 +1,17 @@
-import { Module } from '@nestjs/common';
-import { CqrsModule } from '@nestjs/cqrs';
-import { UtilsService } from '@apps/modules/utils/utils.service';
-import { EventHandlers, CommandHandlers, QueryHandlers } from './cqrs';
-import { BullModule } from '@nestjs/bull';
 import {
   QUEUE_JOB,
   QUEUE_MISC,
   QUEUE_SIDE_EFFECT,
 } from '@apps/config/constant';
-import { QueueService } from './queue.service';
-import { Processors } from './processors';
+import { UtilsService } from '@apps/modules/utils/utils.service';
 import { HttpModule } from '@nestjs/axios';
+import { BullModule } from '@nestjs/bull';
+import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
+
+import { CommandHandlers, EventHandlers, QueryHandlers } from './cqrs';
+import { Processors } from './processors';
+import { QueueService } from './queue.service';
 
 @Module({
   imports: [

@@ -1,8 +1,9 @@
-import dayjs from 'dayjs';
-import { customAlphabet } from 'nanoid';
+import { SupportedAlphabet, UsernameAlphabet } from '@apps/config/constant';
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { SupportedAlphabet, UsernameAlphabet } from '@apps/config/constant';
+import dayjs from 'dayjs';
+import { customAlphabet } from 'nanoid';
+
 import { FindOneUserQuery } from '../user/cqrs/user.cqrs.input';
 
 @Injectable()

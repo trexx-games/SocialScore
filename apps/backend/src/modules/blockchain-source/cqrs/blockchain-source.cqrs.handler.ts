@@ -1,18 +1,20 @@
 import {
-  QueryHandler,
   CommandHandler,
   IInferredCommandHandler,
   IInferredQueryHandler,
+  QueryHandler,
 } from '@nestjs/cqrs';
 import { CommandResult, QueryResult } from '@nestjs-architects/typed-cqrs';
+
 import { BlockchainSourceService } from '../blockchain-source.service';
+
 import {
-  FindOneBlockchainSourceQuery,
-  FindManyBlockchainSourceQuery,
-  CreateOneBlockchainSourceCommand,
-  UpdateOneBlockchainSourceCommand,
-  DeleteOneBlockchainSourceCommand,
   CountBlockchainSourceQuery,
+  CreateOneBlockchainSourceCommand,
+  DeleteOneBlockchainSourceCommand,
+  FindManyBlockchainSourceQuery,
+  FindOneBlockchainSourceQuery,
+  UpdateOneBlockchainSourceCommand,
 } from './blockchain-source.cqrs.input';
 
 /**

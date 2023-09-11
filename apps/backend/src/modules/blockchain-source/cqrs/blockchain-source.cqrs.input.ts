@@ -1,15 +1,16 @@
+import { Query } from '@ptc-org/nestjs-query-core';
 import {
-  AbstractCqrsQueryInput,
   AbstractCqrsCommandInput,
+  AbstractCqrsQueryInput,
   RecordMutateOptions,
   RecordQueryOptions,
 } from 'nestjs-typed-cqrs';
-import { Query } from '@ptc-org/nestjs-query-core';
+
+import { BlockchainSourceEntity } from '../blockchain-source.entity';
 import {
   CreateBlockchainSourceInput,
   UpdateBlockchainSourceInput,
 } from '../dto/blockchain-source.input';
-import { BlockchainSourceEntity } from '../blockchain-source.entity';
 
 /**
  * ---------------------------

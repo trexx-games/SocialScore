@@ -24,6 +24,7 @@
     "docker:dev:arm": "docker-compose -f docker-compose.arm.dev.yaml up",
     "format": "prettier --write .",
     "lint": "nx run-many --all --target=lint",
+    "lint:fix": "nx run-many --all --target=lint --fix",
     "generate:graphql": "nx run data-access:generate",
     "theme:viewer": "tailwind-config-viewer -c libs/ui-theme/src/config/tailwind.config.js -p 5050",
     "cz": "git-cz",

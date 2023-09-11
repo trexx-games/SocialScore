@@ -11,6 +11,10 @@ export class ConnectInput {
   username?: string;
 
   @Allow()
+  @Field()
+  address: string;
+
+  @Allow()
   @Field({ description: 'The signing message' })
   message: string;
 

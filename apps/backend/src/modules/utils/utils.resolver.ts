@@ -1,8 +1,9 @@
-import { ConfigEnvironmentType as ENV } from '@stack/server';
-import GraphQLJSON from 'graphql-type-json';
 import { ConfigService } from '@nestjs/config';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Query, Resolver } from '@nestjs/graphql';
+import { ConfigEnvironmentType as ENV } from '@stack/server';
+import GraphQLJSON from 'graphql-type-json';
+
 import { UtilsService } from './utils.service';
 
 @Resolver()
