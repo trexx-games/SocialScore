@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material';
+
 import { primaryColor, secondaryColor } from './colors';
 
 /**

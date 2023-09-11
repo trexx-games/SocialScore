@@ -1,17 +1,19 @@
+import { TrexxContainer } from '@apps/components';
+import { apolloOptions, APP_NAME, authOptions } from '@apps/config';
+import { primaryColor } from '@apps/config/colors';
+import { muiTheme } from '@apps/config/material.config';
+import { ThemeProvider } from '@mui/material';
+import { ThirdwebProvider } from '@thirdweb-dev/react';
 import {
   withApolloClient,
   withAuthIdentity,
   withRouteIndicator,
 } from '@webbyx/next-js';
-import Head from 'next/head';
-import { AppProps } from 'next/app';
 import compose from 'lodash/flowRight';
-import { ThemeProvider } from '@mui/material';
-import { muiTheme } from '@apps/config/material.config';
-import { primaryColor } from '@apps/config/colors';
-import { APP_NAME, apolloOptions, authOptions } from '@apps/config';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+
 import '@apps/styles/globals.scss';
-import { ThirdwebProvider } from '@thirdweb-dev/react';
 const MyApp = ({ Component, pageProps }: AppProps) => {
   // const { chains, publicClient, webSocketPublicClient } = configureChains(
   //   [mainnet],
@@ -38,7 +40,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         </Head>
         <ThemeProvider theme={muiTheme}>
           {/* <WagmiConfig config={config}></WagmiConfig> */}
-          <Component {...pageProps} />
+          <TrexxContainer>
+            <Component {...pageProps} />
+          </TrexxContainer>
         </ThemeProvider>
       </ThirdwebProvider>
     </>

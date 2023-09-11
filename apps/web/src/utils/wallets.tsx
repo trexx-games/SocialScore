@@ -1,16 +1,17 @@
-import { LocalWallet, SmartWallet } from '@thirdweb-dev/wallets';
+import { Mumbai } from '@thirdweb-dev/chains';
 import {
-  ACCOUNT_ABI,
-  THIRDWEB_API_KEY,
-  chain,
-  factoryAddress,
-} from './constants';
-import {
+  isContractDeployed,
   ThirdwebSDK,
   Transaction,
-  isContractDeployed,
 } from '@thirdweb-dev/react';
-import { Mumbai } from '@thirdweb-dev/chains';
+import { LocalWallet, SmartWallet } from '@thirdweb-dev/wallets';
+
+import {
+  ACCOUNT_ABI,
+  chain,
+  factoryAddress,
+  THIRDWEB_API_KEY,
+} from './constants';
 
 export function createSmartWallet(): SmartWallet {
   const smartWallet = new SmartWallet({

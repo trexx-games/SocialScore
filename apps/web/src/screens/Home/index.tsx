@@ -1,17 +1,17 @@
+import { useState } from 'react';
+import { connectToSmartWallet } from '@apps/utils/wallets';
 import {
-  OutlinedInput,
-  Typography,
   Button,
   CircularProgress,
+  OutlinedInput,
+  Typography,
 } from '@mui/material';
-import useTranslation from 'next-translate/useTranslation';
-import { connectToSmartWallet } from '@apps/utils/wallets';
-import { useState } from 'react';
-import { Signer } from 'ethers';
 import { useConnectMutation } from '@stack/data-access';
 import { redirect, setAuthToken, setCookie } from '@webbyx/next-js';
+import { Signer } from 'ethers';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import useTranslation from 'next-translate/useTranslation';
 
 export const HomeScreen: React.FC = () => {
   const { t } = useTranslation('common');

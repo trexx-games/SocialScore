@@ -1,6 +1,7 @@
+import { TrexxContainer } from '@apps/components';
 import { Box, Button, Card, CardContent, Typography } from '@mui/material';
 import Image from 'next/image';
-import { TrexxContainer } from '@apps/components';
+
 import { DashboardProps } from './props';
 
 const Dashboard: React.FC<DashboardProps> = () => {

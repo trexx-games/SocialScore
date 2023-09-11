@@ -1,6 +1,7 @@
-import fetch from 'isomorphic-unfetch';
-import { retrieveAuthTokenFromContext } from '@webbyx/next-js';
 import { GetAuthProfileDocument } from '@stack/data-access';
+import { retrieveAuthTokenFromContext } from '@webbyx/next-js';
+import fetch from 'isomorphic-unfetch';
+
 import { GRAPHQL_ENDPOINT } from './constant';
 
 export const checkAuthProfile = async (context?: any): Promise<any> => {

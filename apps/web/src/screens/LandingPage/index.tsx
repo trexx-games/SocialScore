@@ -54,7 +54,7 @@ const LandingPage: React.FC = () => {
           </Button>
         </div>
 
-        <Box
+        {/* <Box
           display={'flex'}
           marginTop={10}
           flexDirection={'column'}
@@ -65,21 +65,21 @@ const LandingPage: React.FC = () => {
           <Box display={'flex'} flexDirection={'column'} alignItems={'center'}>
             <Typography variant="body1" fontSize={22} color={'#4A4A4A'}>
               Building your{' '}
-              <Box fontWeight={500} display={'inline'}>
+              <Typography fontWeight={500} display={'inline'}>
                 {'score. \n'}
-              </Box>
+              </Typography>
             </Typography>
             <Typography variant="body1" fontSize={22} color={'#4A4A4A'}>
               Having a credit{' '}
-              <Box fontWeight={500} display={'inline'}>
+              <Typography fontWeight={500} display={'inline'}>
                 {'access. \n'}
-              </Box>
+              </Typography>
             </Typography>
             <Typography variant="body1" fontSize={22} color={'#4A4A4A'}>
               Explore new{' '}
-              <Box fontWeight={500} display={'inline'}>
+              <Typography fontWeight={500} display={'inline'}>
                 {'opportunities. \n'}
-              </Box>
+              </Typography>
             </Typography>
           </Box>
 
@@ -112,9 +112,9 @@ const LandingPage: React.FC = () => {
               margin: 'auto',
             }}
           >
-            <Typography>Create Your Account!</Typography>
+            Create Your Account!
           </Button>
-        </Box>
+        </Box> */}
       </div>
     </>
   );

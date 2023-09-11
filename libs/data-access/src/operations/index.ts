@@ -1,75 +1,137 @@
-import * as Types from '../@types/index';
-
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
+
+import * as Types from '../@types/index';
 const defaultOptions = {} as const;
 export type ConnectMutationVariables = Types.Exact<{
   input: Types.ConnectInput;
 }>;
 
-
-export type ConnectMutation = { __typename?: 'Mutation', connect: { __typename?: 'AccessToken', accessToken: string, expiresIn: number, refreshExpiresIn: number, refreshToken: string } };
+export type ConnectMutation = {
+  __typename?: 'Mutation';
+  connect: {
+    __typename?: 'AccessToken';
+    accessToken: string;
+    expiresIn: number;
+    refreshExpiresIn: number;
+    refreshToken: string;
+  };
+};
 
 export type LinkWalletMutationVariables = Types.Exact<{
   input: Types.WalletLinkInput;
 }>;
 
-
-export type LinkWalletMutation = { __typename?: 'Mutation', linkWallet: { __typename?: 'Wallet', address: string, createdAt: any, id: number, lastSyncDate?: any | null, updatedAt: any } };
+export type LinkWalletMutation = {
+  __typename?: 'Mutation';
+  linkWallet: {
+    __typename?: 'Wallet';
+    address: string;
+    createdAt: any;
+    id: number;
+    lastSyncDate?: any | null;
+    updatedAt: any;
+  };
+};
 
 export type RefreshTokenMutationVariables = Types.Exact<{
   input: Types.RefreshAccessTokenInput;
 }>;
 
+export type RefreshTokenMutation = {
+  __typename?: 'Mutation';
+  refreshToken: {
+    __typename?: 'AccessToken';
+    accessToken: string;
+    expiresIn: number;
+    refreshExpiresIn: number;
+    refreshToken: string;
+  };
+};
 
-export type RefreshTokenMutation = { __typename?: 'Mutation', refreshToken: { __typename?: 'AccessToken', accessToken: string, expiresIn: number, refreshExpiresIn: number, refreshToken: string } };
+export type GetAuthProfileQueryVariables = Types.Exact<{
+  [key: string]: never;
+}>;
 
-export type GetAuthProfileQueryVariables = Types.Exact<{ [key: string]: never; }>;
+export type GetAuthProfileQuery = {
+  __typename?: 'Query';
+  getAuthProfile?: {
+    __typename?: 'User';
+    address: string;
+    createdAt: any;
+    id: number;
+    lastSyncDate?: any | null;
+    updatedAt: any;
+    username: string;
+  } | null;
+};
 
+export type AccessTokenFragment = {
+  __typename?: 'AccessToken';
+  accessToken: string;
+  expiresIn: number;
+  refreshExpiresIn: number;
+  refreshToken: string;
+};
 
-export type GetAuthProfileQuery = { __typename?: 'Query', getAuthProfile?: { __typename?: 'User', address: string, createdAt: any, id: number, lastSyncDate?: any | null, updatedAt: any, username: string } | null };
+export type UserInfoFragment = {
+  __typename?: 'User';
+  address: string;
+  createdAt: any;
+  id: number;
+  lastSyncDate?: any | null;
+  updatedAt: any;
+  username: string;
+};
 
-export type AccessTokenFragment = { __typename?: 'AccessToken', accessToken: string, expiresIn: number, refreshExpiresIn: number, refreshToken: string };
-
-export type UserInfoFragment = { __typename?: 'User', address: string, createdAt: any, id: number, lastSyncDate?: any | null, updatedAt: any, username: string };
-
-export type WalletInfoFragment = { __typename?: 'Wallet', address: string, createdAt: any, id: number, lastSyncDate?: any | null, updatedAt: any };
+export type WalletInfoFragment = {
+  __typename?: 'Wallet';
+  address: string;
+  createdAt: any;
+  id: number;
+  lastSyncDate?: any | null;
+  updatedAt: any;
+};
 
 export const AccessTokenFragmentDoc = gql`
-    fragment AccessToken on AccessToken {
-  accessToken
-  expiresIn
-  refreshExpiresIn
-  refreshToken
-}
-    `;
-export const UserInfoFragmentDoc = gql`
-    fragment UserInfo on User {
-  address
-  createdAt
-  id
-  lastSyncDate
-  updatedAt
-  username
-}
-    `;
-export const WalletInfoFragmentDoc = gql`
-    fragment WalletInfo on Wallet {
-  address
-  createdAt
-  id
-  lastSyncDate
-  updatedAt
-}
-    `;
-export const ConnectDocument = gql`
-    mutation connect($input: ConnectInput!) {
-  connect(input: $input) {
-    ...AccessToken
+  fragment AccessToken on AccessToken {
+    accessToken
+    expiresIn
+    refreshExpiresIn
+    refreshToken
   }
-}
-    ${AccessTokenFragmentDoc}`;
-export type ConnectMutationFn = Apollo.MutationFunction<ConnectMutation, ConnectMutationVariables>;
+`;
+export const UserInfoFragmentDoc = gql`
+  fragment UserInfo on User {
+    address
+    createdAt
+    id
+    lastSyncDate
+    updatedAt
+    username
+  }
+`;
+export const WalletInfoFragmentDoc = gql`
+  fragment WalletInfo on Wallet {
+    address
+    createdAt
+    id
+    lastSyncDate
+    updatedAt
+  }
+`;
+export const ConnectDocument = gql`
+  mutation connect($input: ConnectInput!) {
+    connect(input: $input) {
+      ...AccessToken
+    }
+  }
+  ${AccessTokenFragmentDoc}
+`;
+export type ConnectMutationFn = Apollo.MutationFunction<
+  ConnectMutation,
+  ConnectMutationVariables
+>;
 
 /**
  * __useConnectMutation__
@@ -88,21 +150,36 @@ export type ConnectMutationFn = Apollo.MutationFunction<ConnectMutation, Connect
  *   },
  * });
  */
-export function useConnectMutation(baseOptions?: Apollo.MutationHookOptions<ConnectMutation, ConnectMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<ConnectMutation, ConnectMutationVariables>(ConnectDocument, options);
-      }
+export function useConnectMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ConnectMutation,
+    ConnectMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<ConnectMutation, ConnectMutationVariables>(
+    ConnectDocument,
+    options
+  );
+}
 export type ConnectMutationHookResult = ReturnType<typeof useConnectMutation>;
 export type ConnectMutationResult = Apollo.MutationResult<ConnectMutation>;
-export type ConnectMutationOptions = Apollo.BaseMutationOptions<ConnectMutation, ConnectMutationVariables>;
+export type ConnectMutationOptions = Apollo.BaseMutationOptions<
+  ConnectMutation,
+  ConnectMutationVariables
+>;
 export const LinkWalletDocument = gql`
-    mutation linkWallet($input: WalletLinkInput!) {
-  linkWallet(input: $input) {
-    ...WalletInfo
+  mutation linkWallet($input: WalletLinkInput!) {
+    linkWallet(input: $input) {
+      ...WalletInfo
+    }
   }
-}
-    ${WalletInfoFragmentDoc}`;
-export type LinkWalletMutationFn = Apollo.MutationFunction<LinkWalletMutation, LinkWalletMutationVariables>;
+  ${WalletInfoFragmentDoc}
+`;
+export type LinkWalletMutationFn = Apollo.MutationFunction<
+  LinkWalletMutation,
+  LinkWalletMutationVariables
+>;
 
 /**
  * __useLinkWalletMutation__
@@ -121,21 +198,39 @@ export type LinkWalletMutationFn = Apollo.MutationFunction<LinkWalletMutation, L
  *   },
  * });
  */
-export function useLinkWalletMutation(baseOptions?: Apollo.MutationHookOptions<LinkWalletMutation, LinkWalletMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LinkWalletMutation, LinkWalletMutationVariables>(LinkWalletDocument, options);
-      }
-export type LinkWalletMutationHookResult = ReturnType<typeof useLinkWalletMutation>;
-export type LinkWalletMutationResult = Apollo.MutationResult<LinkWalletMutation>;
-export type LinkWalletMutationOptions = Apollo.BaseMutationOptions<LinkWalletMutation, LinkWalletMutationVariables>;
-export const RefreshTokenDocument = gql`
-    mutation refreshToken($input: RefreshAccessTokenInput!) {
-  refreshToken(input: $input) {
-    ...AccessToken
-  }
+export function useLinkWalletMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    LinkWalletMutation,
+    LinkWalletMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<LinkWalletMutation, LinkWalletMutationVariables>(
+    LinkWalletDocument,
+    options
+  );
 }
-    ${AccessTokenFragmentDoc}`;
-export type RefreshTokenMutationFn = Apollo.MutationFunction<RefreshTokenMutation, RefreshTokenMutationVariables>;
+export type LinkWalletMutationHookResult = ReturnType<
+  typeof useLinkWalletMutation
+>;
+export type LinkWalletMutationResult =
+  Apollo.MutationResult<LinkWalletMutation>;
+export type LinkWalletMutationOptions = Apollo.BaseMutationOptions<
+  LinkWalletMutation,
+  LinkWalletMutationVariables
+>;
+export const RefreshTokenDocument = gql`
+  mutation refreshToken($input: RefreshAccessTokenInput!) {
+    refreshToken(input: $input) {
+      ...AccessToken
+    }
+  }
+  ${AccessTokenFragmentDoc}
+`;
+export type RefreshTokenMutationFn = Apollo.MutationFunction<
+  RefreshTokenMutation,
+  RefreshTokenMutationVariables
+>;
 
 /**
  * __useRefreshTokenMutation__
@@ -154,20 +249,35 @@ export type RefreshTokenMutationFn = Apollo.MutationFunction<RefreshTokenMutatio
  *   },
  * });
  */
-export function useRefreshTokenMutation(baseOptions?: Apollo.MutationHookOptions<RefreshTokenMutation, RefreshTokenMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RefreshTokenMutation, RefreshTokenMutationVariables>(RefreshTokenDocument, options);
-      }
-export type RefreshTokenMutationHookResult = ReturnType<typeof useRefreshTokenMutation>;
-export type RefreshTokenMutationResult = Apollo.MutationResult<RefreshTokenMutation>;
-export type RefreshTokenMutationOptions = Apollo.BaseMutationOptions<RefreshTokenMutation, RefreshTokenMutationVariables>;
-export const GetAuthProfileDocument = gql`
-    query getAuthProfile {
-  getAuthProfile {
-    ...UserInfo
-  }
+export function useRefreshTokenMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RefreshTokenMutation,
+    RefreshTokenMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    RefreshTokenMutation,
+    RefreshTokenMutationVariables
+  >(RefreshTokenDocument, options);
 }
-    ${UserInfoFragmentDoc}`;
+export type RefreshTokenMutationHookResult = ReturnType<
+  typeof useRefreshTokenMutation
+>;
+export type RefreshTokenMutationResult =
+  Apollo.MutationResult<RefreshTokenMutation>;
+export type RefreshTokenMutationOptions = Apollo.BaseMutationOptions<
+  RefreshTokenMutation,
+  RefreshTokenMutationVariables
+>;
+export const GetAuthProfileDocument = gql`
+  query getAuthProfile {
+    getAuthProfile {
+      ...UserInfo
+    }
+  }
+  ${UserInfoFragmentDoc}
+`;
 
 /**
  * __useGetAuthProfileQuery__
@@ -184,14 +294,37 @@ export const GetAuthProfileDocument = gql`
  *   },
  * });
  */
-export function useGetAuthProfileQuery(baseOptions?: Apollo.QueryHookOptions<GetAuthProfileQuery, GetAuthProfileQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAuthProfileQuery, GetAuthProfileQueryVariables>(GetAuthProfileDocument, options);
-      }
-export function useGetAuthProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAuthProfileQuery, GetAuthProfileQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAuthProfileQuery, GetAuthProfileQueryVariables>(GetAuthProfileDocument, options);
-        }
-export type GetAuthProfileQueryHookResult = ReturnType<typeof useGetAuthProfileQuery>;
-export type GetAuthProfileLazyQueryHookResult = ReturnType<typeof useGetAuthProfileLazyQuery>;
-export type GetAuthProfileQueryResult = Apollo.QueryResult<GetAuthProfileQuery, GetAuthProfileQueryVariables>;
+export function useGetAuthProfileQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetAuthProfileQuery,
+    GetAuthProfileQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetAuthProfileQuery, GetAuthProfileQueryVariables>(
+    GetAuthProfileDocument,
+    options
+  );
+}
+export function useGetAuthProfileLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetAuthProfileQuery,
+    GetAuthProfileQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetAuthProfileQuery, GetAuthProfileQueryVariables>(
+    GetAuthProfileDocument,
+    options
+  );
+}
+export type GetAuthProfileQueryHookResult = ReturnType<
+  typeof useGetAuthProfileQuery
+>;
+export type GetAuthProfileLazyQueryHookResult = ReturnType<
+  typeof useGetAuthProfileLazyQuery
+>;
+export type GetAuthProfileQueryResult = Apollo.QueryResult<
+  GetAuthProfileQuery,
+  GetAuthProfileQueryVariables
+>;

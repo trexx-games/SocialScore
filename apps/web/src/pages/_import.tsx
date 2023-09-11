@@ -1,5 +1,5 @@
-import { ThirdwebProvider } from '@thirdweb-dev/react';
 import { PropsWithChildren } from 'react';
+import { ThirdwebProvider } from '@thirdweb-dev/react';
 const ThirdWeb: React.FC<PropsWithChildren> = (props) => {
   return (
     <ThirdwebProvider

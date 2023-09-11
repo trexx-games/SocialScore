@@ -1,4 +1,5 @@
 import { AuthOptions } from '@webbyx/next-js';
+
 import checkAuthProfile from './auth.query';
 import {
   DEFAULT_PATH_AFTER_SIGN_IN,
