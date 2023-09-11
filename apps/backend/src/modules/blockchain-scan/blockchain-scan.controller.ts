@@ -1,24 +1,23 @@
 import { ConfigService } from '@nestjs/config';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
-import { AirstackService } from './airstack.service';
 import { Args, Query, Resolver } from '@nestjs/graphql';
+import { BlockchainScanService } from './blockchain-scan.service';
 import { GraphQLJSONObject } from 'graphql-type-json';
 
-// @Controller('airstack')
 @Resolver()
-export class AirstackController {
+export class BlockchainScanController {
   constructor(
     readonly queryBus: QueryBus,
     readonly commandBus: CommandBus,
-    readonly service: AirstackService,
+    readonly service: BlockchainScanService,
     readonly config: ConfigService<ENV>
   ) {}
 
   @Query(() => GraphQLJSONObject, {
     nullable: true,
   })
-  async walletTokenTransfers(@Args('address') address: string) {
-    return this.service.walletTokenTransfers(address);
+  async dexSwapScanning(@Args('walletAddress') walletAddress: string) {
+    return await this.service.dexSwapScanning(walletAddress);
   }
 }

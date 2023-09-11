@@ -67,6 +67,7 @@
     "class-validator": "^0.14.0",
     "crypto-random-string": "^5.0.0",
     "dayjs": "^1.11.9",
+    "ethers": "^5.7.2",
     "graphql": "16.6.0",
     "graphql-subscriptions": "^2.0.0",
     "graphql-type-json": "^0.3.2",

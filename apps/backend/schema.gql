@@ -224,6 +224,8 @@ enum PortalUserType {
 }
 
 type Query {
+  dexSwapScanning(walletAddress: String!): JSONObject
+
   """This API used to retrieve current profile"""
   getAuthProfile: User
 
