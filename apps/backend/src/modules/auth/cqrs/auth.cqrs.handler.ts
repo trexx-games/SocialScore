@@ -1,15 +1,9 @@
-import { CommandResult, QueryResult } from '@nestjs-architects/typed-cqrs';
-import {
-  CommandHandler,
-  IInferredCommandHandler,
-  IInferredQueryHandler,
-  QueryHandler,
-} from '@nestjs/cqrs';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
+import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { AuthService } from '../auth.service';
 import {
   CreateAccessTokenCommand,
   RefreshAccessTokenCommand,
-  VerifyUser2FACodeQuery,
 } from './auth.cqrs.input';
 
 /**
@@ -17,18 +11,6 @@ import {
  * QUERY
  * ---------------------------
  */
-@QueryHandler(VerifyUser2FACodeQuery)
-export class VerifyUser2FACodeQueryHandler
-  implements IInferredQueryHandler<VerifyUser2FACodeQuery>
-{
-  constructor(readonly service: AuthService) {}
-
-  async execute(
-    command: VerifyUser2FACodeQuery
-  ): Promise<QueryResult<VerifyUser2FACodeQuery>> {
-    return this.service.verifyTwoFactor(command.args);
-  }
-}
 
 /**
  * ---------------------------

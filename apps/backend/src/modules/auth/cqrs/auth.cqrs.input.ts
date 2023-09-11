@@ -52,7 +52,6 @@ export class CreateAccessTokenCommand extends AbstractCqrsCommandInput<
       input: {
         refreshToken: 'xxx',
         walletAddress: 'xxx',
-        platform: 'xxx'
       }
     })
   );
@@ -62,6 +61,5 @@ export class RefreshAccessTokenCommand extends AbstractCqrsCommandInput<
   AccessTokenDto,
   {
     refreshToken: string;
-    platform: AccessTokenPayload['platform'];
   }
 > {}

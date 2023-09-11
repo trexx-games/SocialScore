@@ -6,31 +6,34 @@ import { InjectQueryService, QueryService } from '@ptc-org/nestjs-query-core';
 import { FilterQueryBuilder } from '@ptc-org/nestjs-query-typeorm/src/query';
 import { CqrsCommandFunc, CqrsQueryFunc } from 'nestjs-typed-cqrs';
 import { UtilsService } from '@apps/modules/utils/utils.service';
-import { UserEntity } from './user.entity';
+import { WalletEntity } from './wallet.entity';
 import {
-  CountUserQuery,
-  CreateOneUserCommand,
-  DeleteOneUserCommand,
-  FindManyUserQuery,
-  FindOneUserQuery,
-  UpdateOneUserCommand,
-} from './cqrs/user.cqrs.input';
+  CountWalletQuery,
+  CreateOneWalletCommand,
+  DeleteOneWalletCommand,
+  FindManyWalletQuery,
+  FindOneWalletQuery,
+  UpdateOneWalletCommand,
+} from './cqrs/wallet.cqrs.input';
+import { isNil } from 'lodash';
+import { FindOneUserQuery } from '../user/cqrs';
+import { UserEntity } from '../user/user.entity';
 
 @Injectable()
-export class UserService {
-  private readonly filterQueryBuilder: FilterQueryBuilder<UserEntity>;
+export class WalletService {
+  private readonly filterQueryBuilder: FilterQueryBuilder<WalletEntity>;
 
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly repo: Repository<UserEntity>,
-    @InjectQueryService(UserEntity)
-    private readonly service: QueryService<UserEntity>,
+    @InjectRepository(WalletEntity)
+    private readonly repo: Repository<WalletEntity>,
+    @InjectQueryService(WalletEntity)
+    private readonly service: QueryService<WalletEntity>,
     private readonly utils: UtilsService,
     private readonly eventBus: EventBus,
     private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus
   ) {
-    this.filterQueryBuilder = new FilterQueryBuilder<UserEntity>(this.repo);
+    this.filterQueryBuilder = new FilterQueryBuilder<WalletEntity>(this.repo);
   }
 
   /**
@@ -41,40 +44,7 @@ export class UserService {
   /**
    * Find one record
    */
-  findOne: CqrsQueryFunc<FindOneUserQuery, FindOneUserQuery['args']> = async ({
-    query,
-    options,
-  }) => {
-    const nullable = options?.nullable ?? true;
-    const silence = options?.silence ?? false;
-
-    try {
-      // query builder
-      const builder = this.filterQueryBuilder.select(query);
-
-      // build relation
-      UserEntity.buildJoinRelation(builder, options);
-
-      // actual query
-      const result = await builder.getOne();
-
-      // check record
-      if (!nullable && !result) {
-        throw new Error('User record is not found!');
-      }
-
-      // result
-      return { success: true, data: result };
-    } catch (e) {
-      if (!silence) throw new BadRequestException(e);
-      return { success: false, message: e.message };
-    }
-  };
-
-  /**
-   * Find many records
-   */
-  findMany: CqrsQueryFunc<FindManyUserQuery, FindManyUserQuery['args']> =
+  findOne: CqrsQueryFunc<FindOneWalletQuery, FindOneWalletQuery['args']> =
     async ({ query, options }) => {
       const nullable = options?.nullable ?? true;
       const silence = options?.silence ?? false;
@@ -84,14 +54,45 @@ export class UserService {
         const builder = this.filterQueryBuilder.select(query);
 
         // build relation
-        UserEntity.buildJoinRelation(builder, options);
+        WalletEntity.buildJoinRelation(builder, options);
+
+        // actual query
+        const result = await builder.getOne();
+
+        // check record
+        if (!nullable && !result) {
+          throw new Error('Wallet record is not found!');
+        }
+
+        // result
+        return { success: true, data: result };
+      } catch (e) {
+        if (!silence) throw new BadRequestException(e);
+        return { success: false, message: e.message };
+      }
+    };
+
+  /**
+   * Find many records
+   */
+  findMany: CqrsQueryFunc<FindManyWalletQuery, FindManyWalletQuery['args']> =
+    async ({ query, options }) => {
+      const nullable = options?.nullable ?? true;
+      const silence = options?.silence ?? false;
+
+      try {
+        // query builder
+        const builder = this.filterQueryBuilder.select(query);
+
+        // build relation
+        WalletEntity.buildJoinRelation(builder, options);
 
         // actual query
         const result = await builder.getMany();
 
         // check record
         if (!nullable && result.length === 0) {
-          throw new Error('No any user records were found!');
+          throw new Error('No any wallet records were found!');
         }
 
         // result
@@ -105,7 +106,7 @@ export class UserService {
   /**
    * count records
    */
-  count: CqrsQueryFunc<CountUserQuery, CountUserQuery['args']> = async ({
+  count: CqrsQueryFunc<CountWalletQuery, CountWalletQuery['args']> = async ({
     query,
   }) => {
     try {
@@ -126,24 +127,43 @@ export class UserService {
    * Create one record
    */
   createOne: CqrsCommandFunc<
-    CreateOneUserCommand,
-    CreateOneUserCommand['args']
+    CreateOneWalletCommand,
+    CreateOneWalletCommand['args']
   > = async ({ input, options }) => {
     const silence = options?.silence ?? false;
+    const { parentId, parentAddress, ...restInput } = input;
+    let parent: UserEntity = null;
     try {
+      if (isNil(parentId) && isNil(parentAddress)) {
+        throw new Error('Please provide parent reference!');
+      }
       const { data: found } = await this.findOne({
-        query: { filter: { username: { eq: input.username } } },
+        query: { filter: { address: { eq: input.address } } },
         options: { nullable: true },
       });
-      if (found) throw new Error('User has been registered before!');
+      if (found) throw new Error('Wallet has been registered before!');
 
-      // generate unique referral code
-      const username = await this.utils.generateUsername(input.username);
+      // check whether parent exists
+      if (parentId || parentAddress) {
+        const { data } = await this.queryBus.execute(
+          new FindOneUserQuery({
+            query: {
+              filter: {
+                ...(parentAddress
+                  ? { address: { iLike: `%${parentAddress}%` } }
+                  : { id: { eq: parentId } }),
+              },
+            },
+            options: { nullable: false, relation: false },
+          })
+        );
+        parent = data;
+      }
 
       // create record
       const record = await this.repo.save({
-        username: input.username ?? username,
-        ...input,
+        parent,
+        ...restInput,
       });
 
       return { success: true, data: record };
@@ -157,8 +177,8 @@ export class UserService {
    * Update record
    */
   updateOne: CqrsCommandFunc<
-    UpdateOneUserCommand,
-    UpdateOneUserCommand['args']
+    UpdateOneWalletCommand,
+    UpdateOneWalletCommand['args']
   > = async ({ query, input, options }) => {
     const silence = options?.silence ?? false;
 
@@ -168,11 +188,14 @@ export class UserService {
         query: query,
         options: { nullable: false },
       });
+
       // update record
-      const updated = await this.service.updateOne(found.id, {
-        ...input,
+      const { data } = await this.findOne({
+        query: { filter: { id: { eq: found.id } } },
+        options: { nullable: false, relation: false },
       });
-      return { success: true, data: { before: found, updated } };
+
+      return { success: true, data: { before: found, updated: data } };
     } catch (error) {
       if (!silence) throw new BadRequestException(error);
       return { success: false, message: error.message };
@@ -183,8 +206,8 @@ export class UserService {
    * Update one record
    */
   deleteOne: CqrsCommandFunc<
-    DeleteOneUserCommand,
-    DeleteOneUserCommand['args']
+    DeleteOneWalletCommand,
+    DeleteOneWalletCommand['args']
   > = async ({ input, options }) => {
     const silence = options?.silence ?? false;
 

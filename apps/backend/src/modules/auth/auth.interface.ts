@@ -1,27 +1,18 @@
 import { UserEntity } from '@apps/modules/user/user.entity';
 
-export type AccessPlatformType = 'customer' | 'portal';
-
 /**
  * Access token context holds information that originally from token
  */
 export type AccessTokenContext = {
-  sub: string; // refer to unique user reference (referralCode)
-  /**
-   * refer to platform
-   * business: refer to business owner portal
-   * portal: refer to admin
-   */
-  aud: AccessPlatformType;
-  iss: string; // issuer example default: ccgds
+  sub: string; // refer to unique user reference (address)
+  iss: string; // issuer
 };
 
 /**
  * Access token payload used for token creation
  */
 export type AccessTokenPayload = {
-  reference?: string; // refer to unique user reference
-  platform: AccessPlatformType;
+  reference?: string; // refer to unique user reference (address)
 };
 
 /**

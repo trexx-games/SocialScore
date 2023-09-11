@@ -25,7 +25,7 @@ export class AuthJwtStrategy extends PassportStrategy(Strategy, 'auth-jwt') {
   async validate(context: AccessTokenContext): Promise<AccessTokenInfo> {
     const { data } = await this.queryBus.execute(
       new FindOneUserQuery({
-        query: { filter: { referralCode: { eq: context.sub } } },
+        query: { filter: { address: { eq: context.sub } } },
         options: { nullable: true, silence: true, relation: true },
       })
     );

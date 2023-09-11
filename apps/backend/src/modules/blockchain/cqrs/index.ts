@@ -1,24 +1,18 @@
-import {
-  CreateAccessTokenCommandHandler,
-  RefreshAccessTokenCommandHandler,
-} from './auth.cqrs.handler';
+import { BlockchainVerifySignerMessageQueryHandler } from './blockchain.cqrs.handler';
 
 /**
  * ---------------------------
  * QUERY
  * ---------------------------
  */
-export const QueryHandlers = [];
+export const QueryHandlers = [BlockchainVerifySignerMessageQueryHandler];
 
 /**
  * ---------------------------
  * COMMANDS
  * ---------------------------
  */
-export const CommandHandlers = [
-  CreateAccessTokenCommandHandler,
-  RefreshAccessTokenCommandHandler,
-];
+export const CommandHandlers = [];
 
 /**
  * ---------------------------
@@ -32,4 +26,4 @@ export const EventHandlers = [];
  * EXPORTS
  * ---------------------------
  */
-export * from './auth.cqrs.input';
+export * from './blockchain.cqrs.input';

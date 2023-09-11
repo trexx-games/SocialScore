@@ -34,6 +34,16 @@ export class FindManyUserQuery extends AbstractCqrsQueryInput<
 > {}
 
 /**
+ * find one by
+ */
+export class FindOneUserByQuery extends AbstractCqrsQueryInput<
+  UserEntity,
+  { id: number; address: string },
+  RecordQueryWithJoinOptions<UserJoinRelationType>,
+  UserEntity
+> {}
+
+/**
  * find & count records
  */
 export class CountUserQuery extends AbstractCqrsQueryInput<
