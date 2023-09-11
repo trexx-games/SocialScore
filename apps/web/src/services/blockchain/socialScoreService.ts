@@ -1,11 +1,17 @@
 import { ethers } from 'ethers';
-import { WS_PROVIDER, SOCIAL_SCORE_CONTRACT_ADDRESS, SOCIAL_SCORE_ABI } from '../../config/constant';
+import { JSON_RPC_URL, 
+        MUMBAI_NETWORK_ID, 
+        SOCIAL_SCORE_CONTRACT_ADDRESS, 
+        SOCIAL_SCORE_ABI } from '../../config/constant';
 
 export class SocialScoreService {
-  provider: ethers.providers.WebSocketProvider;
+  provider: ethers.providers.JsonRpcProvider;
   contract: ethers.Contract;
   constructor() {
-    this.provider = new ethers.providers.WebSocketProvider(WS_PROVIDER);
+    this.provider = new ethers.providers.JsonRpcProvider(
+      JSON_RPC_URL,
+      MUMBAI_NETWORK_ID
+    );
     this.contract = new ethers.Contract(SOCIAL_SCORE_CONTRACT_ADDRESS, SOCIAL_SCORE_ABI, this.provider);
   }
 

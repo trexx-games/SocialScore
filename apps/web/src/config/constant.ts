@@ -69,9 +69,11 @@ export const NO_LAYOUT_PATH = [SIGN_IN_PATH];
  * ===========================
  */
 
-export const WS_PROVIDER = 'wss://mainnet.infura.io/ws/v3/bb3a00119c1b43dcbf1a0cc88aaa8ace';
+export const JSON_RPC_URL = 'https://mumbai.rpc.thirdweb.com';
 
-export const SOCIAL_SCORE_CONTRACT_ADDRESS = '0x123456789';
+export const MUMBAI_NETWORK_ID = 80001;
+
+export const SOCIAL_SCORE_CONTRACT_ADDRESS = '0xa58077B5F5549004Ea92F56d832aB7705f939Cc0';
 
 export const SOCIAL_SCORE_ABI = [
   {
