@@ -16,36 +16,88 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  Date: any;
   DateTime: any;
-  Json: any;
-  Upload: any;
+  JSON: any;
 };
 
-export type LoginInput = {
-  device_id: Scalars['String'];
-  password: Scalars['String'];
-  user_mobile: Scalars['String'];
+export type AccessToken = {
+  __typename?: 'AccessToken';
+  accessToken: Scalars['String'];
+  expiresIn: Scalars['Float'];
+  refreshExpiresIn: Scalars['Float'];
+  refreshToken: Scalars['String'];
 };
 
-export type LoginResponse = {
-  __typename?: 'LoginResponse';
-  TokenResponse?: Maybe<TokenResponse>;
+/** The input used to connect smart wallet */
+export type ConnectInput = {
+  address: Scalars['String'];
+  /** The signing message */
   message: Scalars['String'];
-  status: Scalars['Boolean'];
+  /** The signing signature */
+  signature: Scalars['String'];
+  /** Optional: username for smart wallet. If not provided will random generate one */
+  username?: InputMaybe<Scalars['String']>;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  Login?: Maybe<LoginResponse>;
+  /** This API used for connect smart wallet */
+  connect: AccessToken;
+  /** This API used to link input wallet to smart wallet */
+  linkWallet: Wallet;
+  /** This API used to exchange new access token with an old token */
+  refreshToken: AccessToken;
 };
 
-export type MutationLoginArgs = {
-  input?: InputMaybe<LoginInput>;
+export type MutationConnectArgs = {
+  input: ConnectInput;
 };
 
-export type TokenResponse = {
-  __typename?: 'TokenResponse';
-  token?: Maybe<Scalars['String']>;
-  token_type?: Maybe<Scalars['String']>;
+export type MutationLinkWalletArgs = {
+  input: WalletLinkInput;
+};
+
+export type MutationRefreshTokenArgs = {
+  input: RefreshAccessTokenInput;
+};
+
+export type Query = {
+  __typename?: 'Query';
+  /** This API used to retrieve current profile */
+  getAuthProfile?: Maybe<User>;
+  utilsTest?: Maybe<Scalars['JSON']>;
+};
+
+/** The input used to prolong user access. NOTE: refreshToken must matched with connected wallet */
+export type RefreshAccessTokenInput = {
+  refreshToken: Scalars['String'];
+};
+
+export type User = {
+  __typename?: 'User';
+  address: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['Int'];
+  lastSyncDate?: Maybe<Scalars['DateTime']>;
+  updatedAt: Scalars['DateTime'];
+  username: Scalars['String'];
+};
+
+export type Wallet = {
+  __typename?: 'Wallet';
+  address: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['Int'];
+  lastSyncDate?: Maybe<Scalars['DateTime']>;
+  updatedAt: Scalars['DateTime'];
+};
+
+/** The input used to link wallet to smart wallet */
+export type WalletLinkInput = {
+  /** Wallet address that going to link with smart wallet */
+  address: Scalars['String'];
+  /** The signing message */
+  message: Scalars['String'];
+  /** The signing signature */
+  signature: Scalars['String'];
 };

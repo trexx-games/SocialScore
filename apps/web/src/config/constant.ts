@@ -45,7 +45,13 @@ export const ONBOARDING_PATH = '/onboarding';
 // path accessible by public
 // by default, this works as a whitelist.
 // everything else that is not listed here will not be accessible by the public
-export const PATHS_ONLY_ALLOWED_BEFORE_AUTH = [SIGN_IN_PATH, '/404', '/500'];
+export const PATHS_ONLY_ALLOWED_BEFORE_AUTH = [
+  SIGN_IN_PATH,
+  '/404',
+  '/500',
+  '/login',
+  '/main',
+];
 
 // restricted path that can't be accessed if user has already signed in
 export const PATHS_NOT_ALLOWED_AFTER_AUTH = [SIGN_IN_PATH];

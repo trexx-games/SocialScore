@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-unfetch';
 import { retrieveAuthTokenFromContext } from '@webbyx/next-js';
-// import { XXXDocument } from '@stack/data-access';
+import { GetAuthProfileDocument } from '@stack/data-access';
 import { GRAPHQL_ENDPOINT } from './constant';
 
 export const checkAuthProfile = async (context?: any): Promise<any> => {
@@ -8,8 +8,7 @@ export const checkAuthProfile = async (context?: any): Promise<any> => {
   if (!token) return Promise.resolve(null);
 
   // NOTE: Replace with project GraphQL document
-  // const query = XXXDocument?.loc?.source?.body ?? {};
-  const query = {}; // TODO: remove this line if above line is resolved
+  const query = GetAuthProfileDocument?.loc?.source?.body ?? {};
   const res = await fetch(GRAPHQL_ENDPOINT, {
     method: 'POST',
     headers: {
@@ -21,9 +20,11 @@ export const checkAuthProfile = async (context?: any): Promise<any> => {
     }),
   });
   const result = await res.json();
+
+  console.log('result', result);
   // NOTE: Replace with project GraphQL result
   // TODO: change to project API response
-  return result?.data?.xxxxProfile ?? null;
+  return result?.data?.getAuthProfile ?? null;
 };
 
 export default checkAuthProfile;

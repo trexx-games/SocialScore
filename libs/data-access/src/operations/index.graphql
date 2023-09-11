@@ -1,22 +1,53 @@
 # ======================================== QUERY & MUTATIONS ========================================
 
-# AUTH
-# ========================
-mutation Login($input: LoginInput!) {
-  Login(input: $input) {
-    status
-    message
-    TokenResponse {
-      ...TokenResponseInfo
-    }
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+mutation connect($input: ConnectInput!) {
+  connect(input: $input) {
+    ...AccessToken
   }
 }
 
-# ======================================== FRAGMENTS ========================================
+mutation linkWallet($input: WalletLinkInput!) {
+  linkWallet(input: $input) {
+    ...WalletInfo
+  }
+}
 
-# AUTH
-# ========================
-fragment TokenResponseInfo on TokenResponse {
-  token
-  token_type
+mutation refreshToken($input: RefreshAccessTokenInput!) {
+  refreshToken(input: $input) {
+    ...AccessToken
+  }
+}
+
+query getAuthProfile {
+  getAuthProfile {
+    ...UserInfo
+  }
+}
+
+fragment AccessToken on AccessToken {
+  accessToken
+  expiresIn
+  refreshExpiresIn
+  refreshToken
+}
+
+fragment UserInfo on User {
+  address
+  createdAt
+  id
+  lastSyncDate
+  updatedAt
+  username
+}
+
+fragment WalletInfo on Wallet {
+  address
+  createdAt
+  id
+  lastSyncDate
+  updatedAt
 }
