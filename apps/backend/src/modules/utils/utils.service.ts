@@ -2,12 +2,8 @@ import dayjs from 'dayjs';
 import { customAlphabet } from 'nanoid';
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import {
-  ReferenceAlphabet,
-  ReferralAlphabet,
-} from '@apps/config/setting.config';
+import { SupportedAlphabet, UsernameAlphabet } from '@apps/config/constant';
 import { FindOneUserQuery } from '../user/cqrs/user.cqrs.input';
-import { FindOnePortalUserQuery } from '../portal-user/cqrs/portal-user.cqrs.input';
 
 @Injectable()
 export class UtilsService {
@@ -22,7 +18,7 @@ export class UtilsService {
    *  ---------------------------
    */
   generateRandomStr = async (max = 8): Promise<string> => {
-    const generate = customAlphabet(ReferralAlphabet, max);
+    const generate = customAlphabet(SupportedAlphabet, max);
     const random = generate();
     return random;
   };
@@ -32,37 +28,21 @@ export class UtilsService {
    * generate unique referral code
    *  ---------------------------
    */
-  generateReferralCode = async (): Promise<string> => {
-    const generate = customAlphabet(ReferralAlphabet, 10);
+  generateUsername = async (input?: string): Promise<string> => {
+    const generate = customAlphabet(UsernameAlphabet, 10);
     const referral = generate();
     // check whether referral has been taken
     const { data } = await this.queryBus.execute(
       new FindOneUserQuery({
-        query: { filter: { referralCode: { eq: referral } } },
+        query: { filter: { username: { eq: input ?? referral } } },
         options: { nullable: true, silence: true },
       })
     );
+    if (!!input && !!data) {
+      throw new Error('Input username already exists!');
+    }
     if (!data) return referral;
-    return this.generateReferralCode();
-  };
-
-  /**
-   *  ---------------------------
-   * generate unique reference code for portal user
-   *  ---------------------------
-   */
-  generateReferenceCode = async (): Promise<string> => {
-    const generate = customAlphabet(ReferenceAlphabet, 10);
-    const reference = generate();
-    // check whether referral has been taken
-    const { data } = await this.queryBus.execute(
-      new FindOnePortalUserQuery({
-        query: { filter: { reference: { eq: reference } } },
-        options: { nullable: true, silence: true },
-      })
-    );
-    if (!data) return reference;
-    return this.generateReferenceCode();
+    return this.generateUsername();
   };
 
   /**
