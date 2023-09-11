@@ -1,12 +1,12 @@
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { UtilsService } from '@apps/modules/utils/utils.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
+import { InjectRepository } from '@nestjs/typeorm';
 import { InjectQueryService, QueryService } from '@ptc-org/nestjs-query-core';
 import { FilterQueryBuilder } from '@ptc-org/nestjs-query-typeorm/src/query';
 import { CqrsCommandFunc, CqrsQueryFunc } from 'nestjs-typed-cqrs';
-import { UtilsService } from '@apps/modules/utils/utils.service';
-import { UserEntity } from './user.entity';
+import { Repository } from 'typeorm';
+
 import {
   CountUserQuery,
   CreateOneUserCommand,
@@ -15,6 +15,7 @@ import {
   FindOneUserQuery,
   UpdateOneUserCommand,
 } from './cqrs/user.cqrs.input';
+import { UserEntity } from './user.entity';
 
 @Injectable()
 export class UserService {

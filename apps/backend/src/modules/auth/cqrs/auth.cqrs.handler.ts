@@ -1,6 +1,8 @@
-import { CommandResult } from '@nestjs-architects/typed-cqrs';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
+import { CommandResult } from '@nestjs-architects/typed-cqrs';
+
 import { AuthService } from '../auth.service';
+
 import {
   CreateAccessTokenCommand,
   RefreshAccessTokenCommand,

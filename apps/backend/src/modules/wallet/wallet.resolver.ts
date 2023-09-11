@@ -1,14 +1,16 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { WalletDto } from './dto/wallet.dto';
-import { WalletService } from './wallet.service';
 import { UseGuards } from '@nestjs/common';
-import { AuthJwtGuard } from '../auth/guards/auth-jwt.guard';
-import { CurrentUser } from 'nestjs-dev-utilities';
-import { AccessTokenInfo } from '../auth/auth.interface';
-import { WalletLinkInput } from './dto/wallet.input';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CurrentUser } from 'nestjs-dev-utilities';
+
+import { AccessTokenInfo } from '../auth/auth.interface';
+import { AuthJwtGuard } from '../auth/guards/auth-jwt.guard';
 import { BlockchainVerifySignerMessageQuery } from '../blockchain/cqrs';
+
+import { WalletDto } from './dto/wallet.dto';
+import { WalletLinkInput } from './dto/wallet.input';
 import { FindManyWalletQuery } from './cqrs';
+import { WalletService } from './wallet.service';
 
 @Resolver(WalletDto)
 export class WalletResolver {

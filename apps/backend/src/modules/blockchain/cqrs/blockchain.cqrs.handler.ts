@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { BadRequestException } from '@nestjs/common';
 import {
   CommandHandler,
   IInferredCommandHandler,
@@ -6,10 +6,12 @@ import {
   QueryBus,
   QueryHandler,
 } from '@nestjs/cqrs';
-import { BlockchainVerifySignerMessageQuery } from './blockchain.cqrs.input';
 import { CommandResult, QueryResult } from '@nestjs-architects/typed-cqrs';
-import { BadRequestException } from '@nestjs/common';
+import { ethers } from 'ethers';
+
 import { BlockchainService } from '../blockchain.service';
+
+import { BlockchainVerifySignerMessageQuery } from './blockchain.cqrs.input';
 
 /**
  * ---------------------------

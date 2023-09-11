@@ -1,10 +1,11 @@
-import {
-  AbstractCqrsQueryInput,
-  AbstractCqrsCommandInput,
-  RecordQueryWithJoinOptions,
-  RecordMutateOptions,
-} from 'nestjs-typed-cqrs';
 import { Query } from '@ptc-org/nestjs-query-core';
+import {
+  AbstractCqrsCommandInput,
+  AbstractCqrsQueryInput,
+  RecordMutateOptions,
+  RecordQueryWithJoinOptions,
+} from 'nestjs-typed-cqrs';
+
 import { CreateWalletInput, UpdateWalletInput } from '../dto/wallet.input';
 import { WalletEntity, WalletJoinRelationType } from '../wallet.entity';
 

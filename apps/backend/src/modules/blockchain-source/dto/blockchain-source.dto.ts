@@ -1,7 +1,8 @@
-import { AbstractDto } from 'nestjs-dev-utilities';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { FilterableField } from '@ptc-org/nestjs-query-graphql';
 import { GraphQLJSONObject } from 'graphql-type-json';
+import { AbstractDto } from 'nestjs-dev-utilities';
+
 import {
   BlockchainSourceStatus,
   ISourceMeta,

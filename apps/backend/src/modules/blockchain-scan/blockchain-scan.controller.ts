@@ -1,9 +1,10 @@
 import { ConfigService } from '@nestjs/config';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ConfigEnvironmentType as ENV } from '@stack/server';
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { BlockchainScanService } from './blockchain-scan.service';
+import { ConfigEnvironmentType as ENV } from '@stack/server';
 import { GraphQLJSONObject } from 'graphql-type-json';
+
+import { BlockchainScanService } from './blockchain-scan.service';
 
 @Resolver()
 export class BlockchainScanController {

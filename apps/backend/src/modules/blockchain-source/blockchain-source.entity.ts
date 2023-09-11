@@ -1,5 +1,6 @@
-import { Column, Entity, Unique } from 'typeorm';
 import { AbstractEntity } from 'nestjs-dev-utilities';
+import { Column, Entity, Unique } from 'typeorm';
+
 import {
   BlockchainSourceStatus,
   ISourceMeta,

@@ -147,6 +147,9 @@ type Query {
 
   """This API used to retrieve current profile"""
   getAuthProfile: User
+
+  """This API used to list linked wallets from smart wallet"""
+  listLinkedWallet: [Wallet!]!
   nounsDaoProposalScanning(walletAddress: String!): JSONObject
   nounsDaoVoteScanning(walletAddress: String!): JSONObject
   utilsTest: JSON

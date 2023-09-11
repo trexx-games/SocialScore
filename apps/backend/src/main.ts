@@ -1,9 +1,10 @@
-import { ConfigService } from '@nestjs/config';
 import { PROJECT_NAME } from '@apps/config/constant';
-import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { LoggingInterceptor } from 'nestjs-dev-utilities';
+import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
+import { LoggingInterceptor } from 'nestjs-dev-utilities';
+
 import { AppModule } from './app.module';
 
 async function bootstrap() {

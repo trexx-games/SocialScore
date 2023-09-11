@@ -1,6 +1,6 @@
-import { DataSource } from 'typeorm';
-import { Logger } from '@nestjs/common';
 import { Seeder } from '@jorgebodega/typeorm-seeding';
+import { Logger } from '@nestjs/common';
+import { DataSource } from 'typeorm';
 
 export default class ResetSeeder extends Seeder {
   async run(dataSource: DataSource) {

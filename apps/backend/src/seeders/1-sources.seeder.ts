@@ -1,8 +1,9 @@
-import { DataSource } from 'typeorm';
-import { Logger } from '@nestjs/common';
-import { Seeder } from '@jorgebodega/typeorm-seeding';
-import { BlockchainSourceDataSeedData } from './data/1-sources.seeder.data';
 import { BlockchainSourceEntity } from '@apps/modules/blockchain-source/blockchain-source.entity';
+import { Seeder } from '@jorgebodega/typeorm-seeding';
+import { Logger } from '@nestjs/common';
+import { DataSource } from 'typeorm';
+
+import { BlockchainSourceDataSeedData } from './data/1-sources.seeder.data';
 
 export default class SettingsSeeder extends Seeder {
   async run(dataSource: DataSource) {

@@ -1,10 +1,11 @@
 import { Field, InputType, PartialType } from '@nestjs/graphql';
 import { Allow } from 'class-validator';
+import { GraphQLJSONObject } from 'graphql-type-json';
+
 import {
   BlockchainSourceStatus,
   ISourceMeta,
 } from '../blockchain-source.interface';
-import { GraphQLJSONObject } from 'graphql-type-json';
 
 @InputType({ description: 'The input used to create blockchain source' })
 export class CreateBlockchainSourceInput {

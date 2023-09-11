@@ -1,6 +1,6 @@
-import { Strategy } from 'passport';
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
+import { Strategy } from 'passport';
 
 // In anonymous.strategy.ts
 @Injectable()

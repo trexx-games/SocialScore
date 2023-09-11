@@ -1,11 +1,12 @@
-import { toDataURL } from 'qrcode';
-import { authenticator } from 'otplib';
+import { TWO_FACTOR_APP_NAME } from '@apps/config/constant';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { CqrsCommandFunc, CqrsQueryFunc } from 'nestjs-typed-cqrs';
-import { TWO_FACTOR_APP_NAME } from '@apps/config/constant';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
+import { CqrsCommandFunc, CqrsQueryFunc } from 'nestjs-typed-cqrs';
+import { authenticator } from 'otplib';
+import { toDataURL } from 'qrcode';
+
 import {
   GenerateTwoFactorCommand,
   VerifyTwoFactorQuery,

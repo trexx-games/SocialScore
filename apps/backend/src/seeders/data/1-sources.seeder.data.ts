@@ -1,6 +1,6 @@
-import { OmitType } from '@nestjs/graphql';
-import { BlockchainSourceDto } from '@apps/modules/blockchain-source/dto/blockchain-source.dto';
 import { BlockchainSourceStatus } from '@apps/modules/blockchain-source/blockchain-source.interface';
+import { BlockchainSourceDto } from '@apps/modules/blockchain-source/dto/blockchain-source.dto';
+import { OmitType } from '@nestjs/graphql';
 
 class BlockchainSourceDataDto extends OmitType(BlockchainSourceDto, [
   'id',
