@@ -18,6 +18,7 @@ import { PortalUserModule } from '@apps/modules/portal-user/portal-user.module';
 import { PortalAuthModule } from '@apps/modules/portal-auth/portal-auth.module';
 import { QueueModule } from '@apps/modules/queue/queue.module';
 import { SnakeNamingStrategy } from 'nestjs-dev-utilities';
+import { AirstackModule } from './modules/airstack/airstack.module';
 
 @Module({
   imports: [
@@ -77,6 +78,7 @@ import { SnakeNamingStrategy } from 'nestjs-dev-utilities';
     QueueModule,
     AuthModule,
     UserModule,
+    AirstackModule,
   ],
 })
 export class AppModule {}

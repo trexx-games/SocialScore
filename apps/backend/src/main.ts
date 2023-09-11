@@ -14,13 +14,7 @@ async function bootstrap() {
 
   const reflector = app.get(Reflector);
 
-  app.useGlobalInterceptors(
-    new LoggingInterceptor(),
-    new RequestHeaderPlatformInterceptor(
-      reflector,
-      app.get<JwtService>(JwtService)
-    )
-  );
+  app.useGlobalInterceptors(new LoggingInterceptor());
 
   app.useGlobalPipes(
     new ValidationPipe({
