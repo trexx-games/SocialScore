@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
-import { DataSource } from 'typeorm';
 import { SnakeNamingStrategy } from 'nestjs-dev-utilities';
+import { DataSource } from 'typeorm';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
 dotenv.config({

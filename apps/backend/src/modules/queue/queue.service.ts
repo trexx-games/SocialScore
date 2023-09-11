@@ -1,5 +1,5 @@
-import { InjectQueue } from '@nestjs/bull';
 import { QUEUE_JOB } from '@apps/config/constant';
+import { InjectQueue } from '@nestjs/bull';
 import { Injectable, Logger } from '@nestjs/common';
 import { Queue } from 'bull';
 

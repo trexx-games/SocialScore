@@ -1,10 +1,11 @@
-import * as Ethers from 'nestjs-ethers';
 import { Module } from '@nestjs/common';
-import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigService } from '@nestjs/config';
-import { CoreConfigModule, ConfigEnvironmentType as ENV } from '@stack/server';
-import { EventHandlers, CommandHandlers, QueryHandlers } from './cqrs';
+import { CqrsModule } from '@nestjs/cqrs';
+import { ConfigEnvironmentType as ENV, CoreConfigModule } from '@stack/server';
+import * as Ethers from 'nestjs-ethers';
+
 import { BlockchainService } from './blockchain.service';
+import { CommandHandlers, EventHandlers, QueryHandlers } from './cqrs';
 
 @Module({
   imports: [

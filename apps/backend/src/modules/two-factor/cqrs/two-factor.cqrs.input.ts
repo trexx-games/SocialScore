@@ -1,9 +1,10 @@
 import {
-  RecordMutateOptions,
   AbstractCqrsCommandInput,
   AbstractCqrsQueryInput,
+  RecordMutateOptions,
   RecordQueryOptions,
 } from 'nestjs-typed-cqrs';
+
 import { TwoFactorInfoDto } from '../dto/two-factor.dto';
 import {
   GenerateTwoFactorInput,

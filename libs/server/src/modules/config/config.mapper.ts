@@ -1,5 +1,6 @@
-import { ConfigEnvironmentType } from './@types';
 import { isNil, toNumber } from 'lodash';
+
+import { ConfigEnvironmentType } from './@types';
 
 export const configuration = (): ConfigEnvironmentType => ({
   /**

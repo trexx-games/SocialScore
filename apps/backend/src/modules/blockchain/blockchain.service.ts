@@ -1,9 +1,9 @@
-import * as Ethers from 'nestjs-ethers';
-import { ConfigService } from '@nestjs/config';
 import { BaseProvider } from '@ethersproject/providers';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
+import * as Ethers from 'nestjs-ethers';
 
 @Injectable()
 export class BlockchainService {

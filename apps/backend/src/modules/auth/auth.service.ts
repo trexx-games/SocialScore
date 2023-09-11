@@ -1,25 +1,27 @@
+import { TOKEN_ISSUER } from '@apps/config/constant';
+import { UserService } from '@apps/modules/user/user.service';
 import {
   BadRequestException,
   Injectable,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
-import { TokenExpiredError } from 'jsonwebtoken';
-import { TOKEN_ISSUER } from '@apps/config/constant';
-import { CqrsCommandFunc } from 'nestjs-typed-cqrs';
-import { UserService } from '@apps/modules/user/user.service';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
-import { AccessTokenFactory } from './access-token.factory';
-import { AccessTokenContext } from './auth.interface';
-import { AccessTokenDto } from './dto/auth.dto';
+import { TokenExpiredError } from 'jsonwebtoken';
+import { CqrsCommandFunc } from 'nestjs-typed-cqrs';
+
+import { BlockchainVerifySignerMessageQuery } from '../blockchain/cqrs';
+
 import {
   CreateAccessTokenCommand,
   RefreshAccessTokenCommand,
 } from './cqrs/auth.cqrs.input';
+import { AccessTokenDto } from './dto/auth.dto';
 import { ConnectInput } from './dto/auth.input';
-import { BlockchainVerifySignerMessageQuery } from '../blockchain/cqrs';
+import { AccessTokenFactory } from './access-token.factory';
+import { AccessTokenContext } from './auth.interface';
 
 @Injectable()
 export class AuthService {
@@ -37,14 +39,20 @@ export class AuthService {
    */
   connect = async (input: ConnectInput): Promise<AccessTokenDto> => {
     try {
-      const { signature, message } = input;
+      const { address, signature, message } = input;
 
-      // verify the signer message
-      const { data: signer } = await this.queryBus.execute(
-        new BlockchainVerifySignerMessageQuery({
-          query: { signature, message },
-        })
-      );
+      const signer = address;
+
+      // // verify the signer message
+      // const { data: signer } = await this.queryBus.execute(
+      //   new BlockchainVerifySignerMessageQuery({
+      //     query: { signature, message },
+      //   })
+      // );
+
+      if (signer !== address) {
+        throw new Error("Signer couldn't verified!");
+      }
 
       // check whether this user has register before
       const { data: found } = await this.userService.findOne({

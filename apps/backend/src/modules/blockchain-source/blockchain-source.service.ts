@@ -8,30 +8,31 @@ import { CqrsCommandFunc, CqrsQueryFunc } from 'nestjs-typed-cqrs';
 import { Repository } from 'typeorm';
 
 import {
-  CountUserQuery,
-  CreateOneUserCommand,
-  DeleteOneUserCommand,
-  FindManyUserQuery,
-  FindOneUserQuery,
-  UpdateOneUserCommand,
-} from './cqrs/user.cqrs.input';
-import { UserEntity } from './user.entity';
+  CountBlockchainSourceQuery,
+  CreateOneBlockchainSourceCommand,
+  DeleteOneBlockchainSourceCommand,
+  FindManyBlockchainSourceQuery,
+  FindOneBlockchainSourceQuery,
+  UpdateOneBlockchainSourceCommand,
+} from './cqrs/blockchain-source.cqrs.input';
+import { BlockchainSourceEntity } from './blockchain-source.entity';
 
 @Injectable()
-export class UserService {
-  private readonly filterQueryBuilder: FilterQueryBuilder<UserEntity>;
+export class BlockchainSourceService {
+  private readonly filterQueryBuilder: FilterQueryBuilder<BlockchainSourceEntity>;
 
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly repo: Repository<UserEntity>,
-    @InjectQueryService(UserEntity)
-    private readonly service: QueryService<UserEntity>,
-    private readonly utils: UtilsService,
+    @InjectRepository(BlockchainSourceEntity)
+    private readonly repo: Repository<BlockchainSourceEntity>,
+    @InjectQueryService(BlockchainSourceEntity)
+    private readonly service: QueryService<BlockchainSourceEntity>,
     private readonly eventBus: EventBus,
     private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus
   ) {
-    this.filterQueryBuilder = new FilterQueryBuilder<UserEntity>(this.repo);
+    this.filterQueryBuilder = new FilterQueryBuilder<BlockchainSourceEntity>(
+      this.repo
+    );
   }
 
   /**
@@ -42,10 +43,10 @@ export class UserService {
   /**
    * Find one record
    */
-  findOne: CqrsQueryFunc<FindOneUserQuery, FindOneUserQuery['args']> = async ({
-    query,
-    options,
-  }) => {
+  findOne: CqrsQueryFunc<
+    FindOneBlockchainSourceQuery,
+    FindOneBlockchainSourceQuery['args']
+  > = async ({ query, options }) => {
     const nullable = options?.nullable ?? true;
     const silence = options?.silence ?? false;
 
@@ -53,15 +54,12 @@ export class UserService {
       // query builder
       const builder = this.filterQueryBuilder.select(query);
 
-      // build relation
-      UserEntity.buildJoinRelation(builder, options);
-
       // actual query
       const result = await builder.getOne();
 
       // check record
       if (!nullable && !result) {
-        throw new Error('User record is not found!');
+        throw new Error('BlockchainSource record is not found!');
       }
 
       // result
@@ -75,40 +73,40 @@ export class UserService {
   /**
    * Find many records
    */
-  findMany: CqrsQueryFunc<FindManyUserQuery, FindManyUserQuery['args']> =
-    async ({ query, options }) => {
-      const nullable = options?.nullable ?? true;
-      const silence = options?.silence ?? false;
+  findMany: CqrsQueryFunc<
+    FindManyBlockchainSourceQuery,
+    FindManyBlockchainSourceQuery['args']
+  > = async ({ query, options }) => {
+    const nullable = options?.nullable ?? true;
+    const silence = options?.silence ?? false;
 
-      try {
-        // query builder
-        const builder = this.filterQueryBuilder.select(query);
+    try {
+      // query builder
+      const builder = this.filterQueryBuilder.select(query);
 
-        // build relation
-        UserEntity.buildJoinRelation(builder, options);
+      // actual query
+      const result = await builder.getMany();
 
-        // actual query
-        const result = await builder.getMany();
-
-        // check record
-        if (!nullable && result.length === 0) {
-          throw new Error('No any user records were found!');
-        }
-
-        // result
-        return { success: true, data: result };
-      } catch (e) {
-        if (!silence) throw new BadRequestException(e);
-        return { success: false, message: e.message };
+      // check record
+      if (!nullable && result.length === 0) {
+        throw new Error('No any blockchain-source records were found!');
       }
-    };
+
+      // result
+      return { success: true, data: result };
+    } catch (e) {
+      if (!silence) throw new BadRequestException(e);
+      return { success: false, message: e.message };
+    }
+  };
 
   /**
    * count records
    */
-  count: CqrsQueryFunc<CountUserQuery, CountUserQuery['args']> = async ({
-    query,
-  }) => {
+  count: CqrsQueryFunc<
+    CountBlockchainSourceQuery,
+    CountBlockchainSourceQuery['args']
+  > = async ({ query }) => {
     try {
       // query builder
       const builder = this.filterQueryBuilder.select({
@@ -127,25 +125,19 @@ export class UserService {
    * Create one record
    */
   createOne: CqrsCommandFunc<
-    CreateOneUserCommand,
-    CreateOneUserCommand['args']
+    CreateOneBlockchainSourceCommand,
+    CreateOneBlockchainSourceCommand['args']
   > = async ({ input, options }) => {
     const silence = options?.silence ?? false;
     try {
       const { data: found } = await this.findOne({
-        query: { filter: { username: { eq: input.username } } },
+        query: { filter: { address: { eq: input.address } } },
         options: { nullable: true },
       });
-      if (found) throw new Error('User has been registered before!');
-
-      // generate unique referral code
-      const username = await this.utils.generateUsername(input.username);
+      if (found) throw new Error('Blockchain source already existed!');
 
       // create record
-      const record = await this.repo.save({
-        username: input.username ?? username,
-        ...input,
-      });
+      const record = await this.service.createOne(input);
 
       return { success: true, data: record };
     } catch (error) {
@@ -158,8 +150,8 @@ export class UserService {
    * Update record
    */
   updateOne: CqrsCommandFunc<
-    UpdateOneUserCommand,
-    UpdateOneUserCommand['args']
+    UpdateOneBlockchainSourceCommand,
+    UpdateOneBlockchainSourceCommand['args']
   > = async ({ query, input, options }) => {
     const silence = options?.silence ?? false;
 
@@ -184,8 +176,8 @@ export class UserService {
    * Update one record
    */
   deleteOne: CqrsCommandFunc<
-    DeleteOneUserCommand,
-    DeleteOneUserCommand['args']
+    DeleteOneBlockchainSourceCommand,
+    DeleteOneBlockchainSourceCommand['args']
   > = async ({ input, options }) => {
     const silence = options?.silence ?? false;
 

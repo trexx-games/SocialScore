@@ -1,24 +1,26 @@
-import { BlockchainScanModule } from './modules/blockchain-scan/blockchain-scan.module';
-import { join } from 'path';
-import GraphQLJSON from 'graphql-type-json';
-import { Module } from '@nestjs/common';
-import { BullModule } from '@nestjs/bull';
-import { CqrsModule } from '@nestjs/cqrs';
-import { ConfigService } from '@nestjs/config';
-import { GraphQLModule } from '@nestjs/graphql';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ScheduleModule } from '@nestjs/schedule';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { CoreConfigModule, ConfigEnvironmentType as ENV } from '@stack/server';
-import { UtilsModule } from '@apps/modules/utils/utils.module';
-import { UserModule } from '@apps/modules/user/user.module';
-import { AuthModule } from '@apps/modules/auth/auth.module';
-import { TwoFactorModule } from '@apps/modules/two-factor/two-factor.module';
 import { PROJECT_FOLDER } from '@apps/config/constant';
+import { AuthModule } from '@apps/modules/auth/auth.module';
 import { QueueModule } from '@apps/modules/queue/queue.module';
+import { TwoFactorModule } from '@apps/modules/two-factor/two-factor.module';
+import { UserModule } from '@apps/modules/user/user.module';
+import { UtilsModule } from '@apps/modules/utils/utils.module';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { BullModule } from '@nestjs/bull';
+import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { CqrsModule } from '@nestjs/cqrs';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigEnvironmentType as ENV, CoreConfigModule } from '@stack/server';
+import GraphQLJSON from 'graphql-type-json';
 import { SnakeNamingStrategy } from 'nestjs-dev-utilities';
+import { join } from 'path';
+
 import { AirstackModule } from './modules/airstack/airstack.module';
 import { BlockchainModule } from './modules/blockchain/blockchain.module';
+import { BlockchainScanModule } from './modules/blockchain-scan/blockchain-scan.module';
+import { BlockchainSourceModule } from './modules/blockchain-source/blockchain-source.module';
 import { WalletModule } from './modules/wallet/wallet.module';
 
 @Module({
@@ -80,6 +82,7 @@ import { WalletModule } from './modules/wallet/wallet.module';
     AirstackModule,
     BlockchainScanModule,
     BlockchainModule,
+    BlockchainSourceModule,
     WalletModule,
   ],
 })

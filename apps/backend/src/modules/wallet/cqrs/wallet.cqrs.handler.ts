@@ -1,18 +1,20 @@
 import {
-  QueryHandler,
   CommandHandler,
   IInferredCommandHandler,
   IInferredQueryHandler,
+  QueryHandler,
 } from '@nestjs/cqrs';
 import { CommandResult, QueryResult } from '@nestjs-architects/typed-cqrs';
+
 import { WalletService } from '../wallet.service';
+
 import {
-  FindOneWalletQuery,
-  FindManyWalletQuery,
-  CreateOneWalletCommand,
-  UpdateOneWalletCommand,
-  DeleteOneWalletCommand,
   CountWalletQuery,
+  CreateOneWalletCommand,
+  DeleteOneWalletCommand,
+  FindManyWalletQuery,
+  FindOneWalletQuery,
+  UpdateOneWalletCommand,
 } from './wallet.cqrs.input';
 
 /**

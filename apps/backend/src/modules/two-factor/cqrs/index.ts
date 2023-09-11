@@ -1,6 +1,6 @@
 import {
-  VerifyTwoFactorQueryHandler,
   GenerateTwoFactorCommandHandler,
+  VerifyTwoFactorQueryHandler,
 } from './two-factor.cqrs.handler';
 
 /**

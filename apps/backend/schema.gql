@@ -9,8 +9,50 @@ type AccessToken {
   refreshToken: String!
 }
 
+type BlockchainSource {
+  address: String!
+  createdAt: DateTime!
+  description: String
+  id: Int!
+  meta: JSONObject!
+  name: String!
+  status: BlockchainSourceStatus!
+  updatedAt: DateTime!
+}
+
+input BlockchainSourceFilter {
+  address: StringFieldComparison
+  and: [BlockchainSourceFilter!]
+  createdAt: DateFieldComparison
+  id: IntFieldComparison
+  name: StringFieldComparison
+  or: [BlockchainSourceFilter!]
+  updatedAt: DateFieldComparison
+}
+
+input BlockchainSourceSort {
+  direction: SortDirection!
+  field: BlockchainSourceSortFields!
+  nulls: SortNulls
+}
+
+enum BlockchainSourceSortFields {
+  address
+  createdAt
+  id
+  name
+  updatedAt
+}
+
+enum BlockchainSourceStatus {
+  ACTIVATED
+  DEACTIVATED
+}
+
 """The input used to connect smart wallet"""
 input ConnectInput {
+  address: String!
+
   """The signing message"""
   message: String!
 
@@ -23,10 +65,50 @@ input ConnectInput {
   username: String
 }
 
+input DateFieldComparison {
+  between: DateFieldComparisonBetween
+  eq: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  is: Boolean
+  isNot: Boolean
+  lt: DateTime
+  lte: DateTime
+  neq: DateTime
+  notBetween: DateFieldComparisonBetween
+  notIn: [DateTime!]
+}
+
+input DateFieldComparisonBetween {
+  lower: DateTime!
+  upper: DateTime!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+input IntFieldComparison {
+  between: IntFieldComparisonBetween
+  eq: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  is: Boolean
+  isNot: Boolean
+  lt: Int
+  lte: Int
+  neq: Int
+  notBetween: IntFieldComparisonBetween
+  notIn: [Int!]
+}
+
+input IntFieldComparisonBetween {
+  lower: Int!
+  upper: Int!
+}
 
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
@@ -50,10 +132,24 @@ type Mutation {
 }
 
 type Query {
+  blockchainSource(
+    """The id of the record to find."""
+    id: Int!
+  ): BlockchainSource!
+  blockchainSources(
+    """Specify to filter the records returned."""
+    filter: BlockchainSourceFilter! = {}
+
+    """Specify to sort results."""
+    sorting: [BlockchainSourceSort!]! = []
+  ): [BlockchainSource!]!
   dexSwapScanning(walletAddress: String!): JSONObject
 
   """This API used to retrieve current profile"""
   getAuthProfile: User
+
+  """This API used to list linked wallets from smart wallet"""
+  listLinkedWallet: [Wallet!]!
   nounsDaoProposalScanning(walletAddress: String!): JSONObject
   nounsDaoVoteScanning(walletAddress: String!): JSONObject
   tokenBalanceScan(address: String!): JSONObject
@@ -66,6 +162,35 @@ The input used to prolong user access. NOTE: refreshToken must matched with conn
 """
 input RefreshAccessTokenInput {
   refreshToken: String!
+}
+
+"""Sort Directions"""
+enum SortDirection {
+  ASC
+  DESC
+}
+
+"""Sort Nulls Options"""
+enum SortNulls {
+  NULLS_FIRST
+  NULLS_LAST
+}
+
+input StringFieldComparison {
+  eq: String
+  gt: String
+  gte: String
+  iLike: String
+  in: [String!]
+  is: Boolean
+  isNot: Boolean
+  like: String
+  lt: String
+  lte: String
+  neq: String
+  notILike: String
+  notIn: [String!]
+  notLike: String
 }
 
 type User {

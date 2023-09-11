@@ -1,10 +1,12 @@
 import { ConfigService } from '@nestjs/config';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ConfigEnvironmentType as ENV } from '@stack/server';
-import { AirstackService } from './airstack.service';
 import { Args, Query, Resolver } from '@nestjs/graphql';
+import { ConfigEnvironmentType as ENV } from '@stack/server';
 import { GraphQLJSONObject } from 'graphql-type-json';
 
+import { AirstackService } from './airstack.service';
+
+// @Controller('airstack')
 @Resolver()
 export class AirstackController {
   constructor(

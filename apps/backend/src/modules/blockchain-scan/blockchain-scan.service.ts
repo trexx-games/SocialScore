@@ -1,9 +1,3 @@
-import { toDataURL } from 'qrcode';
-import { authenticator } from 'otplib';
-import { ConfigService } from '@nestjs/config';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { CqrsCommandFunc, CqrsQueryFunc } from 'nestjs-typed-cqrs';
 import {
   JSON_RPC_URL,
   MUMBAI_NETWORK_ID,
@@ -12,12 +6,19 @@ import {
   UNISWAP_ADDRESS,
   WS_PROVIDER,
 } from '@apps/config/constant';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
 import { ethers } from 'ethers';
+import { CqrsCommandFunc, CqrsQueryFunc } from 'nestjs-typed-cqrs';
+import { authenticator } from 'otplib';
+import { toDataURL } from 'qrcode';
 import { Readable, Transform } from 'stream';
-import { UniswapABI } from './abi/uniswap-abi';
-import { SocialScoreABI } from './abi/social-score';
+
 import { nounsAbi } from './abi/nouns-abi';
+import { SocialScoreABI } from './abi/social-score';
+import { UniswapABI } from './abi/uniswap-abi';
 
 @Injectable()
 export class BlockchainScanService {

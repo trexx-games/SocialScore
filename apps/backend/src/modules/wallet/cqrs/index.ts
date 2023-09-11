@@ -1,10 +1,10 @@
 import {
-  FindOneWalletQueryHandler,
-  FindManyWalletQueryHandler,
   CountWalletQueryHandler,
   CreateOneWalletCommandHandler,
-  UpdateOneWalletCommandHandler,
   DeleteOneWalletCommandHandler,
+  FindManyWalletQueryHandler,
+  FindOneWalletQueryHandler,
+  UpdateOneWalletCommandHandler,
 } from './wallet.cqrs.handler';
 
 /**

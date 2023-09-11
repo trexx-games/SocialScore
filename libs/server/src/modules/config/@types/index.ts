@@ -1,5 +1,6 @@
-import { ProjectEnvironmentConfig } from './project';
 import { QueueOptions } from 'bull';
+
+import { ProjectEnvironmentConfig } from './project';
 
 export type ConfigEnvironmentType = {
   /**

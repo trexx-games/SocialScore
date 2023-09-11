@@ -1,3 +1,6 @@
+import { includes } from 'lodash';
+import { AbstractEntity } from 'nestjs-dev-utilities';
+import { RecordQueryWithJoinOptions } from 'nestjs-typed-cqrs';
 import {
   Column,
   Entity,
@@ -7,9 +10,7 @@ import {
   SelectQueryBuilder,
   Unique,
 } from 'typeorm';
-import { includes } from 'lodash';
-import { RecordQueryWithJoinOptions } from 'nestjs-typed-cqrs';
-import { AbstractEntity } from 'nestjs-dev-utilities';
+
 import { UserEntity } from '../user/user.entity';
 
 @Entity({ name: 'wallet' })

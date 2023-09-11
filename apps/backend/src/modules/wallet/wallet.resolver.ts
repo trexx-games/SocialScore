@@ -1,13 +1,16 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { WalletDto } from './dto/wallet.dto';
-import { WalletService } from './wallet.service';
 import { UseGuards } from '@nestjs/common';
-import { AuthJwtGuard } from '../auth/guards/auth-jwt.guard';
-import { CurrentUser } from 'nestjs-dev-utilities';
-import { AccessTokenInfo } from '../auth/auth.interface';
-import { WalletLinkInput } from './dto/wallet.input';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CurrentUser } from 'nestjs-dev-utilities';
+
+import { AccessTokenInfo } from '../auth/auth.interface';
+import { AuthJwtGuard } from '../auth/guards/auth-jwt.guard';
 import { BlockchainVerifySignerMessageQuery } from '../blockchain/cqrs';
+
+import { WalletDto } from './dto/wallet.dto';
+import { WalletLinkInput } from './dto/wallet.input';
+import { FindManyWalletQuery } from './cqrs';
+import { WalletService } from './wallet.service';
 
 @Resolver(WalletDto)
 export class WalletResolver {
@@ -16,6 +19,27 @@ export class WalletResolver {
     private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus
   ) {}
+
+  /**
+   * List linked wallet from master wallet
+   */
+  @UseGuards(AuthJwtGuard)
+  @Query(() => [WalletDto], {
+    description: 'This API used to list linked wallets from smart wallet',
+  })
+  async listLinkedWallet(@CurrentUser() currentUser: AccessTokenInfo) {
+    const user = currentUser.user;
+
+    const { data } = await this.queryBus.execute(
+      new FindManyWalletQuery({
+        query: {
+          filter: { parentId: { eq: user.id } },
+        },
+        options: { nullable: true },
+      })
+    );
+    return data;
+  }
 
   /**
    * Link wallet to user

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { EventHandlers, CommandHandlers, QueryHandlers } from './cqrs';
+
+import { CommandHandlers, EventHandlers, QueryHandlers } from './cqrs';
 import { TwoFactorService } from './two-factor.service';
 
 @Module({

@@ -1,12 +1,13 @@
-import { Queue } from 'bull';
-import { InjectQueue } from '@nestjs/bull';
 import {
   QUEUE_JOB,
   QUEUE_MISC,
   QUEUE_SIDE_EFFECT,
 } from '@apps/config/constant';
+import { InjectQueue } from '@nestjs/bull';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { CommandResult } from '@nestjs-architects/typed-cqrs';
+import { Queue } from 'bull';
+
 import { CreateOneQueueJobCommand } from './queue.cqrs.input';
 
 /**

@@ -1,5 +1,6 @@
-import { toDataURL } from 'qrcode';
-import { authenticator } from 'otplib';
+import { fetchQuery, init } from '@airstack/node';
+import { TWO_FACTOR_APP_NAME } from '@apps/config/constant';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { BadRequestException, Injectable } from '@nestjs/common';

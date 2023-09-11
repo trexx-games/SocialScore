@@ -1,3 +1,6 @@
+import { includes } from 'lodash';
+import { AbstractEntity } from 'nestjs-dev-utilities';
+import { RecordQueryWithJoinOptions } from 'nestjs-typed-cqrs';
 import {
   Column,
   Entity,
@@ -6,9 +9,7 @@ import {
   TreeChildren,
   Unique,
 } from 'typeorm';
-import { includes } from 'lodash';
-import { RecordQueryWithJoinOptions } from 'nestjs-typed-cqrs';
-import { AbstractEntity } from 'nestjs-dev-utilities';
+
 import { WalletEntity } from '../wallet/wallet.entity';
 
 @Entity({ name: 'user' })
@@ -21,7 +22,6 @@ export class UserEntity extends AbstractEntity {
   username: string;
 
   @OneToMany(() => WalletEntity, (entity) => entity.parent)
-  @TreeChildren({ cascade: true })
   linking: UserEntity[];
 
   @Column({ type: 'timestamptz', nullable: true })

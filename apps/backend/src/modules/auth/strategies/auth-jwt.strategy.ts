@@ -1,11 +1,12 @@
-import { QueryBus } from '@nestjs/cqrs';
+import { FindOneUserQuery } from '@apps/modules/user/cqrs/user.cqrs.input';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { QueryBus } from '@nestjs/cqrs';
 import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
+import { ExtractJwt, Strategy } from 'passport-jwt';
+
 import { AccessTokenContext, AccessTokenInfo } from '../auth.interface';
-import { FindOneUserQuery } from '@apps/modules/user/cqrs/user.cqrs.input';
 
 @Injectable()
 export class AuthJwtStrategy extends PassportStrategy(Strategy, 'auth-jwt') {

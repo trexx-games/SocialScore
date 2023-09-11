@@ -1,18 +1,20 @@
 import {
-  QueryHandler,
   CommandHandler,
   IInferredCommandHandler,
   IInferredQueryHandler,
+  QueryHandler,
 } from '@nestjs/cqrs';
 import { CommandResult, QueryResult } from '@nestjs-architects/typed-cqrs';
+
 import { UserService } from '../user.service';
+
 import {
-  FindOneUserQuery,
-  FindManyUserQuery,
-  CreateOneUserCommand,
-  UpdateOneUserCommand,
-  DeleteOneUserCommand,
   CountUserQuery,
+  CreateOneUserCommand,
+  DeleteOneUserCommand,
+  FindManyUserQuery,
+  FindOneUserQuery,
+  UpdateOneUserCommand,
 } from './user.cqrs.input';
 
 /**
