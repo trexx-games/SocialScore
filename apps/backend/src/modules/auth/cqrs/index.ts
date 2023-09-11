@@ -1,5 +1,4 @@
 import {
-  VerifyUser2FACodeQueryHandler,
   CreateAccessTokenCommandHandler,
   RefreshAccessTokenCommandHandler,
 } from './auth.cqrs.handler';
@@ -9,7 +8,7 @@ import {
  * QUERY
  * ---------------------------
  */
-export const QueryHandlers = [VerifyUser2FACodeQueryHandler];
+export const QueryHandlers = [];
 
 /**
  * ---------------------------
