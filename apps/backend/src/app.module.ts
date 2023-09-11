@@ -1,3 +1,4 @@
+import { BlockchainScanModule } from './modules/blockchain-scan/blockchain-scan.module';
 import { join } from 'path';
 import GraphQLJSON from 'graphql-type-json';
 import { Module } from '@nestjs/common';
@@ -16,6 +17,7 @@ import { TwoFactorModule } from '@apps/modules/two-factor/two-factor.module';
 import { PROJECT_FOLDER } from '@apps/config/constant';
 import { QueueModule } from '@apps/modules/queue/queue.module';
 import { SnakeNamingStrategy } from 'nestjs-dev-utilities';
+import { AirstackModule } from './modules/airstack/airstack.module';
 import { BlockchainModule } from './modules/blockchain/blockchain.module';
 import { WalletModule } from './modules/wallet/wallet.module';
 
@@ -75,6 +77,8 @@ import { WalletModule } from './modules/wallet/wallet.module';
     QueueModule,
     AuthModule,
     UserModule,
+    AirstackModule,
+    BlockchainScanModule,
     BlockchainModule,
     WalletModule,
   ],

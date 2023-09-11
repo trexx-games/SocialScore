@@ -33,6 +33,11 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 """
 scalar JSON
 
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+
 type Mutation {
   """This API used for connect smart wallet"""
   connect(input: ConnectInput!): AccessToken!
@@ -45,9 +50,12 @@ type Mutation {
 }
 
 type Query {
+  dexSwapScanning(walletAddress: String!): JSONObject
+
   """This API used to retrieve current profile"""
   getAuthProfile: User
   utilsTest: JSON
+  walletTokenTransfers(address: String!): JSONObject
 }
 
 """
