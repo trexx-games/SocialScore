@@ -59,6 +59,9 @@
     "@ptc-org/nestjs-query-core": "^3.0.0",
     "@ptc-org/nestjs-query-graphql": "^3.0.0",
     "@ptc-org/nestjs-query-typeorm": "^3.0.0",
+    "@thirdweb-dev/react": "^3.14.40",
+    "@thirdweb-dev/sdk": "^3.10.59",
+    "@thirdweb-dev/wallets": "^1.1.23",
     "@types/nodemailer": "^6.4.9",
     "@webbyx/next-js": "0.0.0",
     "ali-oss": "^6.18.0",
@@ -95,6 +98,8 @@
     "tslib": "^2.3.0",
     "typeorm": "^0.3.17",
     "uuid": "^9.0.0",
+    "viem": "^1.10.9",
+    "wagmi": "^1.4.1",
     "zustand": "4.3.8"
   },
   "devDependencies": {
