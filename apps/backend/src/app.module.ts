@@ -20,6 +20,7 @@ import { SnakeNamingStrategy } from 'nestjs-dev-utilities';
 import { AirstackModule } from './modules/airstack/airstack.module';
 import { BlockchainModule } from './modules/blockchain/blockchain.module';
 import { WalletModule } from './modules/wallet/wallet.module';
+import { BlockchainSourceModule } from './modules/blockchain-source/blockchain-source.module';
 
 @Module({
   imports: [
@@ -80,6 +81,7 @@ import { WalletModule } from './modules/wallet/wallet.module';
     AirstackModule,
     BlockchainScanModule,
     BlockchainModule,
+    BlockchainSourceModule,
     WalletModule,
   ],
 })

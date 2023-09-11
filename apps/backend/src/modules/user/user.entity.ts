@@ -21,7 +21,6 @@ export class UserEntity extends AbstractEntity {
   username: string;
 
   @OneToMany(() => WalletEntity, (entity) => entity.parent)
-  @TreeChildren({ cascade: true })
   linking: UserEntity[];
 
   @Column({ type: 'timestamptz', nullable: true })
