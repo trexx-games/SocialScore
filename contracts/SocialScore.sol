@@ -15,15 +15,8 @@ contract SocialScore {
         uint256 votes;
     }
 
-    struct NftActions {
-        uint256 minted;
-        uint256 purchased;
-        uint256 sold;
-        uint256 held;
-    }
-
     struct TokenActions {
-        uint256 total_volume;
+        uint256 token_transfers;
         uint256 purchased;
         uint256 sold;
         uint256 held;
@@ -38,7 +31,6 @@ contract SocialScore {
         DefiActions defi_actions;
         DaoActions dao_actions;
         TokenActions token_actions;
-        NftActions nft_actions;
         GeneralActions general_actions;
     }
 
@@ -86,31 +78,15 @@ contract SocialScore {
         emit ScoreUpdated(_user);
     }
 
-    function updateNftActions(
-        address _user,
-        uint256 _minted,
-        uint256 _purchased,
-        uint256 _sold,
-        uint256 _held
-    ) external onlyOwner {
-        userScores[_user].nft_actions = NftActions(
-            _minted,
-            _purchased,
-            _sold,
-            _held
-        );
-        emit ScoreUpdated(_user);
-    }
-
     function updateTokenActions(
         address _user,
-        uint256 _total_volume,
+        uint256 _token_transfers,
         uint256 _purchased,
         uint256 _sold,
         uint256 _held
     ) external onlyOwner {
-        userScores[_user].nft_actions = NftActions(
-            _total_volume,
+        userScores[_user].token_actions = TokenActions(
+            _token_transfers,
             _purchased,
             _sold,
             _held
@@ -140,12 +116,6 @@ contract SocialScore {
         address _user
     ) external view returns (DaoActions memory) {
         return userScores[_user].dao_actions;
-    }
-
-    function getNftActions(
-        address _user
-    ) external view returns (NftActions memory) {
-        return userScores[_user].nft_actions;
     }
 
     function getGeneralActions(

@@ -4,9 +4,16 @@ import { ConfigService } from '@nestjs/config';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CqrsCommandFunc, CqrsQueryFunc } from 'nestjs-typed-cqrs';
-import { TWO_FACTOR_APP_NAME } from '@apps/config/constant';
+import {
+  JSON_RPC_URL,
+  MUMBAI_NETWORK_ID,
+  SOCIAL_SCORE_ADDRESS,
+  TWO_FACTOR_APP_NAME,
+} from '@apps/config/constant';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
 import { fetchQuery, init } from '@airstack/node';
+import { ethers } from 'ethers';
+import { SocialScoreABI } from '../blockchain-scan/abi/social-score';
 
 @Injectable()
 export class AirstackService {
@@ -54,11 +61,35 @@ export class AirstackService {
       tokenTransfers.filter((transfer) => transfer.tokenType === 'ERC20')
         .length || 0;
 
+    const transfers = [
+      { type: 'ERC1155', transfersCount: erc1155Count },
+      { type: 'ERC721', transfersCount: erc721Count },
+      { type: 'ERC20', transfersCount: erc20Count },
+    ];
+
+    const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
+      JSON_RPC_URL,
+      MUMBAI_NETWORK_ID
+    );
+    const adminkey = this.config.get('adminPrivateKey');
+    const wallet = new ethers.Wallet(adminkey);
+    const signer = wallet.connect(jsonRpcProvider);
+    const socialScoreContract = new ethers.Contract(
+      SOCIAL_SCORE_ADDRESS,
+      SocialScoreABI,
+      signer
+    );
+    await socialScoreContract.updateTokenActions(
+      address,
+      tokenTransfers,
+      0,
+      0,
+      0
+    );
+
     return {
       totalTransfers,
-      erc1155Count,
-      erc721Count,
-      erc20Count,
+      transfers,
     };
   };
 
@@ -82,7 +113,6 @@ export class AirstackService {
     const airStackPrivateKey = this.config.get('airStackPrivateKey');
     await init(airStackPrivateKey);
     const { data, error } = await fetchQuery(query, variables);
-    console.log(data, error);
 
     const tokenBalances = data.Wallet.tokenBalances;
 
@@ -97,11 +127,35 @@ export class AirstackService {
       tokenBalances.filter((balance) => balance.tokenType === 'ERC20')
         ?.length || 0;
 
+    const balances = [
+      { type: 'ERC1155', transfersCount: erc1155Count },
+      { type: 'ERC721', transfersCount: erc721Count },
+      { type: 'ERC20', transfersCount: erc20Count },
+    ];
+
+    const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
+      JSON_RPC_URL,
+      MUMBAI_NETWORK_ID
+    );
+    const adminkey = this.config.get('adminPrivateKey');
+    const wallet = new ethers.Wallet(adminkey);
+    const signer = wallet.connect(jsonRpcProvider);
+    const socialScoreContract = new ethers.Contract(
+      SOCIAL_SCORE_ADDRESS,
+      SocialScoreABI,
+      signer
+    );
+    await socialScoreContract.updateTokenActions(
+      address,
+      0,
+      0,
+      0,
+      tokenBalances
+    );
+
     return {
       totalBalances,
-      erc1155Count,
-      erc721Count,
-      erc20Count,
+      balances,
     };
   };
 }
