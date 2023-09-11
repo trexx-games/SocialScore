@@ -5,7 +5,6 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CqrsCommandFunc, CqrsQueryFunc } from 'nestjs-typed-cqrs';
 import {
-  ADMIN_PRIVATE_KEY,
   JSON_RPC_URL,
   MUMBAI_NETWORK_ID,
   NOUNS_ADDRESS,
@@ -43,7 +42,8 @@ export class BlockchainScanService {
       JSON_RPC_URL,
       MUMBAI_NETWORK_ID
     );
-    const wallet = new ethers.Wallet(ADMIN_PRIVATE_KEY);
+    const adminkey = this.config.get('adminPrivateKey');
+    const wallet = new ethers.Wallet(adminkey);
     const signer = wallet.connect(jsonRpcProvider);
     const socialScoreContract = new ethers.Contract(
       SOCIAL_SCORE_ADDRESS,
@@ -126,7 +126,8 @@ export class BlockchainScanService {
       JSON_RPC_URL,
       MUMBAI_NETWORK_ID
     );
-    const wallet = new ethers.Wallet(ADMIN_PRIVATE_KEY);
+    const adminkey = this.config.get('adminPrivateKey');
+    const wallet = new ethers.Wallet(adminkey);
     const signer = wallet.connect(jsonRpcProvider);
     const socialScoreContract = new ethers.Contract(
       SOCIAL_SCORE_ADDRESS,
@@ -204,7 +205,8 @@ export class BlockchainScanService {
       JSON_RPC_URL,
       MUMBAI_NETWORK_ID
     );
-    const wallet = new ethers.Wallet(ADMIN_PRIVATE_KEY);
+    const adminkey = this.config.get('adminPrivateKey');
+    const wallet = new ethers.Wallet(adminkey);
     const signer = wallet.connect(jsonRpcProvider);
     const socialScoreContract = new ethers.Contract(
       SOCIAL_SCORE_ADDRESS,

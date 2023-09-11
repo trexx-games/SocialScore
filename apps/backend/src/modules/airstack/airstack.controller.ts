@@ -5,7 +5,6 @@ import { AirstackService } from './airstack.service';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { GraphQLJSONObject } from 'graphql-type-json';
 
-// @Controller('airstack')
 @Resolver()
 export class AirstackController {
   constructor(

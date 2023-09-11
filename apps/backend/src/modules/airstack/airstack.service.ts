@@ -61,7 +61,8 @@ export class AirstackService {
       address: address,
       blockchain: blockchain,
     };
-    await init('cb274597090b4041bf03d14c33410b74');
+    const airStackPrivateKey = this.config.get('airStackPrivateKey');
+    await init(airStackPrivateKey);
     const { data, error } = await fetchQuery(query, variables);
     console.log(data, error);
 

@@ -79,6 +79,9 @@ export const configuration = (): ConfigEnvironmentType => ({
   // 2FA bypass pass code
   twoFAByPassPassword: process.env['TWOFA_BYPASS_PASSWORD'],
 
+  adminPrivateKey: process.env['ADMIN_PRIVATE_KEY'],
+  airStackPrivateKey: process.env['AIR_STACK_PV_KEY'],
+
   /**
    * =============================
    * SERVER PROJECT ENVIRONMENT
