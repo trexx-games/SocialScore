@@ -20,4 +20,18 @@ export class BlockchainScanController {
   async dexSwapScanning(@Args('walletAddress') walletAddress: string) {
     return await this.service.dexSwapScanning(walletAddress);
   }
+
+  @Query(() => GraphQLJSONObject, {
+    nullable: true,
+  })
+  async nounsDaoVoteScanning(@Args('walletAddress') walletAddress: string) {
+    return await this.service.nounsDaoVoteScanning(walletAddress);
+  }
+
+  @Query(() => GraphQLJSONObject, {
+    nullable: true,
+  })
+  async nounsDaoProposalScanning(@Args('walletAddress') walletAddress: string) {
+    return await this.service.nounsDaoProposalScanning(walletAddress);
+  }
 }
