@@ -37,7 +37,7 @@ export class AuthService {
    */
   connect = async (input: ConnectInput): Promise<AccessTokenDto> => {
     try {
-      const { address, signature, message } = input;
+      const { signature, message } = input;
 
       // verify the signer message
       const { data: signer } = await this.queryBus.execute(
@@ -46,13 +46,9 @@ export class AuthService {
         })
       );
 
-      if (signer !== address) {
-        throw new Error("Signer couldn't verified!");
-      }
-
       // check whether this user has register before
       const { data: found } = await this.userService.findOne({
-        query: { filter: { address: { eq: `${address}` } } },
+        query: { filter: { address: { eq: `${signer}` } } },
         options: { nullable: true },
       });
 
@@ -60,7 +56,7 @@ export class AuthService {
       if (!found) {
         const { data: user } = await this.userService.createOne({
           input: {
-            address: input.address,
+            address: signer,
             username: input.username,
           },
         });

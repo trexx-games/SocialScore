@@ -4,19 +4,18 @@ import { Allow, IsNotEmpty, IsString } from 'class-validator';
 @InputType({ description: 'The input used to connect smart wallet' })
 export class ConnectInput {
   @Allow()
-  @Field()
-  address: string;
-
-  @Allow()
-  @Field({ nullable: true })
+  @Field({
+    nullable: true,
+    description: `Optional: username for smart wallet. If not provided will random generate one`,
+  })
   username?: string;
 
   @Allow()
-  @Field()
+  @Field({ description: 'The signing message' })
   message: string;
 
   @Allow()
-  @Field()
+  @Field({ description: 'The signing signature' })
   signature: string;
 }
 

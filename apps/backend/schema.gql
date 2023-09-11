@@ -11,9 +11,15 @@ type AccessToken {
 
 """The input used to connect smart wallet"""
 input ConnectInput {
-  address: String!
+  """The signing message"""
   message: String!
+
+  """The signing signature"""
   signature: String!
+
+  """
+  Optional: username for smart wallet. If not provided will random generate one
+  """
   username: String
 }
 
@@ -70,7 +76,12 @@ type Wallet {
 
 """The input used to link wallet to smart wallet"""
 input WalletLinkInput {
+  """Wallet address that going to link with smart wallet"""
   address: String!
+
+  """The signing message"""
   message: String!
+
+  """The signing signature"""
   signature: String!
 }

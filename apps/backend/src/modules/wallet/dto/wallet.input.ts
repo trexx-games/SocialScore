@@ -19,14 +19,14 @@ export class UpdateWalletInput {
 @InputType({ description: 'The input used to link wallet to smart wallet' })
 export class WalletLinkInput {
   @Allow()
-  @Field()
+  @Field({ description: 'Wallet address that going to link with smart wallet' })
   address: string;
 
   @Allow()
-  @Field()
+  @Field({ description: 'The signing message' })
   message: string;
 
   @Allow()
-  @Field()
+  @Field({ description: 'The signing signature' })
   signature: string;
 }
