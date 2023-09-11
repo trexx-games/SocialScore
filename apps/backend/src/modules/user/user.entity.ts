@@ -1,67 +1,31 @@
 import {
   Column,
   Entity,
-  JoinColumn,
-  ManyToOne,
   OneToMany,
-  RelationId,
   SelectQueryBuilder,
-  Tree,
   TreeChildren,
-  TreeParent,
   Unique,
 } from 'typeorm';
 import { includes } from 'lodash';
 import { RecordQueryWithJoinOptions } from 'nestjs-typed-cqrs';
 import { AbstractEntity } from 'nestjs-dev-utilities';
-import { UserStatusType } from './user.constant';
+import { WalletEntity } from '../wallet/wallet.entity';
 
 @Entity({ name: 'user' })
-@Tree('materialized-path')
-@Unique(['username', 'referralCode'])
+@Unique(['address', 'username'])
 export class UserEntity extends AbstractEntity {
   @Column()
-  firstName: string;
-
-  @Column()
-  lastName: string;
+  address: string;
 
   @Column()
   username: string;
 
-  @Column()
-  password: string;
-
-  // the unique referral code of user
-  @Column()
-  referralCode: string;
-
-  // the materialized path for user
-  mpath?: string;
-
-  // the up-line user id
-  @Column({ nullable: true })
-  @RelationId((entity: UserEntity) => entity.referrer)
-  referrerId?: number;
-
-  @ManyToOne(() => UserEntity, (entity) => entity.children)
-  @JoinColumn()
-  @TreeParent()
-  referrer?: UserEntity;
-
-  @OneToMany(() => UserEntity, (entity) => entity.referrer)
+  @OneToMany(() => WalletEntity, (entity) => entity.parent)
   @TreeChildren({ cascade: true })
-  children: UserEntity[];
+  linking: UserEntity[];
 
-  @Column({
-    type: 'enum',
-    enum: UserStatusType,
-    default: UserStatusType.PENDING,
-  })
-  status: UserStatusType;
-
-  @Column({ nullable: true })
-  twoFactorSecret?: string;
+  @Column({ type: 'timestamptz', nullable: true })
+  lastSyncDate?: Date;
 
   /**
    *  ---------------------------
@@ -73,14 +37,14 @@ export class UserEntity extends AbstractEntity {
     options: RecordQueryWithJoinOptions<UserJoinRelationType>
   ) {
     const relation = options?.relation ?? false;
-    const joins = options?.joins ?? ['parent'];
+    const joins = options?.joins ?? ['linking'];
     if (!relation) return;
 
-    // join parent relation
-    if (includes(joins, 'referrer')) {
-      builder.leftJoinAndSelect('UserEntity.referrer', 'referrerJoin');
+    // join linking relation
+    if (includes(joins, 'linking')) {
+      builder.leftJoinAndSelect('UserEntity.linking', 'linkingJoin');
     }
   }
 }
 
-export type UserJoinRelationType = 'referrer'[];
+export type UserJoinRelationType = 'linking'[];

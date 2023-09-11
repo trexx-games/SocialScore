@@ -130,8 +130,6 @@ export class UserService {
     CreateOneUserCommand['args']
   > = async ({ input, options }) => {
     const silence = options?.silence ?? false;
-    const { referrerId, ...restInput } = input;
-    let parent = null;
     try {
       const { data: found } = await this.findOne({
         query: { filter: { username: { eq: input.username } } },
@@ -139,23 +137,13 @@ export class UserService {
       });
       if (found) throw new Error('User has been registered before!');
 
-      // check whether parent exists
-      if (referrerId) {
-        const { data } = await this.findOne({
-          query: { filter: { id: { eq: referrerId } } },
-          options: { nullable: false, relation: false },
-        });
-        parent = data;
-      }
-
       // generate unique referral code
-      const referralCode = await this.utils.generateReferralCode();
+      const username = await this.utils.generateUsername(input.username);
 
       // create record
       const record = await this.repo.save({
-        parent,
-        referralCode: '',
-        ...restInput,
+        username: input.username ?? username,
+        ...input,
       });
 
       return { success: true, data: record };
@@ -173,7 +161,6 @@ export class UserService {
     UpdateOneUserCommand['args']
   > = async ({ query, input, options }) => {
     const silence = options?.silence ?? false;
-    const { referrerId, ...restInput } = input;
 
     try {
       // find record
@@ -181,21 +168,9 @@ export class UserService {
         query: query,
         options: { nullable: false },
       });
-
-      // if have referrer id specified, then should run it separately
-      if (!referrerId) {
-        const updated = await this.service.updateOne(found.id, restInput);
-        return { success: true, data: { before: found, updated } };
-      }
-
       // update record
-      const { data } = await this.findOne({
-        query: { filter: { id: { eq: referrerId } } },
-        options: { nullable: false, relation: false },
-      });
       const updated = await this.service.updateOne(found.id, {
-        referrer: data,
-        ...restInput,
+        ...input,
       });
       return { success: true, data: { before: found, updated } };
     } catch (error) {
