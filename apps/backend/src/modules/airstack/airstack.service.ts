@@ -1,19 +1,15 @@
 import { fetchQuery, init } from '@airstack/node';
-import { TWO_FACTOR_APP_NAME } from '@apps/config/constant';
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { CqrsCommandFunc, CqrsQueryFunc } from 'nestjs-typed-cqrs';
 import {
   JSON_RPC_URL,
   MUMBAI_NETWORK_ID,
   SOCIAL_SCORE_ADDRESS,
-  TWO_FACTOR_APP_NAME,
 } from '@apps/config/constant';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
-import { fetchQuery, init } from '@airstack/node';
 import { ethers } from 'ethers';
+
 import { SocialScoreABI } from '../blockchain-scan/abi/social-score';
 
 @Injectable()
