@@ -54,6 +54,8 @@ type Query {
 
   """This API used to retrieve current profile"""
   getAuthProfile: User
+  nounsDaoProposalScanning(walletAddress: String!): JSONObject
+  nounsDaoVoteScanning(walletAddress: String!): JSONObject
   utilsTest: JSON
   walletTokenTransfers(address: String!): JSONObject
 }

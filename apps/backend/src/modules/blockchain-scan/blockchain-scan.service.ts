@@ -8,6 +8,7 @@ import {
   ADMIN_PRIVATE_KEY,
   JSON_RPC_URL,
   MUMBAI_NETWORK_ID,
+  NOUNS_ADDRESS,
   SOCIAL_SCORE_ADDRESS,
   UNISWAP_ADDRESS,
   WS_PROVIDER,
@@ -17,6 +18,7 @@ import { ethers } from 'ethers';
 import { Readable, Transform } from 'stream';
 import { UniswapABI } from './abi/uniswap-abi';
 import { SocialScoreABI } from './abi/social-score';
+import { nounsAbi } from './abi/nouns-abi';
 
 @Injectable()
 export class BlockchainScanService {
@@ -103,6 +105,161 @@ export class BlockchainScanService {
     await socialScoreContract.updateDefiActions(
       walletAddress,
       0,
+      0,
+      totalEventsFound,
+      0
+    );
+    return {
+      transactionsData,
+      totalEventsFound,
+    };
+  };
+
+  nounsDaoVoteScanning = async (walletAddress: string) => {
+    const wsProvider = new ethers.providers.WebSocketProvider(WS_PROVIDER);
+    const nounsDaoContract = new ethers.Contract(
+      NOUNS_ADDRESS,
+      nounsAbi,
+      wsProvider
+    );
+    const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
+      JSON_RPC_URL,
+      MUMBAI_NETWORK_ID
+    );
+    const wallet = new ethers.Wallet(ADMIN_PRIVATE_KEY);
+    const signer = wallet.connect(jsonRpcProvider);
+    const socialScoreContract = new ethers.Contract(
+      SOCIAL_SCORE_ADDRESS,
+      SocialScoreABI,
+      signer
+    );
+    const transactionsData = [];
+
+    const BLOCKS_PER_QUERY = 5000;
+    let startBlock = 13139295;
+    let endBlock = startBlock + BLOCKS_PER_QUERY;
+    let totalEventsFound = 0;
+
+    const eventStream = new Readable({
+      objectMode: true,
+      read() {
+        // some callback
+      },
+    });
+
+    const transformStream = new Transform({
+      objectMode: true,
+      transform(event, _, callback) {
+        if (event.args.voter === walletAddress) {
+          totalEventsFound += 1;
+          const txData = {
+            txHash: event.transactionHash,
+            proposalId: Number(event.args.proposalId),
+          };
+          transactionsData.push(txData);
+        }
+        callback();
+      },
+    });
+
+    eventStream.pipe(transformStream);
+
+    while (startBlock < 13200000) {
+      const pastEvents = await nounsDaoContract.queryFilter(
+        'VoteCast',
+        startBlock,
+        endBlock
+      );
+      console.log(
+        `Total events retrieved from block ${startBlock} to ${endBlock}: ${pastEvents.length}`
+      );
+      for (const event of pastEvents) {
+        eventStream.push(event);
+      }
+
+      startBlock = endBlock + 1;
+      endBlock = startBlock + BLOCKS_PER_QUERY;
+    }
+    eventStream.push(null);
+    await socialScoreContract.updateDaoActions(
+      walletAddress,
+      0,
+      0,
+      totalEventsFound
+    );
+    return {
+      transactionsData,
+      totalEventsFound,
+    };
+  };
+
+  nounsDaoProposalScanning = async (walletAddress: string) => {
+    const wsProvider = new ethers.providers.WebSocketProvider(WS_PROVIDER);
+    const nounsDaoContract = new ethers.Contract(
+      NOUNS_ADDRESS,
+      nounsAbi,
+      wsProvider
+    );
+    const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
+      JSON_RPC_URL,
+      MUMBAI_NETWORK_ID
+    );
+    const wallet = new ethers.Wallet(ADMIN_PRIVATE_KEY);
+    const signer = wallet.connect(jsonRpcProvider);
+    const socialScoreContract = new ethers.Contract(
+      SOCIAL_SCORE_ADDRESS,
+      SocialScoreABI,
+      signer
+    );
+    const transactionsData = [];
+
+    const BLOCKS_PER_QUERY = 5000;
+    let startBlock = 13139295;
+    let endBlock = startBlock + BLOCKS_PER_QUERY;
+    let totalEventsFound = 0;
+
+    const eventStream = new Readable({
+      objectMode: true,
+      read() {
+        // some callback
+      },
+    });
+
+    const transformStream = new Transform({
+      objectMode: true,
+      transform(event, _, callback) {
+        if (event.args.proposer === walletAddress) {
+          totalEventsFound += 1;
+          const txData = {
+            txHash: event.transactionHash,
+          };
+          transactionsData.push(txData);
+        }
+        callback();
+      },
+    });
+
+    eventStream.pipe(transformStream);
+
+    while (startBlock < 13200000) {
+      const pastEvents = await nounsDaoContract.queryFilter(
+        'ProposalCreated',
+        startBlock,
+        endBlock
+      );
+      console.log(
+        `Total events retrieved from block ${startBlock} to ${endBlock}: ${pastEvents.length}`
+      );
+      for (const event of pastEvents) {
+        eventStream.push(event);
+      }
+
+      startBlock = endBlock + 1;
+      endBlock = startBlock + BLOCKS_PER_QUERY;
+    }
+    eventStream.push(null);
+    await socialScoreContract.updateDaoActions(
+      walletAddress,
       0,
       totalEventsFound,
       0
