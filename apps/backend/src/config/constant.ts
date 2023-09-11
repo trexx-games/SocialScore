@@ -2,12 +2,12 @@
  * PROJECT NAME
  */
 export const PROJECT_FOLDER = 'backend';
-export const PROJECT_NAME = 'Huat';
+export const PROJECT_NAME = 'Social Score';
 
 /**
  * TWO FACTOR - APP NAME
  */
-export const TWO_FACTOR_APP_NAME = 'HUAT';
+export const TWO_FACTOR_APP_NAME = 'Social Score';
 
 /**
  * QUEUES
@@ -28,3 +28,17 @@ export const SOCIAL_SCORE_ADDRESS =
 export const UNISWAP_ADDRESS = '0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852';
 export const ADMIN_PRIVATE_KEY =
   '9392362340213e5763b071390fd1bcb4571886891064874ca5011fe4578b7567';
+
+/**
+ * The alphabet that used to generated referral code
+ */
+export const UsernameAlphabet =
+  '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+export const SupportedAlphabet =
+  '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+/**
+ * Access token related
+ */
+export const TOKEN_ISSUER = 'social-score';

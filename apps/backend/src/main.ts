@@ -1,18 +1,14 @@
-import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PROJECT_NAME } from '@apps/config/constant';
-import { NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { LoggingInterceptor } from 'nestjs-dev-utilities';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
-import { RequestHeaderPlatformInterceptor } from '@apps/interceptors/request-headers-platform.interceptor';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get<ConfigService<ENV>>(ConfigService);
-
-  const reflector = app.get(Reflector);
 
   app.useGlobalInterceptors(new LoggingInterceptor());
 

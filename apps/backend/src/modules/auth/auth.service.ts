@@ -7,31 +7,19 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { TokenExpiredError } from 'jsonwebtoken';
-import { TokenIssuer } from '@apps/config/setting.config';
-import { UserEntity } from '@apps/modules/user/user.entity';
-import { CqrsCommandFunc, CqrsQueryFunc } from 'nestjs-typed-cqrs';
+import { TOKEN_ISSUER } from '@apps/config/constant';
+import { CqrsCommandFunc } from 'nestjs-typed-cqrs';
 import { UserService } from '@apps/modules/user/user.service';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
-import { UserStatusType } from '@apps/modules/user/user.constant';
 import { AccessTokenFactory } from './access-token.factory';
-import { UpdateOneUserCommand } from '@apps/modules/user/cqrs';
 import { AccessTokenContext } from './auth.interface';
 import { AccessTokenDto } from './dto/auth.dto';
 import {
-  GenerateTwoFactorCommand,
-  VerifyTwoFactorQuery,
-} from '@apps/modules/two-factor/cqrs';
-import {
   CreateAccessTokenCommand,
   RefreshAccessTokenCommand,
-  VerifyUser2FACodeQuery,
 } from './cqrs/auth.cqrs.input';
-import {
-  BindTwoFactorInput,
-  SignInInput,
-  RegisterInput,
-  UnbindTwoFactorInput,
-} from './dto/auth.input';
+import { ConnectInput } from './dto/auth.input';
+import { BlockchainVerifySignerMessageQuery } from '../blockchain/cqrs';
 
 @Injectable()
 export class AuthService {
@@ -45,189 +33,48 @@ export class AuthService {
   ) {}
 
   /**
-   * Register wallet
+   * Connect smart wallet
    */
-  register = async (
-    input: RegisterInput,
-    ipAddress?: string
-  ): Promise<AccessTokenDto> => {
-    const { referralCode, ...restInput } = input;
-    // find parent with referral code
-    const { data: parent } = await this.userService.findOne({
-      query: { filter: { referralCode: { eq: referralCode } } },
-      options: { nullable: true },
-    });
-
-    if (!parent) {
-      throw new BadRequestException('Invalid referral code provided!');
-    }
-
-    // create the user profile
-    const { data: user } = await this.userService.createOne({
-      input: {
-        ...restInput,
-        referrerId: parent.id,
-        status: UserStatusType.COMPLETED,
-      },
-    });
-
-    // create access token
-    const { data } = await this.createAccessToken({
-      input: {
-        reference: user.referralCode,
-        platform: 'customer',
-      },
-    });
-
-    return data;
-  };
-
-  /**
-   * connect & sign in
-   */
-  signIn = async (
-    input: SignInInput,
-    ipAddress?: string
-  ): Promise<AccessTokenDto> => {
-    // check whether user exists before create access token
-    const { data } = await this.userService.findOne({
-      query: { filter: { username: { eq: input.username } } },
-      options: { nullable: false },
-    });
-
-    // create access token
-    const { data: token } = await this.createAccessToken({
-      input: {
-        reference: data.referralCode,
-        platform: 'customer',
-      },
-    });
-    return token;
-  };
-
-  /**
-   * check whether can register
-   */
-  isRegisterable = async (input: SignInInput): Promise<boolean> => {
-    // check whether user exists before create access token
-    const { data } = await this.userService.findOne({
-      query: { filter: { username: { eq: input.username } } },
-      options: { nullable: true },
-    });
-    return !data;
-  };
-
-  /**
-   * ---------------------------------
-   * TWO FACTOR
-   * ---------------------------------
-   */
-  // generate two factor from user reference
-  generateTwoFactor = async (user: UserEntity) => {
-    if (user.twoFactorSecret) {
-      throw new BadRequestException('You already got 2FA setup!');
-    }
-    const reference = user.username;
-    const { data } = await this.commandBus.execute(
-      new GenerateTwoFactorCommand({
-        input: { reference },
-      })
-    );
-    return data;
-  };
-
-  // verify user input two factor
-  verifyTwoFactor: CqrsQueryFunc<
-    VerifyUser2FACodeQuery,
-    VerifyUser2FACodeQuery['args']
-  > = async ({ query, options }) => {
-    const silence = options?.silence ?? false;
+  connect = async (input: ConnectInput): Promise<AccessTokenDto> => {
     try {
-      let userData: UserEntity = null;
-      // find user
-      if (typeof query.user === 'number') {
-        const { data: foundUser } = await this.userService.findOne({
-          query: { filter: { id: { eq: query.user } } },
-          options: { nullable: false },
-        });
-        userData = foundUser;
-      } else {
-        userData = query.user;
-      }
-      const secret = userData.twoFactorSecret;
-      // check user whether has 2FA setup
-      if (!userData.twoFactorSecret) throw new Error('User got no 2FA setup!');
+      const { signature, message } = input;
 
-      // verify 2FA code
-      return this.queryBus.execute(
-        new VerifyTwoFactorQuery({
-          query: { code: query.code, secret },
-          options: { silence, ...options },
-        })
-      );
-    } catch (e) {
-      if (!silence) throw new BadRequestException(e.message);
-      return { success: false, data: false, message: e.message };
-    }
-  };
-
-  /**
-   * Check / Enable 2FA
-   */
-  bindTwoFactor = async (
-    user: UserEntity,
-    input: BindTwoFactorInput,
-    ipAddress?: string
-  ): Promise<UserEntity> => {
-    try {
-      if (user.twoFactorSecret) {
-        throw new Error('User has already got 2FA setup!');
-      }
-      await this.queryBus.execute(
-        new VerifyTwoFactorQuery({
-          query: { code: input.code, secret: input.secret },
+      // verify the signer message
+      const { data: signer } = await this.queryBus.execute(
+        new BlockchainVerifySignerMessageQuery({
+          query: { signature, message },
         })
       );
 
-      // bind two 2FA to user profile
-      const { data } = await this.userService.updateOne({
-        query: { filter: { id: { eq: user.id } } },
-        input: { twoFactorSecret: input.secret },
+      // check whether this user has register before
+      const { data: found } = await this.userService.findOne({
+        query: { filter: { address: { eq: `${signer}` } } },
+        options: { nullable: true },
       });
-      return data.updated;
-    } catch (e) {
-      throw new BadRequestException(e.message);
-    }
-  };
 
-  /**
-   * Request unbind 2FA
-   */
-  unbindTwoFactor = async (
-    user: UserEntity,
-    input: UnbindTwoFactorInput,
-    ipAddress?: string
-  ): Promise<boolean> => {
-    try {
-      if (!user.twoFactorSecret) {
-        throw new Error("Can't unbind due to no 2FA setup!");
+      // create the user profile if address not in system
+      if (!found) {
+        const { data: user } = await this.userService.createOne({
+          input: {
+            address: signer,
+            username: input.username,
+          },
+        });
+
+        const { data: accessToken } = await this.createAccessToken({
+          input: { reference: user.address },
+        });
+        return accessToken;
       }
-      // verify two factor code
-      await this.queryBus.execute(
-        new VerifyTwoFactorQuery({
-          query: { code: input.code, secret: user.twoFactorSecret },
-        })
-      );
-      // unbind two factor code
-      await this.commandBus.execute(
-        new UpdateOneUserCommand({
-          query: { filter: { id: { eq: user.id } } },
-          input: { twoFactorSecret: null },
-        })
-      );
-      return true;
+
+      // create access token for found user
+      const { data } = await this.createAccessToken({
+        input: { reference: found.address },
+      });
+
+      return data;
     } catch (e) {
-      throw new BadRequestException(e.message);
+      throw new BadRequestException(e);
     }
   };
 
@@ -244,9 +91,8 @@ export class AuthService {
     const silence = options?.silence ?? false;
     try {
       const record = await this.accessTokenFactory.create({
-        iss: 'ccgds',
+        iss: TOKEN_ISSUER,
         sub: input.reference,
-        aud: input.platform,
       });
 
       return { success: true, data: record };
@@ -271,23 +117,17 @@ export class AuthService {
           { ignoreExpiration: false, publicKey: jwt.refreshPublicKey }
         );
 
-      const referralCode = decodedToken.sub; // default as user referralCode (based on token)
-      const defaultPlatform = decodedToken.aud; // default accessing platform (based on token)
+      const username = decodedToken.sub; // default as user wallet address (based on token)
       const defaultIssuer = decodedToken.iss; // default token issuer (based on token)
 
       // check if refresh token is issued by TokenIssuer
-      if (defaultIssuer !== TokenIssuer) {
+      if (defaultIssuer !== TOKEN_ISSUER) {
         throw new Error('Issuer not allowed');
-      }
-
-      // check if refresh token is same with x-ccgds-platform header
-      if (defaultPlatform !== input.platform) {
-        throw new Error('Mismatch platform!');
       }
 
       // find user account info based on token payload "sub"
       const { data: user } = await this.userService.findOne({
-        query: { filter: { referralCode: { eq: referralCode } } },
+        query: { filter: { username: { eq: username } } },
         options: { relation: false, silence: true, nullable: true },
       });
 
@@ -296,8 +136,7 @@ export class AuthService {
       // all ok, create new access token
       return this.createAccessToken({
         input: {
-          reference: referralCode,
-          platform: input.platform,
+          reference: username,
         },
       });
     } catch (e) {

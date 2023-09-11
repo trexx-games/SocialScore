@@ -1,65 +1,31 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Allow, IsNotEmpty, IsString } from 'class-validator';
 
-@InputType({ description: 'This input used to sign in' })
-export class SignInInput {
-  @Field()
-  @IsString()
-  @IsNotEmpty()
-  username: string;
+@InputType({ description: 'The input used to connect smart wallet' })
+export class ConnectInput {
+  @Allow()
+  @Field({
+    nullable: true,
+    description: `Optional: username for smart wallet. If not provided will random generate one`,
+  })
+  username?: string;
 
-  @Field()
-  @IsNotEmpty()
-  password: string;
-}
+  @Allow()
+  @Field({ description: 'The signing message' })
+  message: string;
 
-@InputType({ description: 'This input used to connect & register wallet.' })
-export class RegisterInput {
-  @Field()
-  @IsNotEmpty()
-  firstName: string;
-
-  @Field()
-  @IsNotEmpty()
-  lastName: string;
-
-  @Field()
-  @IsNotEmpty()
-  username: string;
-
-  @Field()
-  @IsNotEmpty()
-  password: string;
-
-  @Field({ nullable: true })
-  referralCode?: string;
+  @Allow()
+  @Field({ description: 'The signing signature' })
+  signature: string;
 }
 
 @InputType({
   description:
-    'This input used to prolong user access. NOTE: refreshToken must matched with connected wallet',
+    'The input used to prolong user access. NOTE: refreshToken must matched with connected wallet',
 })
 export class RefreshAccessTokenInput {
   @Field()
   @IsString()
   @IsNotEmpty()
   refreshToken: string;
-}
-
-@InputType({ description: 'This input used to bind 2FA.' })
-export class BindTwoFactorInput {
-  @Allow()
-  @Field()
-  secret: string;
-
-  @Allow()
-  @Field()
-  code: string;
-}
-
-@InputType({ description: 'This input used to unbind 2FA.' })
-export class UnbindTwoFactorInput {
-  @Allow()
-  @Field()
-  code: string;
 }

@@ -1,14 +1,10 @@
 import { PartialType } from '@nestjs/graphql';
-import { UserStatusType } from '../user.constant';
 
 // create user input
 export class CreateUserInput {
-  firstName: string;
-  lastName: string;
-  username: string;
-  referrerId?: number;
-  status?: UserStatusType;
-  twoFactorSecret?: string;
+  address: string;
+  username?: string;
+  lastSyncDate?: Date;
 }
 
 // update user input

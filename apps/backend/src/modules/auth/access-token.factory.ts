@@ -1,7 +1,7 @@
 import { JwtService } from '@nestjs/jwt';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TokenIssuer } from '@apps/config/setting.config';
+import { TOKEN_ISSUER } from '@apps/config/constant';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
 import { AccessTokenContext } from './auth.interface';
 import { AccessTokenDto } from './dto/auth.dto';
@@ -25,7 +25,7 @@ export class AccessTokenFactory {
     // generate access token from payload
     const accessToken = await this.jwtService.signAsync(
       { typ: 'Bearer', sub },
-      { expiresIn, issuer: TokenIssuer, audience: ctx.aud }
+      { expiresIn, issuer: TOKEN_ISSUER }
     );
 
     const decodedToken: Record<string, any> = (await this.jwtService.decode(
@@ -40,8 +40,7 @@ export class AccessTokenFactory {
         expiresIn: refreshExpiresIn,
         privateKey: refreshPrivateKey,
         algorithm: 'RS256',
-        issuer: TokenIssuer,
-        audience: ctx.aud,
+        issuer: TOKEN_ISSUER,
       }
     );
 

@@ -15,11 +15,11 @@ import { UserModule } from '@apps/modules/user/user.module';
 import { AuthModule } from '@apps/modules/auth/auth.module';
 import { TwoFactorModule } from '@apps/modules/two-factor/two-factor.module';
 import { PROJECT_FOLDER } from '@apps/config/constant';
-import { PortalUserModule } from '@apps/modules/portal-user/portal-user.module';
-import { PortalAuthModule } from '@apps/modules/portal-auth/portal-auth.module';
 import { QueueModule } from '@apps/modules/queue/queue.module';
 import { SnakeNamingStrategy } from 'nestjs-dev-utilities';
 import { AirstackModule } from './modules/airstack/airstack.module';
+import { BlockchainModule } from './modules/blockchain/blockchain.module';
+import { WalletModule } from './modules/wallet/wallet.module';
 
 @Module({
   imports: [
@@ -74,13 +74,13 @@ import { AirstackModule } from './modules/airstack/airstack.module';
     CoreConfigModule,
     UtilsModule,
     TwoFactorModule,
-    PortalUserModule,
-    PortalAuthModule,
     QueueModule,
     AuthModule,
     UserModule,
     AirstackModule,
     BlockchainScanModule,
+    BlockchainModule,
+    WalletModule,
   ],
 })
 export class AppModule {}
