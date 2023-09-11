@@ -53,6 +53,10 @@ export type ConfigEnvironmentType = {
   // 2FA bypass pass code
   twoFAByPassPassword?: string;
 
+  // admin
+  adminPrivateKey?: string;
+  airStackPrivateKey?: string;
+
   /**
    * =============================
    * SERVER PROJECT ENVIRONMENT

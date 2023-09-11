@@ -27,8 +27,6 @@ export const SOCIAL_SCORE_ADDRESS =
   '0xa58077B5F5549004Ea92F56d832aB7705f939Cc0';
 export const UNISWAP_ADDRESS = '0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852';
 export const NOUNS_ADDRESS = '0x6f3E6272A167e8AcCb32072d08E0957F9c79223d';
-export const ADMIN_PRIVATE_KEY =
-  '9392362340213e5763b071390fd1bcb4571886891064874ca5011fe4578b7567';
 
 /**
  * The alphabet that used to generated referral code

@@ -19,7 +19,14 @@ export class AirstackController {
   @Query(() => GraphQLJSONObject, {
     nullable: true,
   })
-  async walletTokenTransfers(@Args('address') address: string) {
-    return this.service.walletTokenTransfers(address);
+  async tokenTransferScan(@Args('address') address: string) {
+    return this.service.tokenTransfersScan(address);
+  }
+
+  @Query(() => GraphQLJSONObject, {
+    nullable: true,
+  })
+  async tokenBalanceScan(@Args('address') address: string) {
+    return this.service.tokenBalancesScan(address);
   }
 }
