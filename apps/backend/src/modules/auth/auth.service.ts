@@ -33,9 +33,9 @@ export class AuthService {
   ) {}
 
   /**
-   * Register wallet
+   * Connect smart wallet
    */
-  signIn = async (input: ConnectInput): Promise<AccessTokenDto> => {
+  connect = async (input: ConnectInput): Promise<AccessTokenDto> => {
     try {
       const { address, signature, message } = input;
 

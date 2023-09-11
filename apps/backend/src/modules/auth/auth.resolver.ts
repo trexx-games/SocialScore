@@ -34,14 +34,14 @@ export class AuthResolver {
 
   // connect wallet
   @Mutation(() => AccessTokenDto, {
-    description: 'This API used for login',
+    description: 'This API used for connect smart wallet',
   })
-  async signIn(
+  async connect(
     @IpAddress() ipAddress: string,
     @Args({ name: 'input', type: () => ConnectInput })
     input: ConnectInput
   ) {
-    return this.service.signIn(input);
+    return this.service.connect(input);
   }
 
   // refresh token
