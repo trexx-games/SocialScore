@@ -1,8 +1,7 @@
-import { Box } from '@mui/material';
 import { PropsWithChildren } from 'react';
 
 export const TrexxContainer: React.FC<PropsWithChildren> = (props) => {
-  return <Box sx={{ padding: '16px' }}>{props.children}</Box>;
+  return <div className="max-w-[500px] mx-auto">{props.children}</div>;
 };
 
 export default TrexxContainer;
