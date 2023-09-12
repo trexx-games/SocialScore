@@ -50,13 +50,13 @@ export class AirstackService {
     const totalTransfers = tokenTransfers.length;
     const erc1155Count =
       tokenTransfers.filter((transfer) => transfer.tokenType === 'ERC1155')
-        .length || 0;
+        ?.length || 0;
     const erc721Count =
       tokenTransfers.filter((transfer) => transfer.tokenType === 'ERC721')
-        .length || 0;
+        ?.length || 0;
     const erc20Count =
       tokenTransfers.filter((transfer) => transfer.tokenType === 'ERC20')
-        .length || 0;
+        ?.length || 0;
 
     const transfers = [
       { type: 'ERC1155', transfersCount: erc1155Count },
@@ -78,7 +78,7 @@ export class AirstackService {
     );
     await socialScoreContract.updateTokenActions(
       address,
-      tokenTransfers,
+      totalTransfers,
       0,
       0,
       0
@@ -147,7 +147,7 @@ export class AirstackService {
       0,
       0,
       0,
-      tokenBalances
+      totalBalances
     );
 
     return {
