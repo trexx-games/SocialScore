@@ -2,17 +2,33 @@
 
 ## Table of contents
 
+- [Technical Stack](#technical-stack)
+- [Development Requirements](#development-requirements)
 - [Getting Started](#getting-started)
 - [Guide](#guide)
 
 ---
 
-## Used of Technologies
+## Technical Stack
 
-1.  Build System - `NX`
-2.  Framework - `NestJs`, `NextJs`
-3.  Coding styles - `TypeScript`
-4.  Coding Practice - `Eslint` rules for `(.js, .jsx, .ts, .tsx)`
+| Technology     | Description                                                                                                   | Reference                       |
+| -------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| PostgreSQL     | Powerful, open source object-relational database system                                                       | https://www.postgresql.org/     |
+| Redis          | Caching & background Process purpose                                                                          | https://redis.com/              |
+| Docker         | Build, share, and run container applications                                                                  | https://www.docker.com/         |
+| NodeJs         | Cross-platform JavaScript runtime environment                                                                 | https://nodejs.org/en           |
+| TypeScript     | Strongly typed programming language that builds on JavaScript                                                 | https://www.typescriptlang.org/ |
+| NX             | Advanced build system with mono-repo support                                                                  | https://nx.dev/                 |
+| NestJs         | NodeJs framework for building efficient, reliable and scalable server-side applications.                      | https://nestjs.com/             |
+| NextJs         | The React framework                                                                                           | https://nextjs.org/             |
+| Apollo GraphQL | API communication between server & client                                                                     | https://www.apollographql.com/  |
+| Material UI    | Library of react components                                                                                   | https://mui.com/                |
+| EthersJs       | Library for interacting with the Ethereum Blockchain and its ecosystem                                        | https://docs.ethers.org/v5/     |
+| Solidity       | Smart Contract Language                                                                                       |                                 |
+| Thirdweb       | SDKs for interacting with Blockchain                                                                          |                                 |
+| Airstack       | SDKs for interacting with Blockchain                                                                          | https://www.airstack.xyz/       |
+| Hardhat        | Development environment for Ethereum software                                                                 | https://hardhat.org/            |
+| JWT            | JSON Web Token (JWT) is a compact URL-safe means of representing claims to be transferred between two parties | https://jwt.io/                 |
 
 ---
 
@@ -109,4 +125,3 @@ yarn remove <DEPENDENCIES>
 ## Guide
 
 1. How to run backend on your local machine [docs](./docs/guide-how-to-run-backend.md)
-2. How to run the web application on your local machine [docs](./docs/guide-how-to-run-frontend.md)
