@@ -193,10 +193,7 @@ export class WalletService {
       });
 
       // update record
-      const { data } = await this.findOne({
-        query: { filter: { id: { eq: found.id } } },
-        options: { nullable: false, relation: false },
-      });
+      const data = await this.service.updateOne(found.id, input);
 
       return { success: true, data: { before: found, updated: data } };
     } catch (error) {

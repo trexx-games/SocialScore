@@ -143,8 +143,8 @@ export class UserService {
 
       // create record
       const record = await this.repo.save({
-        username: input.username ?? username,
         ...input,
+        username,
       });
 
       return { success: true, data: record };
