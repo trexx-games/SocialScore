@@ -4,6 +4,7 @@
 
 - [Technical Stack](#technical-stack)
 - [Development Requirements](#development-requirements)
+- [Folder Structure](#folder-structure)
 - [Getting Started](#getting-started)
 - [Guide](#guide)
 
@@ -40,6 +41,19 @@ Do take note that development tools should met with below requirements:
 | --------------- | ------------------ |
 | Package Manager | Yarn               |
 | NodeJs          | > 14.17.3 - latest |
+
+---
+
+# Folder Structure
+
+```bash
+├── apps
+│    ├── backend # backend project
+│    └── web # frontend project
+└── libs
+     ├── data-access # graphql codegen
+     └── server # server environment configuration
+```
 
 ---
 
