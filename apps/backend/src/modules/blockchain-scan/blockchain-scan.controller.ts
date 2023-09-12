@@ -1,3 +1,4 @@
+import { NOUNS_ADDRESS, UNISWAP_ADDRESS } from '@apps/config/constant';
 import { ConfigService } from '@nestjs/config';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';
@@ -19,20 +20,29 @@ export class BlockchainScanController {
     nullable: true,
   })
   async dexSwapScanning(@Args('walletAddress') walletAddress: string) {
-    return await this.service.dexSwapScanning(walletAddress);
+    return await this.service.dexSwapScanning({
+      walletAddress,
+      sourceAddress: UNISWAP_ADDRESS,
+    });
   }
 
   @Query(() => GraphQLJSONObject, {
     nullable: true,
   })
   async nounsDaoVoteScanning(@Args('walletAddress') walletAddress: string) {
-    return await this.service.nounsDaoVoteScanning(walletAddress);
+    return await this.service.nounsDaoVoteScanning({
+      walletAddress,
+      sourceAddress: NOUNS_ADDRESS,
+    });
   }
 
   @Query(() => GraphQLJSONObject, {
     nullable: true,
   })
   async nounsDaoProposalScanning(@Args('walletAddress') walletAddress: string) {
-    return await this.service.nounsDaoProposalScanning(walletAddress);
+    return await this.service.nounsDaoProposalScanning({
+      walletAddress,
+      sourceAddress: NOUNS_ADDRESS,
+    });
   }
 }

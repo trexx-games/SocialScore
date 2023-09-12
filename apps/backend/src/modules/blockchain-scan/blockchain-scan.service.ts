@@ -1,9 +1,7 @@
 import {
   JSON_RPC_URL,
   MUMBAI_NETWORK_ID,
-  NOUNS_ADDRESS,
   SOCIAL_SCORE_ADDRESS,
-  UNISWAP_ADDRESS,
   WS_PROVIDER,
 } from '@apps/config/constant';
 import { BadRequestException, Injectable } from '@nestjs/common';
@@ -11,14 +9,13 @@ import { ConfigService } from '@nestjs/config';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
 import { ethers } from 'ethers';
-import { CqrsCommandFunc, CqrsQueryFunc } from 'nestjs-typed-cqrs';
-import { authenticator } from 'otplib';
-import { toDataURL } from 'qrcode';
+import { CqrsCommandFunc } from 'nestjs-typed-cqrs';
 import { Readable, Transform } from 'stream';
 
 import { nounsAbi } from './abi/nouns-abi';
 import { SocialScoreABI } from './abi/social-score';
 import { UniswapABI } from './abi/uniswap-abi';
+import { PerformBlockScanCommand } from './cqrs';
 
 @Injectable()
 export class BlockchainScanService {
@@ -29,13 +26,63 @@ export class BlockchainScanService {
   ) {}
 
   /**
-   * Verify is 2FA code matched
+   * ------------------------------------------------------
+   * Basic Functions
+   * ------------------------------------------------------
    */
+  /**
+   * Update one record
+   */
+  performBlockchainSourceScan: CqrsCommandFunc<
+    PerformBlockScanCommand,
+    PerformBlockScanCommand['args']
+  > = async ({ input, options }) => {
+    const silence = options?.silence ?? false;
 
-  dexSwapScanning = async (walletAddress: string) => {
+    try {
+      const { source, walletAddress } = input;
+      if (source.name === 'Uniswap') {
+        await this.dexSwapScanning({
+          walletAddress,
+          sourceAddress: source.address,
+        });
+      }
+      if (source.name === 'NounsDAO') {
+        await Promise.all([
+          this.nounsDaoVoteScanning({
+            walletAddress,
+            sourceAddress: source.address,
+          }),
+          this.nounsDaoProposalScanning({
+            walletAddress,
+            sourceAddress: source.address,
+          }),
+        ]);
+      }
+    } catch (e) {
+      if (!silence) throw new BadRequestException(e);
+      return { success: false, message: e.message };
+    }
+  };
+
+  /**
+   * ------------------------------------------------------
+   * Helper Functions
+   * ------------------------------------------------------
+   */
+  /**
+   * =================
+   * UNISWAP
+   * =================
+   */
+  dexSwapScanning = async (input: {
+    walletAddress: string;
+    sourceAddress: string;
+    totalQueryBlock?: number;
+  }) => {
     const wsProvider = new ethers.providers.WebSocketProvider(WS_PROVIDER);
     const uniswapContract = new ethers.Contract(
-      UNISWAP_ADDRESS,
+      input.sourceAddress,
       UniswapABI,
       wsProvider
     );
@@ -53,7 +100,7 @@ export class BlockchainScanService {
     );
     const transactionsData = [];
 
-    const BLOCKS_PER_QUERY = 5000;
+    const BLOCKS_PER_QUERY = input.totalQueryBlock ?? 5000;
     let startBlock = 13139295;
     let endBlock = startBlock + BLOCKS_PER_QUERY;
     let totalEventsFound = 0;
@@ -68,7 +115,7 @@ export class BlockchainScanService {
     const transformStream = new Transform({
       objectMode: true,
       transform(event, _, callback) {
-        if (event.args.sender === walletAddress) {
+        if (event.args.sender === input.walletAddress) {
           totalEventsFound += 1;
           const txData = {
             txHash: event.transactionHash,
@@ -104,7 +151,7 @@ export class BlockchainScanService {
     }
     eventStream.push(null);
     await socialScoreContract.updateDefiActions(
-      walletAddress,
+      input.walletAddress,
       0,
       0,
       totalEventsFound,
@@ -116,10 +163,19 @@ export class BlockchainScanService {
     };
   };
 
-  nounsDaoVoteScanning = async (walletAddress: string) => {
+  /**
+   * =================
+   * NOUNS DAO
+   * =================
+   */
+  nounsDaoVoteScanning = async (input: {
+    walletAddress: string;
+    sourceAddress: string;
+    totalQueryBlock?: number;
+  }) => {
     const wsProvider = new ethers.providers.WebSocketProvider(WS_PROVIDER);
     const nounsDaoContract = new ethers.Contract(
-      NOUNS_ADDRESS,
+      input.sourceAddress,
       nounsAbi,
       wsProvider
     );
@@ -137,7 +193,7 @@ export class BlockchainScanService {
     );
     const transactionsData = [];
 
-    const BLOCKS_PER_QUERY = 5000;
+    const BLOCKS_PER_QUERY = input.totalQueryBlock ?? 5000;
     let startBlock = 13139295;
     let endBlock = startBlock + BLOCKS_PER_QUERY;
     let totalEventsFound = 0;
@@ -152,7 +208,7 @@ export class BlockchainScanService {
     const transformStream = new Transform({
       objectMode: true,
       transform(event, _, callback) {
-        if (event.args.voter === walletAddress) {
+        if (event.args.voter === input.walletAddress) {
           totalEventsFound += 1;
           const txData = {
             txHash: event.transactionHash,
@@ -184,7 +240,7 @@ export class BlockchainScanService {
     }
     eventStream.push(null);
     await socialScoreContract.updateDaoActions(
-      walletAddress,
+      input.walletAddress,
       0,
       0,
       totalEventsFound
@@ -195,10 +251,19 @@ export class BlockchainScanService {
     };
   };
 
-  nounsDaoProposalScanning = async (walletAddress: string) => {
+  /**
+   * =================
+   * NOUNS DAO PROPOSAL
+   * =================
+   */
+  nounsDaoProposalScanning = async (input: {
+    walletAddress: string;
+    sourceAddress: string;
+    totalQueryBlock?: number;
+  }) => {
     const wsProvider = new ethers.providers.WebSocketProvider(WS_PROVIDER);
     const nounsDaoContract = new ethers.Contract(
-      NOUNS_ADDRESS,
+      input.sourceAddress,
       nounsAbi,
       wsProvider
     );
@@ -216,7 +281,7 @@ export class BlockchainScanService {
     );
     const transactionsData = [];
 
-    const BLOCKS_PER_QUERY = 5000;
+    const BLOCKS_PER_QUERY = input.totalQueryBlock ?? 5000;
     let startBlock = 13139295;
     let endBlock = startBlock + BLOCKS_PER_QUERY;
     let totalEventsFound = 0;
@@ -231,7 +296,7 @@ export class BlockchainScanService {
     const transformStream = new Transform({
       objectMode: true,
       transform(event, _, callback) {
-        if (event.args.proposer === walletAddress) {
+        if (event.args.proposer === input.walletAddress) {
           totalEventsFound += 1;
           const txData = {
             txHash: event.transactionHash,
@@ -262,7 +327,7 @@ export class BlockchainScanService {
     }
     eventStream.push(null);
     await socialScoreContract.updateDaoActions(
-      walletAddress,
+      input.walletAddress,
       0,
       totalEventsFound,
       0
