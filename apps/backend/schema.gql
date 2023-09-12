@@ -49,20 +49,14 @@ enum BlockchainSourceStatus {
   DEACTIVATED
 }
 
-"""
-The input used to connect smart wallet
-"""
+"""The input used to connect smart wallet"""
 input ConnectInput {
   address: String!
 
-  """
-  The signing message
-  """
+  """The signing message"""
   message: String!
 
-  """
-  The signing signature
-  """
+  """The signing signature"""
   signature: String!
 
   """
@@ -127,57 +121,39 @@ The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](
 scalar JSONObject
 
 type Mutation {
-  """
-  This API used for connect smart wallet
-  """
+  """This API used for connect smart wallet"""
   connect(input: ConnectInput!): AccessToken!
 
-  """
-  This API used to link input wallet to smart wallet
-  """
+  """This API used to link input wallet to smart wallet"""
   linkWallet(input: WalletLinkInput!): Wallet!
 
-  """
-  This API used to exchange new access token with an old token
-  """
+  """This API used to exchange new access token with an old token"""
   refreshToken(input: RefreshAccessTokenInput!): AccessToken!
 }
 
 type Query {
   blockchainSource(
-    """
-    The id of the record to find.
-    """
+    """The id of the record to find."""
     id: Int!
   ): BlockchainSource!
   blockchainSources(
-    """
-    Specify to filter the records returned.
-    """
+    """Specify to filter the records returned."""
     filter: BlockchainSourceFilter! = {}
 
-    """
-    Specify to sort results.
-    """
+    """Specify to sort results."""
     sorting: [BlockchainSourceSort!]! = []
   ): [BlockchainSource!]!
   dexSwapScanning(walletAddress: String!): JSONObject
 
-  """
-  This API used to retrieve current profile
-  """
+  """This API used to retrieve current profile"""
   getAuthProfile: User
 
-  """
-  This API used to list linked wallets from smart wallet
-  """
+  """This API used to list linked wallets from smart wallet"""
   listLinkedWallet: [Wallet!]!
   nounsDaoProposalScanning(walletAddress: String!): JSONObject
   nounsDaoVoteScanning(walletAddress: String!): JSONObject
 
-  """
-  This API used to retrieve wallet
-  """
+  """This API used to retrieve wallet"""
   retrieveWallet(input: WalletRetrieveInput!): WalletProfile!
   tokenBalanceScan(address: String!): JSONObject
   tokenTransferScan(address: String!): JSONObject
@@ -191,17 +167,13 @@ input RefreshAccessTokenInput {
   refreshToken: String!
 }
 
-"""
-Sort Directions
-"""
+"""Sort Directions"""
 enum SortDirection {
   ASC
   DESC
 }
 
-"""
-Sort Nulls Options
-"""
+"""Sort Nulls Options"""
 enum SortNulls {
   NULLS_FIRST
   NULLS_LAST
@@ -241,23 +213,15 @@ type Wallet {
   updatedAt: DateTime!
 }
 
-"""
-The input used to link wallet to smart wallet
-"""
+"""The input used to link wallet to smart wallet"""
 input WalletLinkInput {
-  """
-  Wallet address that going to link with smart wallet
-  """
+  """Wallet address that going to link with smart wallet"""
   address: String!
 
-  """
-  The signing message
-  """
+  """The signing message"""
   message: String!
 
-  """
-  The signing signature
-  """
+  """The signing signature"""
   signature: String!
 }
 
@@ -267,13 +231,9 @@ type WalletProfile {
   tokenTransfers: WalletTokenTransfer!
 }
 
-"""
-The input used to retrieve wallet
-"""
+"""The input used to retrieve wallet"""
 input WalletRetrieveInput {
-  """
-  Wallet address that going to retrieve
-  """
+  """Wallet address that going to retrieve"""
   address: String!
 }
 
