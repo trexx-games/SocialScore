@@ -14,7 +14,6 @@ export const TWO_FACTOR_APP_NAME = 'Social Score';
  */
 export const QUEUE_JOB = 'job';
 export const QUEUE_SIDE_EFFECT = 'sideEffect';
-export const QUEUE_MISC = 'misc';
 
 /**
  * BLOCKCHAIN CONFIG

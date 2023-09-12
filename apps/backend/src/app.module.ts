@@ -22,6 +22,7 @@ import { BlockchainModule } from './modules/blockchain/blockchain.module';
 import { BlockchainScanModule } from './modules/blockchain-scan/blockchain-scan.module';
 import { BlockchainSourceModule } from './modules/blockchain-source/blockchain-source.module';
 import { WalletModule } from './modules/wallet/wallet.module';
+import { WalletScanModule } from './modules/wallet-scan/wallet-scan.module';
 
 @Module({
   imports: [
@@ -84,6 +85,7 @@ import { WalletModule } from './modules/wallet/wallet.module';
     BlockchainModule,
     BlockchainSourceModule,
     WalletModule,
+    WalletScanModule,
   ],
 })
 export class AppModule {}

@@ -1,8 +1,4 @@
-import {
-  QUEUE_JOB,
-  QUEUE_MISC,
-  QUEUE_SIDE_EFFECT,
-} from '@apps/config/constant';
+import { QUEUE_JOB, QUEUE_SIDE_EFFECT } from '@apps/config/constant';
 import { UtilsService } from '@apps/modules/utils/utils.service';
 import { HttpModule } from '@nestjs/axios';
 import { BullModule } from '@nestjs/bull';
@@ -15,11 +11,7 @@ import { QueueService } from './queue.service';
 
 @Module({
   imports: [
-    BullModule.registerQueue(
-      { name: QUEUE_JOB },
-      { name: QUEUE_SIDE_EFFECT },
-      { name: QUEUE_MISC }
-    ),
+    BullModule.registerQueue({ name: QUEUE_JOB }, { name: QUEUE_SIDE_EFFECT }),
     CqrsModule,
     HttpModule,
   ],

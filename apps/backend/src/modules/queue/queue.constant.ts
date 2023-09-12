@@ -1,7 +1,5 @@
 export const QueueJobEvent = {
-  Xxx: 'xxx',
+  LinkWalletSync: 'xxx',
 };
 
-export const MiscQueueJobEvent = {
-  Xxx: 'Xxx',
-};
+export const SideEffectQueueJobEvent = {};
