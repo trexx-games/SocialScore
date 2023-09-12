@@ -3,6 +3,7 @@
 ## Table of contents
 
 - [Getting Started](#getting-started)
+- [Guide](#guide)
 
 ---
 
@@ -27,6 +28,8 @@ Do take note that development tools should met with below requirements:
 ---
 
 # Getting Started
+
+> This part only for developer
 
 1. Install dependencies `yarn`
 2. Setup fundamental services with docker (optional)
@@ -100,3 +103,10 @@ yarn add <DEPENDENCIES>
 # to remove dependencies
 yarn remove <DEPENDENCIES>
 ```
+
+---
+
+## Guide
+
+1. How to run backend on your local machine [docs](./docs/guide-how-to-run-backend.md)
+2. How to run the web application on your local machine [docs](./docs/guide-how-to-run-frontend.md)
