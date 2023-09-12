@@ -152,8 +152,9 @@ type Query {
   listLinkedWallet: [Wallet!]!
   nounsDaoProposalScanning(walletAddress: String!): JSONObject
   nounsDaoVoteScanning(walletAddress: String!): JSONObject
+  tokenBalanceScan(address: String!): JSONObject
+  tokenTransferScan(address: String!): JSONObject
   utilsTest: JSON
-  walletTokenTransfers(address: String!): JSONObject
 }
 
 """
