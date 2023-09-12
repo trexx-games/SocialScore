@@ -1,5 +1,7 @@
 import { AbstractEntity } from 'nestjs-dev-utilities';
-import { Column, Entity, Unique } from 'typeorm';
+import { Column, Entity, OneToMany, Unique } from 'typeorm';
+
+import { WalletScanRecordEntity } from '../wallet-scan-record/wallet-scan-record.entity';
 
 import {
   BlockchainSourceStatus,
@@ -20,6 +22,9 @@ export class BlockchainSourceEntity extends AbstractEntity {
 
   @Column({ type: 'jsonb', default: {} })
   meta?: ISourceMeta;
+
+  @OneToMany(() => WalletScanRecordEntity, (entity) => entity.source)
+  records: WalletScanRecordEntity[];
 
   @Column({
     type: 'enum',

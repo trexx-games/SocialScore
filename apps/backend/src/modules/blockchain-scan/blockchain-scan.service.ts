@@ -12,6 +12,10 @@ import { ethers } from 'ethers';
 import { CqrsCommandFunc } from 'nestjs-typed-cqrs';
 import { Readable, Transform } from 'stream';
 
+import { FindOneBlockchainSourceQuery } from '../blockchain-source/cqrs';
+import { FindOneWalletQuery } from '../wallet/cqrs';
+import { CreateOneWalletScanRecordCommand } from '../wallet-scan-record/cqrs';
+
 import { nounsAbi } from './abi/nouns-abi';
 import { SocialScoreABI } from './abi/social-score';
 import { UniswapABI } from './abi/uniswap-abi';
@@ -112,12 +116,38 @@ export class BlockchainScanService {
       },
     });
 
+    const commandBus = this.commandBus;
+    const { data: source } = await this.queryBus.execute(
+      new FindOneBlockchainSourceQuery({
+        query: { filter: { address: { eq: input.sourceAddress } } },
+        options: {
+          nullable: true,
+        },
+      })
+    );
+    const { data: walletData } = await this.queryBus.execute(
+      new FindOneWalletQuery({
+        query: { filter: { address: { eq: input.walletAddress } } },
+        options: {
+          nullable: true,
+        },
+      })
+    );
+
+    if (!source || !walletData) {
+      return {
+        totalEventsFound: 0,
+        transactionsData: [],
+      };
+    }
+
     const transformStream = new Transform({
       objectMode: true,
       transform(event, _, callback) {
         if (event.args.sender === input.walletAddress) {
           totalEventsFound += 1;
           const txData = {
+            block: totalEventsFound,
             txHash: event.transactionHash,
             amount0In: Number(event.args.amount0In._hex),
             amount0Out: Number(event.args.amount0Out),
@@ -125,6 +155,17 @@ export class BlockchainScanService {
             amount1Out: Number(event.args.amount1Out),
           };
           console.log(txData);
+          commandBus.execute(
+            new CreateOneWalletScanRecordCommand({
+              input: {
+                block: txData.block,
+                txHash: txData.txHash,
+                meta: txData,
+                sourceId: source.id,
+                walletId: walletData.id,
+              },
+            })
+          );
           transactionsData.push(txData);
         }
         callback();
@@ -198,6 +239,31 @@ export class BlockchainScanService {
     let endBlock = startBlock + BLOCKS_PER_QUERY;
     let totalEventsFound = 0;
 
+    const commandBus = this.commandBus;
+    const { data: source } = await this.queryBus.execute(
+      new FindOneBlockchainSourceQuery({
+        query: { filter: { address: { eq: input.sourceAddress } } },
+        options: {
+          nullable: true,
+        },
+      })
+    );
+    const { data: walletData } = await this.queryBus.execute(
+      new FindOneWalletQuery({
+        query: { filter: { address: { eq: input.walletAddress } } },
+        options: {
+          nullable: true,
+        },
+      })
+    );
+
+    if (!source || !walletData) {
+      return {
+        totalEventsFound: 0,
+        transactionsData: [],
+      };
+    }
+
     const eventStream = new Readable({
       objectMode: true,
       read() {
@@ -211,9 +277,21 @@ export class BlockchainScanService {
         if (event.args.voter === input.walletAddress) {
           totalEventsFound += 1;
           const txData = {
+            block: totalEventsFound,
             txHash: event.transactionHash,
             proposalId: Number(event.args.proposalId),
           };
+          commandBus.execute(
+            new CreateOneWalletScanRecordCommand({
+              input: {
+                block: txData.block,
+                txHash: txData.txHash,
+                meta: txData,
+                sourceId: source.id,
+                walletId: walletData.id,
+              },
+            })
+          );
           transactionsData.push(txData);
         }
         callback();
@@ -286,6 +364,31 @@ export class BlockchainScanService {
     let endBlock = startBlock + BLOCKS_PER_QUERY;
     let totalEventsFound = 0;
 
+    const commandBus = this.commandBus;
+    const { data: source } = await this.queryBus.execute(
+      new FindOneBlockchainSourceQuery({
+        query: { filter: { address: { eq: input.sourceAddress } } },
+        options: {
+          nullable: true,
+        },
+      })
+    );
+    const { data: walletData } = await this.queryBus.execute(
+      new FindOneWalletQuery({
+        query: { filter: { address: { eq: input.walletAddress } } },
+        options: {
+          nullable: true,
+        },
+      })
+    );
+
+    if (!source || !walletData) {
+      return {
+        totalEventsFound: 0,
+        transactionsData: [],
+      };
+    }
+
     const eventStream = new Readable({
       objectMode: true,
       read() {
@@ -299,8 +402,20 @@ export class BlockchainScanService {
         if (event.args.proposer === input.walletAddress) {
           totalEventsFound += 1;
           const txData = {
+            block: totalEventsFound,
             txHash: event.transactionHash,
           };
+          commandBus.execute(
+            new CreateOneWalletScanRecordCommand({
+              input: {
+                block: txData.block,
+                txHash: txData.txHash,
+                meta: txData,
+                sourceId: source.id,
+                walletId: walletData.id,
+              },
+            })
+          );
           transactionsData.push(txData);
         }
         callback();
