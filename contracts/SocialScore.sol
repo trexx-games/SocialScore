@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 contract SocialScore {
     struct DefiActions {
         uint256 loans;
-        uint256 total_volume;
         uint256 swaps;
         uint256 repayments;
     }
@@ -18,7 +17,6 @@ contract SocialScore {
     struct TokenActions {
         uint256 token_transfers;
         uint256 purchased;
-        uint256 sold;
         uint256 held;
     }
 
@@ -57,7 +55,6 @@ contract SocialScore {
     ) external onlyOwner {
         userScores[_user].defi_actions = DefiActions(
             _loans,
-            _total_volume,
             _swaps,
             _repayments
         );
@@ -88,7 +85,6 @@ contract SocialScore {
         userScores[_user].token_actions = TokenActions(
             _token_transfers,
             _purchased,
-            _sold,
             _held
         );
         emit ScoreUpdated(_user);
