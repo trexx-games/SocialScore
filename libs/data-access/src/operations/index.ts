@@ -66,6 +66,22 @@ export type GetAuthProfileQuery = {
   } | null;
 };
 
+export type ListLinkedWalletQueryVariables = Types.Exact<{
+  [key: string]: never;
+}>;
+
+export type ListLinkedWalletQuery = {
+  __typename?: 'Query';
+  listLinkedWallet: Array<{
+    __typename?: 'Wallet';
+    address: string;
+    createdAt: any;
+    id: number;
+    lastSyncDate?: any | null;
+    updatedAt: any;
+  }>;
+};
+
 export type AccessTokenFragment = {
   __typename?: 'AccessToken';
   accessToken: string;
@@ -327,4 +343,62 @@ export type GetAuthProfileLazyQueryHookResult = ReturnType<
 export type GetAuthProfileQueryResult = Apollo.QueryResult<
   GetAuthProfileQuery,
   GetAuthProfileQueryVariables
+>;
+export const ListLinkedWalletDocument = gql`
+  query listLinkedWallet {
+    listLinkedWallet {
+      ...WalletInfo
+    }
+  }
+  ${WalletInfoFragmentDoc}
+`;
+
+/**
+ * __useListLinkedWalletQuery__
+ *
+ * To run a query within a React component, call `useListLinkedWalletQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListLinkedWalletQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListLinkedWalletQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListLinkedWalletQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    ListLinkedWalletQuery,
+    ListLinkedWalletQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<ListLinkedWalletQuery, ListLinkedWalletQueryVariables>(
+    ListLinkedWalletDocument,
+    options
+  );
+}
+export function useListLinkedWalletLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ListLinkedWalletQuery,
+    ListLinkedWalletQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    ListLinkedWalletQuery,
+    ListLinkedWalletQueryVariables
+  >(ListLinkedWalletDocument, options);
+}
+export type ListLinkedWalletQueryHookResult = ReturnType<
+  typeof useListLinkedWalletQuery
+>;
+export type ListLinkedWalletLazyQueryHookResult = ReturnType<
+  typeof useListLinkedWalletLazyQuery
+>;
+export type ListLinkedWalletQueryResult = Apollo.QueryResult<
+  ListLinkedWalletQuery,
+  ListLinkedWalletQueryVariables
 >;

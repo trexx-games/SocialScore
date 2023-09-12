@@ -28,8 +28,7 @@ export const HomeScreen: React.FC = () => {
       // set to cookie & redirect to dashboard
       setAuthToken(result.accessToken);
       setCookie('refreshToken', result.refreshToken);
-      redirect({}, '/main', 'replace');
-      // router.push('/main', { query: { slug: await signer?.getAddress() } });
+      redirect({}, '/dashboard', 'replace');
     },
   });
 

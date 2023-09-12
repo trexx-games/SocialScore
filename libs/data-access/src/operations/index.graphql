@@ -28,6 +28,12 @@ query getAuthProfile {
   }
 }
 
+query listLinkedWallet {
+  listLinkedWallet {
+    ...WalletInfo
+  }
+}
+
 fragment AccessToken on AccessToken {
   accessToken
   expiresIn

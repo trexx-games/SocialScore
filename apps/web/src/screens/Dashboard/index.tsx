@@ -1,107 +1,139 @@
-import { TrexxContainer } from '@apps/components';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { NavBar, ProfileBlock } from '@apps/components';
+import { sliceWalletAddress } from '@apps/utils/crypto';
 import { Box, Button, Card, CardContent, Typography } from '@mui/material';
-import Image from 'next/image';
+import {
+  useLinkWalletMutation,
+  useListLinkedWalletLazyQuery,
+} from '@stack/data-access';
+import { useAuthIdentity } from '@webbyx/next-js';
+import Link from 'next/link';
+import { useAccount, useConnect } from 'wagmi';
+import { useSignMessage } from 'wagmi';
+import { polygonMumbai } from 'wagmi/chains';
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 
 import { DashboardProps } from './props';
 
-const Dashboard: React.FC<DashboardProps> = () => {
+const Dashboard: React.FC<DashboardProps> = (props) => {
+  const { address, isConnected } = useAccount();
+  const { authUser } = useAuthIdentity();
+  const [getLinkedWallets, { refetch, data: linkedWallets }] =
+    useListLinkedWalletLazyQuery();
+  const [linkWallet] = useLinkWalletMutation({
+    onCompleted: (data) => {
+      console.log('data', data);
+      refetch();
+    },
+    onError: (e) => {
+      toast.error(e.message, {
+        autoClose: 3000,
+        position: 'top-right',
+      });
+    },
+  });
+  const connector = new MetaMaskConnector({
+    chains: [polygonMumbai],
+    options: {
+      shimDisconnect: false,
+    },
+  });
+  const { connectAsync } = useConnect({ connector });
+  const { signMessageAsync } = useSignMessage({
+    message: 'hello world',
+  });
+
+  const handleConnect = async () => {
+    if (!isConnected && !address) {
+      const result = await connectAsync();
+
+      console.log('address', result.account);
+      return;
+    }
+
+    const data = await signMessageAsync();
+
+    linkWallet({
+      variables: {
+        input: {
+          address: address ?? '',
+          signature: data,
+          message: 'hello world',
+        },
+      },
+    });
+  };
+
+  useEffect(() => {
+    getLinkedWallets();
+  }, []);
+
   // ==================== VIEWS
   return (
-    <TrexxContainer>
-      <div
-        style={{
+    <div>
+      {/* NAV BAR */}
+      <NavBar />
+
+      <ProfileBlock
+        walletAddress={authUser?.address.toString()}
+        profileGuide={`Let's begin, first link your wallet.`}
+      />
+
+      <Card
+        sx={{
+          background: '#F5F6FB',
+          width: '100%',
           display: 'flex',
-          flexDirection: 'column',
+          justifyContent: 'center',
           alignItems: 'center',
+          marginBottom: 2,
+          borderRadius: 3,
         }}
       >
-        {/* NAV BAR */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            width: '100%',
-          }}
-        >
-          <div style={{ position: 'relative', height: 60, width: 100 }}>
-            <Image
-              fill={true}
-              src={'./shared/TrexxIcon.svg'}
-              alt={'trexx svg'}
-            />
-          </div>
-          <Box
+        <CardContent>
+          <Button
             sx={{
-              background:
-                'linear-gradient(218deg, #66E3A6 10.93%, #36A9E1 92.73%)',
-              height: 40,
-              width: 40,
-              borderRadius: 60,
-              marginRight: 2,
+              background: 'white',
+              color: '#FFB84F',
+              paddingX: 4,
+              paddingY: 2,
+              borderRadius: 3,
+              boxShadow: '0px 25px 45px 5px rgba(2, 24, 103, 0.08)',
             }}
-          />
-        </div>
+            onClick={async () => handleConnect()}
+          >
+            {!isConnected ? 'Connect wallet' : '+ Link my current wallet'}
+          </Button>
+        </CardContent>
+      </Card>
 
-        <Typography
-          style={{
-            color: '#0E1566',
-            fontWeight: 600,
-            fontSize: 19,
-            marginTop: 20,
-            marginBottom: 20,
-          }}
-        >
-          @username
-        </Typography>
-
-        <Box
-          sx={{
-            background:
-              'linear-gradient(218deg, #66E3A6 10.93%, #36A9E1 92.73%)',
-            height: 80,
-            width: 80,
-            borderRadius: 60,
-          }}
-        />
-
-        <Typography
-          sx={{
-            color: '#54C1FB',
-            fontWeight: 600,
-            marginTop: 2,
-            marginBottom: 2,
-          }}
-        >
-          {`Let's begin, first link your wallet.`}
-        </Typography>
-
-        <Card
-          sx={{
-            background: '#F5F6FB',
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <CardContent>
-            <Button
+      {linkedWallets?.listLinkedWallet?.map((wallet, i) => {
+        return (
+          <Link
+            key={i}
+            href={`/wallet/${wallet.address}`}
+            style={{ textDecoration: 'none' }}
+          >
+            <Box
               sx={{
-                background: 'white',
-                color: '#FFB84F',
-                paddingX: 4,
-                paddingY: 2,
-                borderRadius: 5,
-                boxShadow: '0px 25px 45px 5px rgba(2, 24, 103, 0.08)',
+                mb: 2,
+                bgcolor: '#F5F6FB',
+                color: '#54C1FB',
+                py: 2,
+                px: 4,
+                fontWeight: 600,
+                fontSize: 14,
               }}
             >
-              + Link Wallet
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    </TrexxContainer>
+              <Typography>
+                {sliceWalletAddress(wallet.address, 12, -12)}
+              </Typography>
+            </Box>
+          </Link>
+        );
+      })}
+    </div>
   );
 };
 

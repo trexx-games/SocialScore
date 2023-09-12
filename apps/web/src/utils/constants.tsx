@@ -4,12 +4,6 @@ export const THIRDWEB_API_KEY = '7d16b81679339175821bd86e98b3811f';
 
 export const chain = Mumbai;
 
-// const chainInfos = {
-//   [Mumbai.chainId]: {
-//     factoryAddress: '0x22EC82dE8E00B5488c693850Df8455e2E11E49A9',
-//   },
-// } as const;
-
 export const factoryAddress = '0xFeFB61eD3d504F67b89403FcC77336B87D1df679';
 
 export const ACCOUNT_ABI = [

@@ -1,3 +1,4 @@
+import { ToastContainer } from 'react-toastify';
 import { TrexxContainer } from '@apps/components';
 import { apolloOptions, APP_NAME, authOptions } from '@apps/config';
 import { primaryColor } from '@apps/config/colors';
@@ -12,19 +13,24 @@ import {
 import compose from 'lodash/flowRight';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import { configureChains, createConfig, WagmiConfig } from 'wagmi';
+import { polygonMumbai } from 'wagmi/chains';
+import { publicProvider } from 'wagmi/providers/public';
 
 import '@apps/styles/globals.scss';
-const MyApp = ({ Component, pageProps }: AppProps) => {
-  // const { chains, publicClient, webSocketPublicClient } = configureChains(
-  //   [mainnet],
-  //   [publicProvider()]
-  // );
+import 'react-toastify/dist/ReactToastify.css';
 
-  // const config = createConfig({
-  //   autoConnect: true,
-  //   publicClient,
-  //   webSocketPublicClient,
-  // });
+const MyApp = ({ Component, pageProps }: AppProps) => {
+  const { publicClient, webSocketPublicClient } = configureChains(
+    [polygonMumbai],
+    [publicProvider()]
+  );
+
+  const config = createConfig({
+    autoConnect: false,
+    publicClient,
+    webSocketPublicClient,
+  });
   return (
     <>
       <ThirdwebProvider
@@ -39,10 +45,12 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           <title>{APP_NAME}</title>
         </Head>
         <ThemeProvider theme={muiTheme}>
-          {/* <WagmiConfig config={config}></WagmiConfig> */}
-          <TrexxContainer>
-            <Component {...pageProps} />
-          </TrexxContainer>
+          <WagmiConfig config={config}>
+            <TrexxContainer>
+              <Component {...pageProps} />
+              <ToastContainer />
+            </TrexxContainer>
+          </WagmiConfig>
         </ThemeProvider>
       </ThirdwebProvider>
     </>

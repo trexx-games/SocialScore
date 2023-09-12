@@ -51,6 +51,7 @@ export const PATHS_ONLY_ALLOWED_BEFORE_AUTH = [
   '/500',
   '/login',
   '/main',
+  '/wallets',
 ];
 
 // restricted path that can't be accessed if user has already signed in

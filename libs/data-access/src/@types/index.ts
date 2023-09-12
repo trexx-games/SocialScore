@@ -18,6 +18,7 @@ export type Scalars = {
   Float: number;
   DateTime: any;
   JSON: any;
+  JSONObject: any;
 };
 
 export type AccessToken = {
@@ -28,6 +29,47 @@ export type AccessToken = {
   refreshToken: Scalars['String'];
 };
 
+export type BlockchainSource = {
+  __typename?: 'BlockchainSource';
+  address: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  meta: Scalars['JSONObject'];
+  name: Scalars['String'];
+  status: BlockchainSourceStatus;
+  updatedAt: Scalars['DateTime'];
+};
+
+export type BlockchainSourceFilter = {
+  address?: InputMaybe<StringFieldComparison>;
+  and?: InputMaybe<Array<BlockchainSourceFilter>>;
+  createdAt?: InputMaybe<DateFieldComparison>;
+  id?: InputMaybe<IntFieldComparison>;
+  name?: InputMaybe<StringFieldComparison>;
+  or?: InputMaybe<Array<BlockchainSourceFilter>>;
+  updatedAt?: InputMaybe<DateFieldComparison>;
+};
+
+export type BlockchainSourceSort = {
+  direction: SortDirection;
+  field: BlockchainSourceSortFields;
+  nulls?: InputMaybe<SortNulls>;
+};
+
+export enum BlockchainSourceSortFields {
+  Address = 'address',
+  CreatedAt = 'createdAt',
+  Id = 'id',
+  Name = 'name',
+  UpdatedAt = 'updatedAt',
+}
+
+export enum BlockchainSourceStatus {
+  Activated = 'ACTIVATED',
+  Deactivated = 'DEACTIVATED',
+}
+
 /** The input used to connect smart wallet */
 export type ConnectInput = {
   address: Scalars['String'];
@@ -37,6 +79,46 @@ export type ConnectInput = {
   signature: Scalars['String'];
   /** Optional: username for smart wallet. If not provided will random generate one */
   username?: InputMaybe<Scalars['String']>;
+};
+
+export type DateFieldComparison = {
+  between?: InputMaybe<DateFieldComparisonBetween>;
+  eq?: InputMaybe<Scalars['DateTime']>;
+  gt?: InputMaybe<Scalars['DateTime']>;
+  gte?: InputMaybe<Scalars['DateTime']>;
+  in?: InputMaybe<Array<Scalars['DateTime']>>;
+  is?: InputMaybe<Scalars['Boolean']>;
+  isNot?: InputMaybe<Scalars['Boolean']>;
+  lt?: InputMaybe<Scalars['DateTime']>;
+  lte?: InputMaybe<Scalars['DateTime']>;
+  neq?: InputMaybe<Scalars['DateTime']>;
+  notBetween?: InputMaybe<DateFieldComparisonBetween>;
+  notIn?: InputMaybe<Array<Scalars['DateTime']>>;
+};
+
+export type DateFieldComparisonBetween = {
+  lower: Scalars['DateTime'];
+  upper: Scalars['DateTime'];
+};
+
+export type IntFieldComparison = {
+  between?: InputMaybe<IntFieldComparisonBetween>;
+  eq?: InputMaybe<Scalars['Int']>;
+  gt?: InputMaybe<Scalars['Int']>;
+  gte?: InputMaybe<Scalars['Int']>;
+  in?: InputMaybe<Array<Scalars['Int']>>;
+  is?: InputMaybe<Scalars['Boolean']>;
+  isNot?: InputMaybe<Scalars['Boolean']>;
+  lt?: InputMaybe<Scalars['Int']>;
+  lte?: InputMaybe<Scalars['Int']>;
+  neq?: InputMaybe<Scalars['Int']>;
+  notBetween?: InputMaybe<IntFieldComparisonBetween>;
+  notIn?: InputMaybe<Array<Scalars['Int']>>;
+};
+
+export type IntFieldComparisonBetween = {
+  lower: Scalars['Int'];
+  upper: Scalars['Int'];
 };
 
 export type Mutation = {
@@ -63,14 +145,81 @@ export type MutationRefreshTokenArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  blockchainSource: BlockchainSource;
+  blockchainSources: Array<BlockchainSource>;
+  dexSwapScanning?: Maybe<Scalars['JSONObject']>;
   /** This API used to retrieve current profile */
   getAuthProfile?: Maybe<User>;
+  /** This API used to list linked wallets from smart wallet */
+  listLinkedWallet: Array<Wallet>;
+  nounsDaoProposalScanning?: Maybe<Scalars['JSONObject']>;
+  nounsDaoVoteScanning?: Maybe<Scalars['JSONObject']>;
+  tokenBalanceScan?: Maybe<Scalars['JSONObject']>;
+  tokenTransferScan?: Maybe<Scalars['JSONObject']>;
   utilsTest?: Maybe<Scalars['JSON']>;
+};
+
+export type QueryBlockchainSourceArgs = {
+  id: Scalars['Int'];
+};
+
+export type QueryBlockchainSourcesArgs = {
+  filter?: BlockchainSourceFilter;
+  sorting?: Array<BlockchainSourceSort>;
+};
+
+export type QueryDexSwapScanningArgs = {
+  walletAddress: Scalars['String'];
+};
+
+export type QueryNounsDaoProposalScanningArgs = {
+  walletAddress: Scalars['String'];
+};
+
+export type QueryNounsDaoVoteScanningArgs = {
+  walletAddress: Scalars['String'];
+};
+
+export type QueryTokenBalanceScanArgs = {
+  address: Scalars['String'];
+};
+
+export type QueryTokenTransferScanArgs = {
+  address: Scalars['String'];
 };
 
 /** The input used to prolong user access. NOTE: refreshToken must matched with connected wallet */
 export type RefreshAccessTokenInput = {
   refreshToken: Scalars['String'];
+};
+
+/** Sort Directions */
+export enum SortDirection {
+  Asc = 'ASC',
+  Desc = 'DESC',
+}
+
+/** Sort Nulls Options */
+export enum SortNulls {
+  NullsFirst = 'NULLS_FIRST',
+  NullsLast = 'NULLS_LAST',
+}
+
+export type StringFieldComparison = {
+  eq?: InputMaybe<Scalars['String']>;
+  gt?: InputMaybe<Scalars['String']>;
+  gte?: InputMaybe<Scalars['String']>;
+  iLike?: InputMaybe<Scalars['String']>;
+  in?: InputMaybe<Array<Scalars['String']>>;
+  is?: InputMaybe<Scalars['Boolean']>;
+  isNot?: InputMaybe<Scalars['Boolean']>;
+  like?: InputMaybe<Scalars['String']>;
+  lt?: InputMaybe<Scalars['String']>;
+  lte?: InputMaybe<Scalars['String']>;
+  neq?: InputMaybe<Scalars['String']>;
+  notILike?: InputMaybe<Scalars['String']>;
+  notIn?: InputMaybe<Array<Scalars['String']>>;
+  notLike?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
