@@ -294,7 +294,6 @@ type WalletScanRecord {
   meta: JSONObject!
   sourceId: Float!
   txHash: String!
-  type: String!
   updatedAt: DateTime!
 }
 
@@ -316,7 +315,6 @@ input WalletScanRecordFilter {
   id: IntFieldComparison
   or: [WalletScanRecordFilter!]
   txHash: StringFieldComparison
-  type: StringFieldComparison
   updatedAt: DateFieldComparison
 }
 
@@ -331,7 +329,6 @@ enum WalletScanRecordSortFields {
   createdAt
   id
   txHash
-  type
   updatedAt
 }
 

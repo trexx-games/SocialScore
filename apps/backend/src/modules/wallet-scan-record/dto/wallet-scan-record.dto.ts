@@ -6,9 +6,6 @@ import { AbstractDto } from 'nestjs-dev-utilities';
 @ObjectType('WalletScanRecord')
 export class WalletScanRecordDto extends AbstractDto {
   @FilterableField()
-  type: string;
-
-  @FilterableField()
   block: number;
 
   @FilterableField()
