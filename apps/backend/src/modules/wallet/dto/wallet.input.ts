@@ -30,3 +30,11 @@ export class WalletLinkInput {
   @Field({ description: 'The signing signature' })
   signature: string;
 }
+
+// retrieve wallet input
+@InputType({ description: 'The input used to retrieve wallet' })
+export class WalletRetrieveInput {
+  @Allow()
+  @Field({ description: 'Wallet address that going to retrieve' })
+  address: string;
+}

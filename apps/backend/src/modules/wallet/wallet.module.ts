@@ -4,6 +4,8 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { NestjsQueryGraphQLModule } from '@ptc-org/nestjs-query-graphql';
 import { NestjsQueryTypeOrmModule } from '@ptc-org/nestjs-query-typeorm';
 
+import { AirstackService } from '../airstack/airstack.service';
+
 import { CommandHandlers, EventHandlers, QueryHandlers } from './cqrs';
 import { WalletEntity } from './wallet.entity';
 import { WalletResolver } from './wallet.resolver';
@@ -23,6 +25,7 @@ import { WalletService } from './wallet.service';
     ...QueryHandlers,
     WalletService,
     WalletResolver,
+    AirstackService,
   ],
   exports: [WalletService],
 })

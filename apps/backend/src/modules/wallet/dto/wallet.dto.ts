@@ -10,3 +10,42 @@ export class WalletDto extends AbstractDto {
   @Field(() => Date, { nullable: true })
   lastSyncDate?: string;
 }
+
+@ObjectType('WalletTokenType')
+export class WalletTokenTypeDto {
+  @Field()
+  type: string;
+
+  @Field()
+  amount: number;
+}
+
+@ObjectType('WalletTokenBalance')
+export class WalletTokenBalanceDto {
+  @Field()
+  total: number;
+
+  @Field(() => [WalletTokenTypeDto])
+  balances: WalletTokenTypeDto[];
+}
+
+@ObjectType('WalletTokenTransfer')
+export class WalletTokenTransferDto {
+  @Field()
+  total: number;
+
+  @Field(() => [WalletTokenTypeDto])
+  transfers: WalletTokenTypeDto[];
+}
+
+@ObjectType('WalletProfile')
+export class WalletProfileDto {
+  @Field()
+  address: string;
+
+  @Field(() => WalletTokenBalanceDto)
+  tokenBalances: WalletTokenBalanceDto;
+
+  @Field(() => WalletTokenTransferDto)
+  tokenTransfers: WalletTokenTransferDto;
+}
