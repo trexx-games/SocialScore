@@ -5,6 +5,7 @@ import { AchievementBlockProps } from './props';
 
 export const AchivementBlock: React.FC<AchievementBlockProps> = (props) => {
   const { titles, badges, showMore } = props;
+
   return (
     <>
       {!showMore ? (

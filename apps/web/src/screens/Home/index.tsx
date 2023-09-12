@@ -50,7 +50,6 @@ export const HomeScreen: React.FC = () => {
             address: address,
             message: 'hello',
             signature: 'hello',
-            username: 'user',
           },
         },
       });
@@ -89,7 +88,7 @@ export const HomeScreen: React.FC = () => {
             marginLeft: 20,
           }}
         >
-          <Image fill={true} src={'./shared/Trexx.svg'} alt={'trexx svg'} />
+          <Image fill={true} src={'/Trexx.svg'} alt={'trexx svg'} />
         </div>
       </div>
       <div
@@ -142,23 +141,26 @@ export const HomeScreen: React.FC = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {isLoading ? (
-          <CircularProgress />
-        ) : (
-          <Button
-            style={{
-              background: '#FFDF35',
-              color: '#7B7D7E;',
-              borderRadius: 25,
-              marginRight: 25,
-              marginLeft: 25,
-            }}
-            variant={'contained'}
-            onClick={() => connectWallet()}
-          >
-            Login
-          </Button>
-        )}
+
+        <Button
+          style={{
+            background: '#FFDF35',
+            color: '#7B7D7E;',
+            borderRadius: 25,
+            marginRight: 25,
+            marginLeft: 25,
+          }}
+          variant={'contained'}
+          onClick={() => connectWallet()}
+        >
+          {isLoading ? (
+            <CircularProgress
+              sx={{ justifyContent: 'center', display: 'flex' }}
+            />
+          ) : (
+            'Login'
+          )}
+        </Button>
       </div>
     </div>
   );

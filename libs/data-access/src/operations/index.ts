@@ -82,6 +82,62 @@ export type ListLinkedWalletQuery = {
   }>;
 };
 
+export type RetrieveWalletQueryVariables = Types.Exact<{
+  input: Types.WalletRetrieveInput;
+}>;
+
+export type RetrieveWalletQuery = {
+  __typename?: 'Query';
+  retrieveWallet: {
+    __typename?: 'WalletProfile';
+    address: string;
+    tokenBalances: {
+      __typename?: 'WalletTokenBalance';
+      total: number;
+      balances: Array<{
+        __typename?: 'WalletTokenType';
+        type: string;
+        amount: number;
+      }>;
+    };
+    tokenTransfers: {
+      __typename?: 'WalletTokenTransfer';
+      total: number;
+      transfers: Array<{
+        __typename?: 'WalletTokenType';
+        type: string;
+        amount: number;
+      }>;
+    };
+  };
+};
+
+export type WalletTokenTypeFragment = {
+  __typename?: 'WalletTokenType';
+  amount: number;
+  type: string;
+};
+
+export type WalletTokenBalanceFragment = {
+  __typename?: 'WalletTokenBalance';
+  total: number;
+  balances: Array<{
+    __typename?: 'WalletTokenType';
+    amount: number;
+    type: string;
+  }>;
+};
+
+export type WalletTokenTransferFragment = {
+  __typename?: 'WalletTokenTransfer';
+  total: number;
+  transfers: Array<{
+    __typename?: 'WalletTokenType';
+    amount: number;
+    type: string;
+  }>;
+};
+
 export type AccessTokenFragment = {
   __typename?: 'AccessToken';
   accessToken: string;
@@ -109,6 +165,30 @@ export type WalletInfoFragment = {
   updatedAt: any;
 };
 
+export const WalletTokenTypeFragmentDoc = gql`
+  fragment WalletTokenType on WalletTokenType {
+    amount
+    type
+  }
+`;
+export const WalletTokenBalanceFragmentDoc = gql`
+  fragment WalletTokenBalance on WalletTokenBalance {
+    balances {
+      ...WalletTokenType
+    }
+    total
+  }
+  ${WalletTokenTypeFragmentDoc}
+`;
+export const WalletTokenTransferFragmentDoc = gql`
+  fragment WalletTokenTransfer on WalletTokenTransfer {
+    total
+    transfers {
+      ...WalletTokenType
+    }
+  }
+  ${WalletTokenTypeFragmentDoc}
+`;
 export const AccessTokenFragmentDoc = gql`
   fragment AccessToken on AccessToken {
     accessToken
@@ -401,4 +481,76 @@ export type ListLinkedWalletLazyQueryHookResult = ReturnType<
 export type ListLinkedWalletQueryResult = Apollo.QueryResult<
   ListLinkedWalletQuery,
   ListLinkedWalletQueryVariables
+>;
+export const RetrieveWalletDocument = gql`
+  query retrieveWallet($input: WalletRetrieveInput!) {
+    retrieveWallet(input: $input) {
+      address
+      tokenBalances {
+        total
+        balances {
+          type
+          amount
+        }
+      }
+      tokenTransfers {
+        total
+        transfers {
+          type
+          amount
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useRetrieveWalletQuery__
+ *
+ * To run a query within a React component, call `useRetrieveWalletQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRetrieveWalletQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRetrieveWalletQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRetrieveWalletQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    RetrieveWalletQuery,
+    RetrieveWalletQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<RetrieveWalletQuery, RetrieveWalletQueryVariables>(
+    RetrieveWalletDocument,
+    options
+  );
+}
+export function useRetrieveWalletLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    RetrieveWalletQuery,
+    RetrieveWalletQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<RetrieveWalletQuery, RetrieveWalletQueryVariables>(
+    RetrieveWalletDocument,
+    options
+  );
+}
+export type RetrieveWalletQueryHookResult = ReturnType<
+  typeof useRetrieveWalletQuery
+>;
+export type RetrieveWalletLazyQueryHookResult = ReturnType<
+  typeof useRetrieveWalletLazyQuery
+>;
+export type RetrieveWalletQueryResult = Apollo.QueryResult<
+  RetrieveWalletQuery,
+  RetrieveWalletQueryVariables
 >;

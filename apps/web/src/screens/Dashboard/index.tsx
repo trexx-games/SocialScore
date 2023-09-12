@@ -45,28 +45,36 @@ const Dashboard: React.FC<DashboardProps> = (props) => {
   });
 
   const handleConnect = async () => {
-    if (!isConnected && !address) {
-      const result = await connectAsync();
+    try {
+      if (!isConnected && !address) {
+        const result = await connectAsync();
 
-      console.log('address', result.account);
-      return;
-    }
+        console.log('address', result.account);
+        return;
+      }
 
-    const data = await signMessageAsync();
+      const data = await signMessageAsync();
 
-    linkWallet({
-      variables: {
-        input: {
-          address: address ?? '',
-          signature: data,
-          message: 'hello world',
+      linkWallet({
+        variables: {
+          input: {
+            address: address ?? '',
+            signature: data,
+            message: 'hello world',
+          },
         },
-      },
-    });
+      });
+    } catch (error: any) {
+      console.log(error?.message);
+    }
   };
 
   useEffect(() => {
-    getLinkedWallets();
+    try {
+      getLinkedWallets();
+    } catch (error: any) {
+      console.log(error?.message);
+    }
   }, []);
 
   // ==================== VIEWS

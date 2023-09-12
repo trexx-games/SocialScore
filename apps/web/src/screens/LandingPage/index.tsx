@@ -34,10 +34,10 @@ const LandingPage: React.FC = () => {
               marginLeft: 20,
             }}
           >
-            <Image fill={true} src={'./shared/Trexx.svg'} alt={'trexx svg'} />
+            <Image fill={true} src={'/Trexx.svg'} alt={'trexx svg'} />
           </div>
 
-          <Button
+          {/* <Button
             style={{
               borderRadius: 25,
               height: 35,
@@ -51,10 +51,10 @@ const LandingPage: React.FC = () => {
             title="Log In"
           >
             Log In
-          </Button>
+          </Button> */}
         </div>
 
-        {/* <Box
+        <Box
           display={'flex'}
           marginTop={10}
           flexDirection={'column'}
@@ -64,22 +64,13 @@ const LandingPage: React.FC = () => {
         >
           <Box display={'flex'} flexDirection={'column'} alignItems={'center'}>
             <Typography variant="body1" fontSize={22} color={'#4A4A4A'}>
-              Building your{' '}
-              <Typography fontWeight={500} display={'inline'}>
-                {'score. \n'}
-              </Typography>
+              Building your score.
             </Typography>
             <Typography variant="body1" fontSize={22} color={'#4A4A4A'}>
-              Having a credit{' '}
-              <Typography fontWeight={500} display={'inline'}>
-                {'access. \n'}
-              </Typography>
+              Having a credit access.
             </Typography>
             <Typography variant="body1" fontSize={22} color={'#4A4A4A'}>
-              Explore new{' '}
-              <Typography fontWeight={500} display={'inline'}>
-                {'opportunities. \n'}
-              </Typography>
+              Explore new opportunities.
             </Typography>
           </Box>
 
@@ -90,11 +81,7 @@ const LandingPage: React.FC = () => {
               position: 'relative',
             }}
           >
-            <Image
-              src={'./shared/LoadingPage.svg'}
-              alt="loading_page"
-              fill={true}
-            />
+            <Image src={'/LoadingPage.svg'} alt="loading_page" fill={true} />
           </div>
 
           <Typography color={'white'}>
@@ -111,10 +98,11 @@ const LandingPage: React.FC = () => {
               marginRight: 30,
               margin: 'auto',
             }}
+            onClick={() => router.push('/login')}
           >
-            Create Your Account!
+            Login/Sign Up
           </Button>
-        </Box> */}
+        </Box>
       </div>
     </>
   );

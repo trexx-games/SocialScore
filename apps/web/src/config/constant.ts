@@ -52,6 +52,7 @@ export const PATHS_ONLY_ALLOWED_BEFORE_AUTH = [
   '/login',
   '/main',
   '/wallets',
+  '/dashboard',
 ];
 
 // restricted path that can't be accessed if user has already signed in
@@ -74,471 +75,472 @@ export const JSON_RPC_URL = 'https://mumbai.rpc.thirdweb.com';
 
 export const MUMBAI_NETWORK_ID = 80001;
 
-export const SOCIAL_SCORE_CONTRACT_ADDRESS = '0xa58077B5F5549004Ea92F56d832aB7705f939Cc0';
+export const SOCIAL_SCORE_CONTRACT_ADDRESS =
+  '0xa58077B5F5549004Ea92F56d832aB7705f939Cc0';
 
 export const SOCIAL_SCORE_ABI = [
   {
-    "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
+    inputs: [],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
   },
   {
-    "anonymous": false,
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
+        indexed: true,
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
     ],
-    "name": "ScoreUpdated",
-    "type": "event"
+    name: 'ScoreUpdated',
+    type: 'event',
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
-      }
+        internalType: 'address',
+        name: '_user',
+        type: 'address',
+      },
     ],
-    "name": "getDaoActions",
-    "outputs": [
+    name: 'getDaoActions',
+    outputs: [
       {
-        "components": [
+        components: [
           {
-            "internalType": "uint256",
-            "name": "approvals",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'approvals',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "proposals_submitted",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'proposals_submitted',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "votes",
-            "type": "uint256"
-          }
+            internalType: 'uint256',
+            name: 'votes',
+            type: 'uint256',
+          },
         ],
-        "internalType": "struct SocialScore.DaoActions",
-        "name": "",
-        "type": "tuple"
-      }
+        internalType: 'struct SocialScore.DaoActions',
+        name: '',
+        type: 'tuple',
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
-      }
+        internalType: 'address',
+        name: '_user',
+        type: 'address',
+      },
     ],
-    "name": "getDefiActions",
-    "outputs": [
+    name: 'getDefiActions',
+    outputs: [
       {
-        "components": [
+        components: [
           {
-            "internalType": "uint256",
-            "name": "loans",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'loans',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "total_volume",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'total_volume',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "swaps",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'swaps',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "repayments",
-            "type": "uint256"
-          }
+            internalType: 'uint256',
+            name: 'repayments',
+            type: 'uint256',
+          },
         ],
-        "internalType": "struct SocialScore.DefiActions",
-        "name": "",
-        "type": "tuple"
-      }
+        internalType: 'struct SocialScore.DefiActions',
+        name: '',
+        type: 'tuple',
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
-      }
+        internalType: 'address',
+        name: '_user',
+        type: 'address',
+      },
     ],
-    "name": "getGeneralActions",
-    "outputs": [
+    name: 'getGeneralActions',
+    outputs: [
       {
-        "components": [
+        components: [
           {
-            "internalType": "uint256",
-            "name": "transactions",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'transactions',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "unique_addresses_interacted",
-            "type": "uint256"
-          }
+            internalType: 'uint256',
+            name: 'unique_addresses_interacted',
+            type: 'uint256',
+          },
         ],
-        "internalType": "struct SocialScore.GeneralActions",
-        "name": "",
-        "type": "tuple"
-      }
+        internalType: 'struct SocialScore.GeneralActions',
+        name: '',
+        type: 'tuple',
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
-      }
+        internalType: 'address',
+        name: '_user',
+        type: 'address',
+      },
     ],
-    "name": "getNftActions",
-    "outputs": [
+    name: 'getNftActions',
+    outputs: [
       {
-        "components": [
+        components: [
           {
-            "internalType": "uint256",
-            "name": "minted",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'minted',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "purchased",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'purchased',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "sold",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'sold',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "held",
-            "type": "uint256"
-          }
+            internalType: 'uint256',
+            name: 'held',
+            type: 'uint256',
+          },
         ],
-        "internalType": "struct SocialScore.NftActions",
-        "name": "",
-        "type": "tuple"
-      }
+        internalType: 'struct SocialScore.NftActions',
+        name: '',
+        type: 'tuple',
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
+    inputs: [],
+    name: 'owner',
+    outputs: [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: 'view',
+    type: 'function',
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
+        internalType: 'address',
+        name: '_user',
+        type: 'address',
       },
       {
-        "internalType": "uint256",
-        "name": "_approvals",
-        "type": "uint256"
+        internalType: 'uint256',
+        name: '_approvals',
+        type: 'uint256',
       },
       {
-        "internalType": "uint256",
-        "name": "_proposals_submitted",
-        "type": "uint256"
+        internalType: 'uint256',
+        name: '_proposals_submitted',
+        type: 'uint256',
       },
       {
-        "internalType": "uint256",
-        "name": "_votes",
-        "type": "uint256"
-      }
+        internalType: 'uint256',
+        name: '_votes',
+        type: 'uint256',
+      },
     ],
-    "name": "updateDaoActions",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: 'updateDaoActions',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
+        internalType: 'address',
+        name: '_user',
+        type: 'address',
       },
       {
-        "internalType": "uint256",
-        "name": "_loans",
-        "type": "uint256"
+        internalType: 'uint256',
+        name: '_loans',
+        type: 'uint256',
       },
       {
-        "internalType": "uint256",
-        "name": "_total_volume",
-        "type": "uint256"
+        internalType: 'uint256',
+        name: '_total_volume',
+        type: 'uint256',
       },
       {
-        "internalType": "uint256",
-        "name": "_swaps",
-        "type": "uint256"
+        internalType: 'uint256',
+        name: '_swaps',
+        type: 'uint256',
       },
       {
-        "internalType": "uint256",
-        "name": "_repayments",
-        "type": "uint256"
-      }
+        internalType: 'uint256',
+        name: '_repayments',
+        type: 'uint256',
+      },
     ],
-    "name": "updateDefiActions",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: 'updateDefiActions',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
+        internalType: 'address',
+        name: '_user',
+        type: 'address',
       },
       {
-        "internalType": "uint256",
-        "name": "_transactions",
-        "type": "uint256"
+        internalType: 'uint256',
+        name: '_transactions',
+        type: 'uint256',
       },
       {
-        "internalType": "uint256",
-        "name": "_unique_addresses_interacted",
-        "type": "uint256"
-      }
+        internalType: 'uint256',
+        name: '_unique_addresses_interacted',
+        type: 'uint256',
+      },
     ],
-    "name": "updateGeneralActions",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: 'updateGeneralActions',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
+        internalType: 'address',
+        name: '_user',
+        type: 'address',
       },
       {
-        "internalType": "uint256",
-        "name": "_minted",
-        "type": "uint256"
+        internalType: 'uint256',
+        name: '_minted',
+        type: 'uint256',
       },
       {
-        "internalType": "uint256",
-        "name": "_purchased",
-        "type": "uint256"
+        internalType: 'uint256',
+        name: '_purchased',
+        type: 'uint256',
       },
       {
-        "internalType": "uint256",
-        "name": "_sold",
-        "type": "uint256"
+        internalType: 'uint256',
+        name: '_sold',
+        type: 'uint256',
       },
       {
-        "internalType": "uint256",
-        "name": "_held",
-        "type": "uint256"
-      }
+        internalType: 'uint256',
+        name: '_held',
+        type: 'uint256',
+      },
     ],
-    "name": "updateNftActions",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: 'updateNftActions',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
+        internalType: 'address',
+        name: '_user',
+        type: 'address',
       },
       {
-        "internalType": "uint256",
-        "name": "_total_volume",
-        "type": "uint256"
+        internalType: 'uint256',
+        name: '_total_volume',
+        type: 'uint256',
       },
       {
-        "internalType": "uint256",
-        "name": "_purchased",
-        "type": "uint256"
+        internalType: 'uint256',
+        name: '_purchased',
+        type: 'uint256',
       },
       {
-        "internalType": "uint256",
-        "name": "_sold",
-        "type": "uint256"
+        internalType: 'uint256',
+        name: '_sold',
+        type: 'uint256',
       },
       {
-        "internalType": "uint256",
-        "name": "_held",
-        "type": "uint256"
-      }
+        internalType: 'uint256',
+        name: '_held',
+        type: 'uint256',
+      },
     ],
-    "name": "updateTokenActions",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: 'updateTokenActions',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
     ],
-    "name": "userScores",
-    "outputs": [
+    name: 'userScores',
+    outputs: [
       {
-        "components": [
+        components: [
           {
-            "internalType": "uint256",
-            "name": "loans",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'loans',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "total_volume",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'total_volume',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "swaps",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'swaps',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "repayments",
-            "type": "uint256"
-          }
+            internalType: 'uint256',
+            name: 'repayments',
+            type: 'uint256',
+          },
         ],
-        "internalType": "struct SocialScore.DefiActions",
-        "name": "defi_actions",
-        "type": "tuple"
+        internalType: 'struct SocialScore.DefiActions',
+        name: 'defi_actions',
+        type: 'tuple',
       },
       {
-        "components": [
+        components: [
           {
-            "internalType": "uint256",
-            "name": "approvals",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'approvals',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "proposals_submitted",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'proposals_submitted',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "votes",
-            "type": "uint256"
-          }
+            internalType: 'uint256',
+            name: 'votes',
+            type: 'uint256',
+          },
         ],
-        "internalType": "struct SocialScore.DaoActions",
-        "name": "dao_actions",
-        "type": "tuple"
+        internalType: 'struct SocialScore.DaoActions',
+        name: 'dao_actions',
+        type: 'tuple',
       },
       {
-        "components": [
+        components: [
           {
-            "internalType": "uint256",
-            "name": "total_volume",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'total_volume',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "purchased",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'purchased',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "sold",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'sold',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "held",
-            "type": "uint256"
-          }
+            internalType: 'uint256',
+            name: 'held',
+            type: 'uint256',
+          },
         ],
-        "internalType": "struct SocialScore.TokenActions",
-        "name": "token_actions",
-        "type": "tuple"
+        internalType: 'struct SocialScore.TokenActions',
+        name: 'token_actions',
+        type: 'tuple',
       },
       {
-        "components": [
+        components: [
           {
-            "internalType": "uint256",
-            "name": "minted",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'minted',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "purchased",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'purchased',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "sold",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'sold',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "held",
-            "type": "uint256"
-          }
+            internalType: 'uint256',
+            name: 'held',
+            type: 'uint256',
+          },
         ],
-        "internalType": "struct SocialScore.NftActions",
-        "name": "nft_actions",
-        "type": "tuple"
+        internalType: 'struct SocialScore.NftActions',
+        name: 'nft_actions',
+        type: 'tuple',
       },
       {
-        "components": [
+        components: [
           {
-            "internalType": "uint256",
-            "name": "transactions",
-            "type": "uint256"
+            internalType: 'uint256',
+            name: 'transactions',
+            type: 'uint256',
           },
           {
-            "internalType": "uint256",
-            "name": "unique_addresses_interacted",
-            "type": "uint256"
-          }
+            internalType: 'uint256',
+            name: 'unique_addresses_interacted',
+            type: 'uint256',
+          },
         ],
-        "internalType": "struct SocialScore.GeneralActions",
-        "name": "general_actions",
-        "type": "tuple"
-      }
+        internalType: 'struct SocialScore.GeneralActions',
+        name: 'general_actions',
+        type: 'tuple',
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
-  }
-]
+    stateMutability: 'view',
+    type: 'function',
+  },
+];

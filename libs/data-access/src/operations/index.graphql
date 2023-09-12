@@ -34,6 +34,45 @@ query listLinkedWallet {
   }
 }
 
+query retrieveWallet($input: WalletRetrieveInput!) {
+  retrieveWallet(input: $input) {
+    address
+    tokenBalances {
+      total
+      balances {
+        type
+        amount
+      }
+    }
+    tokenTransfers {
+      total
+      transfers {
+        type
+        amount
+      }
+    }
+  }
+}
+
+fragment WalletTokenType on WalletTokenType {
+  amount
+  type
+}
+
+fragment WalletTokenBalance on WalletTokenBalance {
+  balances {
+    ...WalletTokenType
+  }
+  total
+}
+
+fragment WalletTokenTransfer on WalletTokenTransfer {
+  total
+  transfers {
+    ...WalletTokenType
+  }
+}
+
 fragment AccessToken on AccessToken {
   accessToken
   expiresIn

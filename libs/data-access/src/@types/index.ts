@@ -154,6 +154,8 @@ export type Query = {
   listLinkedWallet: Array<Wallet>;
   nounsDaoProposalScanning?: Maybe<Scalars['JSONObject']>;
   nounsDaoVoteScanning?: Maybe<Scalars['JSONObject']>;
+  /** This API used to retrieve wallet */
+  retrieveWallet: WalletProfile;
   tokenBalanceScan?: Maybe<Scalars['JSONObject']>;
   tokenTransferScan?: Maybe<Scalars['JSONObject']>;
   utilsTest?: Maybe<Scalars['JSON']>;
@@ -178,6 +180,10 @@ export type QueryNounsDaoProposalScanningArgs = {
 
 export type QueryNounsDaoVoteScanningArgs = {
   walletAddress: Scalars['String'];
+};
+
+export type QueryRetrieveWalletArgs = {
+  input: WalletRetrieveInput;
 };
 
 export type QueryTokenBalanceScanArgs = {
@@ -249,4 +255,35 @@ export type WalletLinkInput = {
   message: Scalars['String'];
   /** The signing signature */
   signature: Scalars['String'];
+};
+
+export type WalletProfile = {
+  __typename?: 'WalletProfile';
+  address: Scalars['String'];
+  tokenBalances: WalletTokenBalance;
+  tokenTransfers: WalletTokenTransfer;
+};
+
+/** The input used to retrieve wallet */
+export type WalletRetrieveInput = {
+  /** Wallet address that going to retrieve */
+  address: Scalars['String'];
+};
+
+export type WalletTokenBalance = {
+  __typename?: 'WalletTokenBalance';
+  balances: Array<WalletTokenType>;
+  total: Scalars['Float'];
+};
+
+export type WalletTokenTransfer = {
+  __typename?: 'WalletTokenTransfer';
+  total: Scalars['Float'];
+  transfers: Array<WalletTokenType>;
+};
+
+export type WalletTokenType = {
+  __typename?: 'WalletTokenType';
+  amount: Scalars['Float'];
+  type: Scalars['String'];
 };
