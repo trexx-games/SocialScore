@@ -46,7 +46,7 @@ export const AchivementBlock: React.FC<AchievementBlockProps> = (props) => {
           {titles.map((title, index) => {
             return (
               <Box key={index}>
-                <div style={{ gap: 8 }}>
+                <div style={{ gap: 8, display: 'flex' }}>
                   <Image
                     src={`/achievement${index + 1}.svg`}
                     width={25}
@@ -63,18 +63,27 @@ export const AchivementBlock: React.FC<AchievementBlockProps> = (props) => {
                   sx={{
                     fontWeight: 500,
                     fontSize: 14,
-                    mx: 'auto',
                     width: 100,
+                    my: 1,
+                    ml: 2,
                   }}
                 >
                   {`${[badges[index].total]} badges`}
                 </Typography>
 
-                <Box display={'flex'}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexWrap: 'no-wrap',
+                    mb: 2,
+                    gap: 2,
+                    justifyContent: 'center',
+                  }}
+                >
                   {badges[index].total > 0 &&
-                    [new Array(badges[index].total)].map((_, i) => {
+                    [...new Array(badges[index].total)].map((_, i) => {
                       return (
-                        <Box key={i}>
+                        <Box key={i} sx={{ width: 125 }}>
                           <Image
                             src={`/achievement${index + 1}.svg`}
                             width={45}

@@ -103,22 +103,56 @@ export const WalletScreen: React.FC = () => {
                 total: 3,
                 achivements: [
                   {
-                    title: 'Nouns Partner',
+                    title: 'Nouns Voter',
                     description: '101 votes in NOUNS projects',
                   },
                   {
-                    title: 'Mantle Code',
-                    description: '3 projects approved in Mantle',
+                    title: 'Nouns Builder',
+                    description: '3 projects approved in NOUNS',
                   },
                   {
-                    title: 'Community',
-                    description: '50 project interactions',
+                    title: 'Nouns Partner',
+                    description: '50 submitted proposals in NOUNS',
                   },
                 ],
               },
-              { total: 0 },
-              { total: 0 },
-              { total: 0 },
+              {
+                total: 3,
+                achivements: [
+                  {
+                    title: 'Treasury',
+                    description: 'Holding > 10 units of different tokens',
+                  },
+                  {
+                    title: 'Pure Trader',
+                    description: '1389 total token transfers made',
+                  },
+                  {
+                    title: 'ERC20 Hoarder',
+                    description: '12 unique tokens purchased',
+                  },
+                ],
+              },
+              {
+                total: 3,
+                achivements: [
+                  {
+                    title: 'Uniswapper',
+                    description: '78 swaps done in Uniswap',
+                  },
+                  {
+                    title: 'Finance Officer',
+                    description: 'made 22 loans',
+                  },
+                  {
+                    title: 'Trusty Borrower',
+                    description: '21 completed repayments',
+                  },
+                ],
+              },
+              {
+                total: 0,
+              },
             ]}
             showMore={showMore}
           />
