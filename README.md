@@ -48,11 +48,17 @@ Do take note that development tools should met with below requirements:
 
 ```bash
 ├── apps
-│    ├── backend # backend project
-│    └── web # frontend project
+│    ├── web # frontend application
+│    └── backend # backend application
 └── libs
-     ├── data-access # graphql codegen
-     └── server # server environment configuration
+    ├── data-access # backend module
+    ├── shared-assets
+    │     ├── images # shared images
+    │     └── locales # locales file
+    ├── server # server modules
+    ├── ui-components # shared components
+    ├── utils-crypto # shared utils functions about crypto
+    └── utils-helpers # shared utils functions
 ```
 
 ---
@@ -139,24 +145,6 @@ yarn remove <DEPENDENCIES>
 ## Guide
 
 1. How to run backend on your local machine [docs](./docs/guide-how-to-run-backend.md)
-2. How to run the web application on your local machine [docs](./docs/guide-how-to-run-frontend.md)
-
-## Folder Structure
-
-```
-├── apps
-│    ├── web
-│    └── backend
-└── libs
-    ├── data-access # backend module
-    ├── shared-assets
-    │     ├── images # shared images
-    │     └── locales # locales file
-    ├── server # server modules
-    ├── ui-components # shared components
-    ├── utils-crypto # shared utils functions about crypto
-    └── utils-helpers # shared utils functions
-```
 
 ---
 
@@ -175,4 +163,3 @@ One smart wallet entity can be connected to many personal wallets that will cont
 ### Dashboard
 
 The dashboard displays the smart wallet as the main entity and all connected personal wallets will be sub entities that can be viewed in more detail to breakdown how does that entity contribute towards the ending score.
-
