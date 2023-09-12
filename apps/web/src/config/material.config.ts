@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material';
+
 import { primaryColor, secondaryColor } from './colors';
 
 /**
@@ -10,6 +11,9 @@ import { primaryColor, secondaryColor } from './colors';
  */
 export const muiTheme = createTheme({
   palette: {
+    background: {
+      paper: '#F5F6FB',
+    },
     primary: {
       main: primaryColor,
     },

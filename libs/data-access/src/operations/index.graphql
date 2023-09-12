@@ -1,22 +1,98 @@
 # ======================================== QUERY & MUTATIONS ========================================
 
-# AUTH
-# ========================
-mutation Login($input: LoginInput!) {
-  Login(input: $input) {
-    status
-    message
-    TokenResponse {
-      ...TokenResponseInfo
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+mutation connect($input: ConnectInput!) {
+  connect(input: $input) {
+    ...AccessToken
+  }
+}
+
+mutation linkWallet($input: WalletLinkInput!) {
+  linkWallet(input: $input) {
+    ...WalletInfo
+  }
+}
+
+mutation refreshToken($input: RefreshAccessTokenInput!) {
+  refreshToken(input: $input) {
+    ...AccessToken
+  }
+}
+
+query getAuthProfile {
+  getAuthProfile {
+    ...UserInfo
+  }
+}
+
+query listLinkedWallet {
+  listLinkedWallet {
+    ...WalletInfo
+  }
+}
+
+query retrieveWallet($input: WalletRetrieveInput!) {
+  retrieveWallet(input: $input) {
+    address
+    tokenBalances {
+      total
+      balances {
+        type
+        amount
+      }
+    }
+    tokenTransfers {
+      total
+      transfers {
+        type
+        amount
+      }
     }
   }
 }
 
-# ======================================== FRAGMENTS ========================================
+fragment WalletTokenType on WalletTokenType {
+  amount
+  type
+}
 
-# AUTH
-# ========================
-fragment TokenResponseInfo on TokenResponse {
-  token
-  token_type
+fragment WalletTokenBalance on WalletTokenBalance {
+  balances {
+    ...WalletTokenType
+  }
+  total
+}
+
+fragment WalletTokenTransfer on WalletTokenTransfer {
+  total
+  transfers {
+    ...WalletTokenType
+  }
+}
+
+fragment AccessToken on AccessToken {
+  accessToken
+  expiresIn
+  refreshExpiresIn
+  refreshToken
+}
+
+fragment UserInfo on User {
+  address
+  createdAt
+  id
+  lastSyncDate
+  updatedAt
+  username
+}
+
+fragment WalletInfo on Wallet {
+  address
+  createdAt
+  id
+  lastSyncDate
+  updatedAt
 }

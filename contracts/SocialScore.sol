@@ -49,7 +49,6 @@ contract SocialScore {
     function updateDefiActions(
         address _user,
         uint256 _loans,
-        uint256 _total_volume,
         uint256 _swaps,
         uint256 _repayments
     ) external onlyOwner {
@@ -79,7 +78,6 @@ contract SocialScore {
         address _user,
         uint256 _token_transfers,
         uint256 _purchased,
-        uint256 _sold,
         uint256 _held
     ) external onlyOwner {
         userScores[_user].token_actions = TokenActions(

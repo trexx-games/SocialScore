@@ -1,8 +1,9 @@
+import { ApolloLink } from '@apollo/client';
 import {
   ApolloClientOptions,
   retrieveAuthTokenFromContext,
 } from '@webbyx/next-js';
-import { ApolloLink } from '@apollo/client';
+
 import { GRAPHQL_ENDPOINT, GRAPHQL_SUBSCRIPTION_ENDPOINT } from './constant';
 
 const isProduction = process.env.NODE_ENV === 'production';

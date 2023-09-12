@@ -235,7 +235,7 @@ export class BlockchainScanService {
     const transactionsData = [];
 
     const BLOCKS_PER_QUERY = input.totalQueryBlock ?? 5000;
-    let startBlock = 13139295;
+    let startBlock = 13077700;
     let endBlock = startBlock + BLOCKS_PER_QUERY;
     let totalEventsFound = 0;
 
