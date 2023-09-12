@@ -1,4 +1,5 @@
 import { AuthOptions } from '@webbyx/next-js';
+
 import checkAuthProfile from './auth.query';
 import {
   DEFAULT_PATH_AFTER_SIGN_IN,
@@ -17,7 +18,7 @@ export const authOptions: AuthOptions = {
   syncAuthEventKeyName: 'signout',
   logging: process.env.NODE_ENV === 'development', // whether should do logging on auth check
   enableAdmin: false,
-  enableNotFoundRedirection: true,
+  enableNotFoundRedirection: false,
   enableOnboarding: false, // enable onboarding check
   /**
    * check whether user is required onboarding based on API response

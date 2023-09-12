@@ -31,7 +31,13 @@ export default class CustomDocument extends Document {
   render() {
     return (
       <Html>
-        <Head>{this.props.styles}</Head>
+        <Head>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap"
+            rel="stylesheet"
+          />
+          {this.props.styles}
+        </Head>
         <body>
           <Main />
           <NextScript />

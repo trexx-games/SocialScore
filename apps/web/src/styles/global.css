@@ -1,0 +1,11 @@
+.gradient {
+  border-radius: 20px;
+  background: linear-gradient(200deg, #66e3a6 45.11%, #36a9e1 94.35%);
+}
+
+@font-face {
+  font-family: 'Ubuntu';
+  font-weight: normal;
+  font-size: normal;
+  src: url('./Ubuntu-Regular.ttf');
+}

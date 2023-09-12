@@ -19,7 +19,11 @@ const nextConfig = {
   images: { domains: ['tailwindcss.com'] },
   poweredByHeader: false,
   reactStrictMode: true,
-  transpilePackages: ['@stack/data-access'],
+  transpilePackages: [
+    '@stack/data-access',
+    '@thirdweb-dev/react',
+    '@thirdweb-dev/sdk',
+  ],
   productionBrowserSourceMaps: process.env.ANALYZE === 'true',
   compiler: {
     // according to https://nextjs.org/docs/advanced-features/compiler#styled-components
