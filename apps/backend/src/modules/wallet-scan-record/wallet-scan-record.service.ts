@@ -7,31 +7,37 @@ import { FilterQueryBuilder } from '@ptc-org/nestjs-query-typeorm/src/query';
 import { CqrsCommandFunc, CqrsQueryFunc } from 'nestjs-typed-cqrs';
 import { Repository } from 'typeorm';
 
+import { CreateOneQueueJobCommand } from '../queue/cqrs';
+import { FindOneUserQuery } from '../user/cqrs';
+import { UserEntity } from '../user/user.entity';
+
 import {
-  CountUserQuery,
-  CreateOneUserCommand,
-  DeleteOneUserCommand,
-  FindManyUserQuery,
-  FindOneUserQuery,
-  UpdateOneUserCommand,
-} from './cqrs/user.cqrs.input';
-import { UserEntity } from './user.entity';
+  CountWalletScanRecordQuery,
+  CreateOneWalletScanRecordCommand,
+  DeleteOneWalletScanRecordCommand,
+  FindManyWalletScanRecordQuery,
+  FindOneWalletScanRecordQuery,
+  UpdateOneWalletScanRecordCommand,
+} from './cqrs/wallet-scan-record.cqrs.input';
+import { WalletScanRecordEntity } from './wallet-scan-record.entity';
 
 @Injectable()
-export class UserService {
-  private readonly filterQueryBuilder: FilterQueryBuilder<UserEntity>;
+export class WalletScanRecordService {
+  private readonly filterQueryBuilder: FilterQueryBuilder<WalletScanRecordEntity>;
 
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly repo: Repository<UserEntity>,
-    @InjectQueryService(UserEntity)
-    private readonly service: QueryService<UserEntity>,
+    @InjectRepository(WalletScanRecordEntity)
+    private readonly repo: Repository<WalletScanRecordEntity>,
+    @InjectQueryService(WalletScanRecordEntity)
+    private readonly service: QueryService<WalletScanRecordEntity>,
     private readonly utils: UtilsService,
     private readonly eventBus: EventBus,
     private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus
   ) {
-    this.filterQueryBuilder = new FilterQueryBuilder<UserEntity>(this.repo);
+    this.filterQueryBuilder = new FilterQueryBuilder<WalletScanRecordEntity>(
+      this.repo
+    );
   }
 
   /**
@@ -42,10 +48,10 @@ export class UserService {
   /**
    * Find one record
    */
-  findOne: CqrsQueryFunc<FindOneUserQuery, FindOneUserQuery['args']> = async ({
-    query,
-    options,
-  }) => {
+  findOne: CqrsQueryFunc<
+    FindOneWalletScanRecordQuery,
+    FindOneWalletScanRecordQuery['args']
+  > = async ({ query, options }) => {
     const nullable = options?.nullable ?? true;
     const silence = options?.silence ?? false;
 
@@ -54,14 +60,14 @@ export class UserService {
       const builder = this.filterQueryBuilder.select(query);
 
       // build relation
-      UserEntity.buildJoinRelation(builder, options);
+      WalletScanRecordEntity.buildJoinRelation(builder, options);
 
       // actual query
       const result = await builder.getOne();
 
       // check record
       if (!nullable && !result) {
-        throw new Error('User record is not found!');
+        throw new Error('WalletScanRecord record is not found!');
       }
 
       // result
@@ -75,40 +81,43 @@ export class UserService {
   /**
    * Find many records
    */
-  findMany: CqrsQueryFunc<FindManyUserQuery, FindManyUserQuery['args']> =
-    async ({ query, options }) => {
-      const nullable = options?.nullable ?? true;
-      const silence = options?.silence ?? false;
+  findMany: CqrsQueryFunc<
+    FindManyWalletScanRecordQuery,
+    FindManyWalletScanRecordQuery['args']
+  > = async ({ query, options }) => {
+    const nullable = options?.nullable ?? true;
+    const silence = options?.silence ?? false;
 
-      try {
-        // query builder
-        const builder = this.filterQueryBuilder.select(query);
+    try {
+      // query builder
+      const builder = this.filterQueryBuilder.select(query);
 
-        // build relation
-        UserEntity.buildJoinRelation(builder, options);
+      // build relation
+      WalletScanRecordEntity.buildJoinRelation(builder, options);
 
-        // actual query
-        const result = await builder.getMany();
+      // actual query
+      const result = await builder.getMany();
 
-        // check record
-        if (!nullable && result.length === 0) {
-          throw new Error('No any user records were found!');
-        }
-
-        // result
-        return { success: true, data: result };
-      } catch (e) {
-        if (!silence) throw new BadRequestException(e);
-        return { success: false, message: e.message };
+      // check record
+      if (!nullable && result.length === 0) {
+        throw new Error('No any wallet-scan-record records were found!');
       }
-    };
+
+      // result
+      return { success: true, data: result };
+    } catch (e) {
+      if (!silence) throw new BadRequestException(e);
+      return { success: false, message: e.message };
+    }
+  };
 
   /**
    * count records
    */
-  count: CqrsQueryFunc<CountUserQuery, CountUserQuery['args']> = async ({
-    query,
-  }) => {
+  count: CqrsQueryFunc<
+    CountWalletScanRecordQuery,
+    CountWalletScanRecordQuery['args']
+  > = async ({ query }) => {
     try {
       // query builder
       const builder = this.filterQueryBuilder.select({
@@ -127,25 +136,20 @@ export class UserService {
    * Create one record
    */
   createOne: CqrsCommandFunc<
-    CreateOneUserCommand,
-    CreateOneUserCommand['args']
+    CreateOneWalletScanRecordCommand,
+    CreateOneWalletScanRecordCommand['args']
   > = async ({ input, options }) => {
     const silence = options?.silence ?? false;
     try {
       const { data: found } = await this.findOne({
-        query: { filter: { username: { eq: input.username } } },
+        query: {},
         options: { nullable: true },
       });
-      if (found) throw new Error('User has been registered before!');
-
-      // generate unique referral code
-      const username = await this.utils.generateUsername(input.username);
+      if (found)
+        throw new Error('WalletScanRecord has been registered before!');
 
       // create record
-      const record = await this.repo.save({
-        ...input,
-        username,
-      });
+      const record = await this.repo.save(input);
 
       return { success: true, data: record };
     } catch (error) {
@@ -158,8 +162,8 @@ export class UserService {
    * Update record
    */
   updateOne: CqrsCommandFunc<
-    UpdateOneUserCommand,
-    UpdateOneUserCommand['args']
+    UpdateOneWalletScanRecordCommand,
+    UpdateOneWalletScanRecordCommand['args']
   > = async ({ query, input, options }) => {
     const silence = options?.silence ?? false;
 
@@ -169,11 +173,11 @@ export class UserService {
         query: query,
         options: { nullable: false },
       });
+
       // update record
-      const updated = await this.service.updateOne(found.id, {
-        ...input,
-      });
-      return { success: true, data: { before: found, updated } };
+      const data = await this.service.updateOne(found.id, input);
+
+      return { success: true, data: { before: found, updated: data } };
     } catch (error) {
       if (!silence) throw new BadRequestException(error);
       return { success: false, message: error.message };
@@ -184,8 +188,8 @@ export class UserService {
    * Update one record
    */
   deleteOne: CqrsCommandFunc<
-    DeleteOneUserCommand,
-    DeleteOneUserCommand['args']
+    DeleteOneWalletScanRecordCommand,
+    DeleteOneWalletScanRecordCommand['args']
   > = async ({ input, options }) => {
     const silence = options?.silence ?? false;
 

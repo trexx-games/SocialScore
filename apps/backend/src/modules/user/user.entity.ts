@@ -22,7 +22,7 @@ export class UserEntity extends AbstractEntity {
   username: string;
 
   @OneToMany(() => WalletEntity, (entity) => entity.parent)
-  linking: UserEntity[];
+  linking: WalletEntity[];
 
   @Column({ type: 'timestamptz', nullable: true })
   lastSyncDate?: Date;

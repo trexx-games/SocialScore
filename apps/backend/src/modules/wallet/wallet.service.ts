@@ -4,12 +4,13 @@ import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectQueryService, QueryService } from '@ptc-org/nestjs-query-core';
 import { FilterQueryBuilder } from '@ptc-org/nestjs-query-typeorm/src/query';
-import { isNil } from 'lodash';
 import { CqrsCommandFunc, CqrsQueryFunc } from 'nestjs-typed-cqrs';
 import { Repository } from 'typeorm';
 
+import { CreateOneQueueJobCommand } from '../queue/cqrs';
 import { FindOneUserQuery } from '../user/cqrs';
 import { UserEntity } from '../user/user.entity';
+import { WalletScanProcessorInput } from '../wallet-scan/processors';
 
 import {
   CountWalletQuery,
@@ -136,9 +137,9 @@ export class WalletService {
     const { parentId, parentAddress, ...restInput } = input;
     let parent: UserEntity = null;
     try {
-      if (isNil(parentId) && isNil(parentAddress)) {
-        throw new Error('Please provide parent reference!');
-      }
+      // if (isNil(parentId) && isNil(parentAddress)) {
+      //   throw new Error('Please provide parent reference!');
+      // }
       const { data: found } = await this.findOne({
         query: { filter: { address: { eq: input.address } } },
         options: { nullable: true },
@@ -192,10 +193,7 @@ export class WalletService {
       });
 
       // update record
-      const { data } = await this.findOne({
-        query: { filter: { id: { eq: found.id } } },
-        options: { nullable: false, relation: false },
-      });
+      const data = await this.service.updateOne(found.id, input);
 
       return { success: true, data: { before: found, updated: data } };
     } catch (error) {
@@ -239,4 +237,39 @@ export class WalletService {
    * Helper Functions
    * ------------------------------------------------------
    */
+  addNewWallet = async (input: {
+    address: string;
+    parentId?: number;
+  }): Promise<WalletEntity> => {
+    const address = input.address;
+    // if everything good, then link the wallet to smart wallet
+    const { data } = await this.createOne({
+      input: {
+        address: address,
+        parentId: input.parentId,
+      },
+    });
+
+    this.performScanWallet(address);
+    return data;
+  };
+
+  performScanWallet = (address: string, type: 'link' | 'sync' = 'link') => {
+    const currentTime = new Date().toISOString();
+    const jobId = `${type}-wallet-${address}-${currentTime}`;
+    // create job for wallet scanning
+    this.commandBus.execute(
+      new CreateOneQueueJobCommand<WalletScanProcessorInput>({
+        input: {
+          id: jobId,
+          name: 'LinkWalletSync',
+          queue: 'general',
+          reference: address,
+          data: {
+            address: address,
+          },
+        },
+      })
+    );
+  };
 }

@@ -6,12 +6,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   RelationId,
   SelectQueryBuilder,
   Unique,
 } from 'typeorm';
 
 import { UserEntity } from '../user/user.entity';
+import { WalletScanRecordEntity } from '../wallet-scan-record/wallet-scan-record.entity';
 
 @Entity({ name: 'wallet' })
 @Unique(['address'])
@@ -26,6 +28,9 @@ export class WalletEntity extends AbstractEntity {
   @ManyToOne(() => UserEntity, (entity) => entity.linking)
   @JoinColumn()
   parent?: UserEntity;
+
+  @OneToMany(() => WalletScanRecordEntity, (entity) => entity.wallet)
+  records: WalletScanRecordEntity[];
 
   @Column({ type: 'timestamptz', nullable: true })
   lastSyncDate?: Date;

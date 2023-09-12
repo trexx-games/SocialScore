@@ -83,6 +83,9 @@ export const configuration = (): ConfigEnvironmentType => ({
   adminPrivateKey: process.env['ADMIN_PRIVATE_KEY'],
   airStackPrivateKey: process.env['AIR_STACK_PV_KEY'],
 
+  // sync time gap
+  syncTimeGap: toNumber(process.env['SYNC_TIME_GAP'] || 300),
+
   /**
    * =============================
    * SERVER PROJECT ENVIRONMENT

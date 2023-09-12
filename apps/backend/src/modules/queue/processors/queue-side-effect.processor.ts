@@ -14,8 +14,6 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ConfigEnvironmentType as ENV } from '@stack/server';
 import { Job } from 'bull';
 
-import { QueueJobEvent } from '../queue.constant';
-
 /**
  * ---------------------------
  * Withdrawal Event
@@ -37,13 +35,13 @@ export class QueueSideEffectProcessorHandler {
     const args = job.data;
 
     try {
-      if (args.event === QueueJobEvent.Xxx) {
-        // await this.commandBus.execute(
-        //   new SomeCommand({
-        //     input: args,
-        //   })
-        // );
-      }
+      // if (args.event === SideEffectQueueJobEvent.Xxx) {
+      // await this.commandBus.execute(
+      //   new SomeCommand({
+      //     input: args,
+      //   })
+      // );
+      // }
     } catch (e) {
       this.logger.error(e.message);
     }

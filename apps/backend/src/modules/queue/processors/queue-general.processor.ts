@@ -1,4 +1,5 @@
 import { QUEUE_JOB } from '@apps/config/constant';
+import { WalletScanProcessorCommand } from '@apps/modules/wallet-scan/processors';
 import { HttpService } from '@nestjs/axios';
 import {
   OnQueueActive,
@@ -18,7 +19,7 @@ import { QueueJobEvent } from '../queue.constant';
 
 /**
  * ---------------------------
- * Withdrawal Event
+ * PROCESSOR
  * ---------------------------
  */
 @Processor(QUEUE_JOB)
@@ -32,21 +33,21 @@ export class QueueProcessorHandler {
     private readonly httpService: HttpService
   ) {}
 
-  @Process({ concurrency: 1 })
+  @Process()
   async handler(job: Job) {
     const args = job.data;
 
     try {
       // buy in event
-      if (args.event === QueueJobEvent.Xxx) {
-        // await this.commandBus.execute(
-        //   new SomeCommand({
-        //     input: {
-        //       reference: args.reference,
-        //       args,
-        //     },
-        //   })
-        // );
+      if (args.event === QueueJobEvent.LinkWalletSync) {
+        await this.commandBus.execute(
+          new WalletScanProcessorCommand({
+            input: {
+              reference: args.reference,
+              args,
+            },
+          })
+        );
       }
     } catch (e) {
       this.logger.error(e.message);

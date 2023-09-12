@@ -57,6 +57,9 @@ export type ConfigEnvironmentType = {
   adminPrivateKey?: string;
   airStackPrivateKey?: string;
 
+  // sync time gap
+  syncTimeGap: number;
+
   /**
    * =============================
    * SERVER PROJECT ENVIRONMENT

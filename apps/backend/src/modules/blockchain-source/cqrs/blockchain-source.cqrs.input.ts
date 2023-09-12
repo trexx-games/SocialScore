@@ -38,16 +38,6 @@ export class FindManyBlockchainSourceQuery extends AbstractCqrsQueryInput<
 > {}
 
 /**
- * find one by
- */
-export class FindOneBlockchainSourceByQuery extends AbstractCqrsQueryInput<
-  BlockchainSourceEntity,
-  { id: number; address: string },
-  RecordQueryOptions,
-  BlockchainSourceEntity
-> {}
-
-/**
  * find & count records
  */
 export class CountBlockchainSourceQuery extends AbstractCqrsQueryInput<

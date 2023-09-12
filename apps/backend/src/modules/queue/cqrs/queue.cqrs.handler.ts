@@ -1,8 +1,4 @@
-import {
-  QUEUE_JOB,
-  QUEUE_MISC,
-  QUEUE_SIDE_EFFECT,
-} from '@apps/config/constant';
+import { QUEUE_JOB, QUEUE_SIDE_EFFECT } from '@apps/config/constant';
 import { InjectQueue } from '@nestjs/bull';
 import { CommandHandler, IInferredCommandHandler } from '@nestjs/cqrs';
 import { CommandResult } from '@nestjs-architects/typed-cqrs';
@@ -29,9 +25,7 @@ export class CreateOneQueueJobCommandHandler<Data>
     @InjectQueue(QUEUE_JOB)
     private queue: Queue,
     @InjectQueue(QUEUE_SIDE_EFFECT)
-    private queueSide: Queue,
-    @InjectQueue(QUEUE_MISC)
-    private queueMisc: Queue
+    private queueSide: Queue
   ) {}
   async execute(
     command: CreateOneQueueJobCommand<Data>
@@ -45,9 +39,6 @@ export class CreateOneQueueJobCommandHandler<Data>
       let targetQueue = this.queue;
       if (queue === 'sideEffect') {
         targetQueue = this.queueSide;
-      }
-      if (queue === 'misc') {
-        targetQueue = this.queueMisc;
       }
       // job without named
       if (!identifier) {

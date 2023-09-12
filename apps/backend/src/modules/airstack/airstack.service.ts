@@ -59,9 +59,9 @@ export class AirstackService {
         ?.length || 0;
 
     const transfers = [
-      { type: 'ERC1155', transfersCount: erc1155Count },
-      { type: 'ERC721', transfersCount: erc721Count },
-      { type: 'ERC20', transfersCount: erc20Count },
+      { type: 'ERC1155', amount: erc1155Count },
+      { type: 'ERC721', amount: erc721Count },
+      { type: 'ERC20', amount: erc20Count },
     ];
 
     const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
@@ -85,7 +85,7 @@ export class AirstackService {
     );
 
     return {
-      totalTransfers,
+      total: totalTransfers,
       transfers,
     };
   };
@@ -111,7 +111,7 @@ export class AirstackService {
     await init(airStackPrivateKey);
     const { data, error } = await fetchQuery(query, variables);
 
-    const tokenBalances = data.Wallet.tokenBalances;
+    const tokenBalances = data.Wallet.tokenBalances ?? [];
 
     const totalBalances = tokenBalances.length;
     const erc1155Count =
@@ -125,9 +125,9 @@ export class AirstackService {
         ?.length || 0;
 
     const balances = [
-      { type: 'ERC1155', transfersCount: erc1155Count },
-      { type: 'ERC721', transfersCount: erc721Count },
-      { type: 'ERC20', transfersCount: erc20Count },
+      { type: 'ERC1155', amount: erc1155Count },
+      { type: 'ERC721', amount: erc721Count },
+      { type: 'ERC20', amount: erc20Count },
     ];
 
     const jsonRpcProvider = new ethers.providers.JsonRpcProvider(
@@ -151,7 +151,7 @@ export class AirstackService {
     );
 
     return {
-      totalBalances,
+      total: totalBalances,
       balances,
     };
   };
