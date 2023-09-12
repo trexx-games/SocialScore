@@ -55,7 +55,6 @@ contract SocialScore {
     ) external onlyOwner {
         userScores[_user].defi_actions = DefiActions(
             _loans,
-            _total_volume,
             _swaps,
             _repayments
         );
@@ -86,7 +85,6 @@ contract SocialScore {
         userScores[_user].token_actions = TokenActions(
             _token_transfers,
             _purchased,
-            _sold,
             _held
         );
         emit ScoreUpdated(_user);
