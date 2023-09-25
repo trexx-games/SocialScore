@@ -24,11 +24,6 @@
 | NextJs         | The React framework                                                                                           | https://nextjs.org/             |
 | Apollo GraphQL | API communication between server & client                                                                     | https://www.apollographql.com/  |
 | Material UI    | Library of react components                                                                                   | https://mui.com/                |
-| EthersJs       | Library for interacting with the Ethereum Blockchain and its ecosystem                                        | https://docs.ethers.org/v5/     |
-| Solidity       | Smart Contract Language                                                                                       |                                 |
-| Thirdweb       | SDKs for interacting with Blockchain                                                                          |                                 |
-| Airstack       | SDKs for interacting with Blockchain                                                                          | https://www.airstack.xyz/       |
-| Hardhat        | Development environment for Ethereum software                                                                 | https://hardhat.org/            |
 | JWT            | JSON Web Token (JWT) is a compact URL-safe means of representing claims to be transferred between two parties | https://jwt.io/                 |
 
 ---
