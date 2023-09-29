@@ -24,6 +24,7 @@ import { BlockchainSourceModule } from './modules/blockchain-source/blockchain-s
 import { WalletModule } from './modules/wallet/wallet.module';
 import { WalletScanModule } from './modules/wallet-scan/wallet-scan.module';
 import { WalletScanRecordModule } from './modules/wallet-scan-record/wallet-scan-record.module';
+import { XrplModule } from './modules/xrpl/xrpl.module';
 
 @Module({
   imports: [
@@ -88,6 +89,7 @@ import { WalletScanRecordModule } from './modules/wallet-scan-record/wallet-scan
     WalletModule,
     WalletScanModule,
     WalletScanRecordModule,
+    XrplModule,
   ],
 })
 export class AppModule {}
