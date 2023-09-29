@@ -101,6 +101,7 @@
     "uuid": "^9.0.0",
     "viem": "^1.10.9",
     "wagmi": "^1.4.1",
+    "xrpl": "^2.12.0",
     "zustand": "4.3.8"
   },
   "devDependencies": {
