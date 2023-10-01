@@ -137,6 +137,10 @@ yarn remove <DEPENDENCIES>
 
 ---
 
+## XRPL Folder
+
+[Go to XRPL Folder](./apps/backend/src/modules/xrpl)
+
 ## Guide
 
 1. How to run backend on your local machine [docs](./docs/guide-how-to-run-backend.md)
@@ -149,11 +153,11 @@ After starting the web app, which will be hosted on 'localhost:6767'. The user w
 
 ### Login / Sign Up
 
-The Login and Sign up is the same action in our app, where it takes a certain username and password and then derives a smart wallet for it (ERC4337). If the user is using the platform for the first time, it will save the username to IPFS and a smart wallet is created. The user will then be using the smart wallet to interact with our social scoring systems.
+The Login and Sign up is the same action in our app, where it takes a certain username and password and then derives a smart wallet for it. If the user is using the platform for the first time, it will save the username to IPFS and a smart wallet is created. The user will then be using the smart wallet to interact with our social scoring systems.
 
 ### Linking wallets
 
-One smart wallet entity can be connected to many personal wallets that will contribute to the final score. To link a wallet, Trexx will prompt the user to sign an auth message that will be decrypted by the backend to check for eligibility and then proceed to score calculation.
+One wallet entity can be connected to many personal wallets that will contribute to the final score. To link a wallet, Trexx will prompt the user to sign an auth message that will be decrypted by the backend to check for eligibility and then proceed to score calculation.
 
 ### Dashboard
 
