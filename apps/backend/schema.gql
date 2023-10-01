@@ -168,6 +168,8 @@ input OffsetPaging {
 }
 
 type Query {
+  ammDepositScan(address: String!): JSONObject
+  ammWithdrawScan(address: String!): JSONObject
   blockchainSource(
     """The id of the record to find."""
     id: Int!
@@ -186,8 +188,10 @@ type Query {
 
   """This API used to list linked wallets from smart wallet"""
   listLinkedWallet: [Wallet!]!
+  nfTokenMintScan(address: String!): JSONObject
   nounsDaoProposalScanning(walletAddress: String!): JSONObject
   nounsDaoVoteScanning(walletAddress: String!): JSONObject
+  paymentsScan(address: String!): JSONObject
 
   """This API used to retrieve wallet"""
   retrieveWallet(input: WalletRetrieveInput!): WalletProfile!

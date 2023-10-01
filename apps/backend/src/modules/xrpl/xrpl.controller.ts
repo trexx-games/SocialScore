@@ -18,7 +18,28 @@ export class XrplController {
   @Query(() => GraphQLJSONObject, {
     nullable: true,
   })
-  async tokenTransferScan(@Args('address') address: string) {
+  async paymentsScan(@Args('address') address: string) {
     return this.service.paymentsScan(address);
+  }
+
+  @Query(() => GraphQLJSONObject, {
+    nullable: true,
+  })
+  async ammDepositScan(@Args('address') address: string) {
+    return this.service.ammDepositScan(address);
+  }
+
+  @Query(() => GraphQLJSONObject, {
+    nullable: true,
+  })
+  async ammWithdrawScan(@Args('address') address: string) {
+    return this.service.ammWithdrawScan(address);
+  }
+
+  @Query(() => GraphQLJSONObject, {
+    nullable: true,
+  })
+  async nfTokenMintScan(@Args('address') address: string) {
+    return this.service.nfTokenMintScan(address);
   }
 }
